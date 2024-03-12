@@ -2,7 +2,7 @@ package controller;
 
 
 import model.articulo.Articulo;
-import model.articulo.PantalonCargo;
+import model.PantalonCargo;
 import view.Productos;
 
 public class Controller {
@@ -20,4 +20,12 @@ public class Controller {
                 pantalon_cargo.getColor(), pantalon_cargo.getPrecio(), pantalon_cargo.getStock());
     }
 
+    public void registro(String nombre, String apellidos, String correoEl, String contrasenya, String fechaNac, char sexo, String Pais) {
+    }
+
+    public void logIn(String Usuario, String Contrasenya) {
+    }
+
+    public void cambiarSuscripcion() {
+    }
 }

@@ -1,6 +1,6 @@
 import controller.Controller;
 import model.articulo.Articulo;
-import model.articulo.PantalonCargo;
+import model.PantalonCargo;
 import view.Productos;
 
 public class Main {

@@ -1,4 +1,4 @@
-package model.articulo;
+package model;
 
 public class PantalonCargo {
     private String nombre;
