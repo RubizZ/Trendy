@@ -1,6 +1,8 @@
 package view;
 
-public class Productos {
+import model.articulo.ArticuloAbstracto;
+
+public class Productos  {
     public void imprimirProducto(String nombre, int id, boolean tipo, String categoria, String color, double precio, int stock){
         String exclusivo;
         if(tipo) {

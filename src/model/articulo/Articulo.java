@@ -6,12 +6,19 @@ public interface Articulo {
     double getPrecio();
     Color getColor();
     int getStock();
+    Categoria getCategoria();
+    Subcategoria getSubcategoria();
+    String getFechaLanzamiento();
 
     enum Color{
-        BLANCO, NEGRO, MARRON, ROJO, NARANJA, AMARILLO, BEIGE, CARNE, VERDE, AZUL, ROSA, VIOLETA, GRIS
+        BLANCO, NEGRO, MARRON, ROJO, NARANJA, AMARILLO, BEIGE, CARNE, VERDE, AZUL, ROSA, VIOLETA, GRIS;
     }
 
-    enum Genero{
-        HOMBRE, MUJER, UNISEX
+    enum Categoria{
+        HOMBRE, MUJER, EXCLUSIVOS, PROMOCIONES;
+    }
+
+    enum Subcategoria{
+        CAMISETA, PANTALON, CHAQUETA, SUDADERA, ZAPATOS, BOLSOS, GORRAS, VESTIDOS, FALDAS, CHALECO, CALCETINES, JERSEY;
     }
 }

@@ -12,7 +12,6 @@ public class PantalonCargo {
     public PantalonCargo() {
         this.nombre = "Cargo";
         this.id = 1;
-        this.tipo = false;
         this.categoria = "pantalon";
         this.color = "beige";
         this.precio = 33.777;
@@ -25,10 +24,6 @@ public class PantalonCargo {
 
     public int getId() {
         return id;
-    }
-
-    public boolean isTipo() {
-        return tipo;
     }
 
     public String getCategoria() {

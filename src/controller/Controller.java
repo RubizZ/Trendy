@@ -16,7 +16,7 @@ public class Controller {
     }
 
     public void mostrarArticulo(){
-        view.imprimirProducto(pantalon_cargo.getNombre(), pantalon_cargo.getId(), pantalon_cargo.isTipo(), pantalon_cargo.getCategoria(),
+        view.imprimirProducto(pantalon_cargo.getNombre(), pantalon_cargo.getId(), pantalon_cargo.getCategoria(),
                 pantalon_cargo.getColor(), pantalon_cargo.getPrecio(), pantalon_cargo.getStock());
     }
 
