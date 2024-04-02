@@ -59,6 +59,8 @@ public abstract class ArticuloAbstracto implements Articulo {
 
     public abstract String getFechaLanzamiento();
 
+    public abstract boolean haSalido();
+
     //BLANCO, NEGRO, MARRON, ROJO, NARANJA, AMARILLO, BEIGE, CARNE, VERDE, AZUL, ROSA, VIOLETA, GRIS;
 
     public String colorToString(){
@@ -108,6 +110,55 @@ public abstract class ArticuloAbstracto implements Articulo {
             case VESTIDOS -> c = "Vestidos";
             case CALCETINES -> c = "Calcetines";
             default -> c = "";
+        }
+        return c;
+    }
+
+    public Subcategoria stringToSubcat(String sub){
+        Subcategoria c = null;
+        switch(sub.toUpperCase()){
+            case "BOLSOS" -> c = Subcategoria.BOLSOS;
+            case "FALDAS" -> c = Subcategoria.FALDAS;
+            case "GORRAS" -> c = Subcategoria.GORRAS;
+            case "JERSEY" -> c = Subcategoria.JERSEY;
+            case "CHALECO" -> c = Subcategoria.CHALECO;
+            case "ZAPATOS" -> c = Subcategoria.ZAPATOS;
+            case "CAMISETA" -> c = Subcategoria.CAMISETA;
+            case "CHAQUETA" -> c = Subcategoria.CHAQUETA;
+            case "PANTALON" -> c = Subcategoria.PANTALON;
+            case "SUDADERA" -> c = Subcategoria.SUDADERA;
+            case "VESTIDOS" -> c = Subcategoria.VESTIDOS;
+            case "CALCETINES" -> c = Subcategoria.CALCETINES;
+        }
+        return c;
+    }
+
+    public Color stringToColor(String color){
+        Color c = null;
+        switch(color.toUpperCase()){
+            case "AZUL" -> c = Color.AZUL;
+            case "GRIS" -> c = Color.GRIS;
+            case "ROJO" -> c = Color.ROJO;
+            case "ROSA" -> c = Color.ROSA;
+            case "BEIGE" -> c = Color.BEIGE;
+            case "NEGRO" -> c = Color.NEGRO;
+            case "VERDE" -> c = Color.VERDE;
+            case "BLANCO" -> c = Color.BLANCO;
+            case "MARRON" -> c = Color.MARRON;
+            case "NARANJA" -> c = Color.NARANJA;
+            case "VIOLETA" ->  c = Color.VIOLETA;
+            case "AMARILLO" -> c = Color.AMARILLO;
+        }
+
+        return c;
+    }
+
+    public Categoria stringToCategoria(String cat){
+        Categoria c = null;
+        switch(cat.toUpperCase()){
+            case "HOMBRE" -> c = Categoria.HOMBRE;
+            case "MUJER" -> c = Categoria.MUJER;
+            case "EXCLUSIVOS" -> c = Categoria.EXCLUSIVOS;
         }
         return c;
     }

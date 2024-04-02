@@ -13,6 +13,7 @@ public interface Articulo {
     String colorToString();
     String categoriaToString();
     String subcategoriaToString();
+    boolean haSalido();
 
     enum Color{
         BLANCO, NEGRO, MARRON, ROJO, NARANJA, AMARILLO, BEIGE, VERDE, AZUL, ROSA, VIOLETA, GRIS;

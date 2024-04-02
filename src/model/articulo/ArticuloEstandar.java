@@ -11,4 +11,11 @@ public class ArticuloEstandar extends ArticuloAbstracto{
     public String getFechaLanzamiento() {
         return "";
     }
+
+    @Override
+    public boolean haSalido() {
+        return true;
+    }
+
+
 }

@@ -2,20 +2,24 @@ package controller;
 
 
 import model.articulo.Articulo;
+import view.View;
 
 public class Controller {
 
-    Productos artView;
-    Articulo artModel;
+    private View artView;
+    private Articulo artModel;
 
-    public Controller(Productos view, Articulo model){
+    public Controller(View view, Articulo model){
         this.artView =view;
         this.artModel = model;
     }
 
     public void mostrarArticulo(){
-        artView.imprimirProducto(artModel.getNombre(), artModel.getId(), artModel.getCategoria(),
-                artModel.getColor(), artModel.getPrecio(), artModel.getStock());
+        artView.imprimirProducto(artModel);
+    }
+
+    public void mostrarLista(){
+        //artView.
     }
 
 }

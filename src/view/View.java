@@ -4,17 +4,31 @@ import model.articulo.Articulo;
 import model.articulo.ArticuloAbstracto;
 
 import java.util.Date;
+import java.util.List;
 
 public class View  {
-    public void imprimirProducto(String nombre, int id, Articulo.Categoria categoria, Articulo.Color color,
-                                 double precio, int stock, Articulo.Subcategoria subcat, double desc, String fechaLanz){
 
+    public void imprimirProducto(Articulo a){
 
         System.out.println("_______________________");
-        System.out.println("*** PRODUCTOS ***");
-        System.out.println(nombre + "     " +precio+" €");
-        System.out.println("ID: " + id+"     "+"("+ exclusivo+")"+"     "+ "Color: " + color);
-        System.out.println("Categoria: " + categoria);
-        System.out.println("Stock: "+ stock);
+        if(a.getCategoria() == Articulo.Categoria.EXCLUSIVOS) {
+            if(a.haSalido()) System.out.println("Ya a la venta!");
+            else System.out.println(a.getFechaLanzamiento());
+        }
+        System.out.println(a.getName());
+        if(a.getDescuento() != 0){
+            System.out.println("Precio: "+ (a.getPrecio() - ((a.getDescuento()/100) * a.getPrecio()))+" €" + "  Descuento: " + a.getDescuento() + "%") ;
+        }
+        else System.out.println("Precio: " +a.getPrecio()+" €");
+
+        System.out.println("ID: " + a.getID()+"  "+ "Color: " + a.getColor().toString());
+        System.out.println("Categoria: " + a.getCategoria().toString() + "   Subcategoria: " +  a.getSubcategoria().toString());
+        System.out.println("Stock: "+ a.getStock());
+    }
+
+    public void imprimeListaCategoria(List<Articulo> l){
+        for(Articulo a: l){
+            System.out.println(a.getName());
+        }
     }
 }
