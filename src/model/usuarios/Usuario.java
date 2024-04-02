@@ -1,14 +1,13 @@
-package model;
+package model.usuarios;
 
 import controller.Controller;
 import model.articulo.ArticuloAbstracto;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UsuarioRegistrado extends PersonaAbstracta{
+public class Usuario extends PersonaAbstracta {
 
     protected String nombre;
     protected String apellidos;
@@ -18,12 +17,15 @@ public class UsuarioRegistrado extends PersonaAbstracta{
     protected char sexo;
     protected String pais;
     protected String suscripcion;
+    protected String direccion;
+    protected int saldo;
+    protected int id;
 
     protected List<ArticuloAbstracto> favoritos;
 
-    UsuarioRegistrado(Controller contr, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, String suscrpcion) {
+    protected Usuario(Controller contr, int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, String Suscripcion, String Direccion, int Saldo) {
         super(contr);
-
+        id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
         correo_e =Correo;
@@ -32,7 +34,9 @@ public class UsuarioRegistrado extends PersonaAbstracta{
         sexo = Sexo;
         pais = Pais;
         favoritos = new LinkedList<>();
-        suscripcion = suscrpcion;
+        suscripcion = Suscripcion;
+        direccion = Direccion;
+        saldo = Saldo;
     }
 
     protected void anyadirAFavoritos(ArticuloAbstracto a){

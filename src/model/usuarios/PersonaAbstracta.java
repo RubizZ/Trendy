@@ -1,20 +1,20 @@
-package model;
+package model.usuarios;
 
 import controller.Controller;
 import model.articulo.ArticuloAbstracto;
+import model.usuarios.Persona;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 
 
-public class PersonaAbstracta implements Persona{
+public class PersonaAbstracta implements Persona {
 
     protected List<ArticuloAbstracto> Cesta;
     protected Controller controlador;
-    PersonaAbstracta(Controller contr){
+    public PersonaAbstracta(Controller contr){
         Cesta = new LinkedList<>();
         controlador = contr;
     }

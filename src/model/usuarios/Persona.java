@@ -1,4 +1,4 @@
-package model;
+package model.usuarios;
 
 import model.articulo.Articulo;
 import model.articulo.ArticuloAbstracto;
