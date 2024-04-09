@@ -21,7 +21,8 @@ public class TUsuario implements Serializable {
     protected String direccion;
     protected int saldo;
 
-    public TUsuario () {
+    public TUsuario (int Id) {
+        this.id= Id;
     }
 
     protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, String Suscripcion, String Direccion, int Saldo) {
