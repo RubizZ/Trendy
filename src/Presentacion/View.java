@@ -1,4 +1,4 @@
-package view;
+package Presentacion;
 
 import model.articulo.Articulo;
 import model.articulo.ArticuloAbstracto;

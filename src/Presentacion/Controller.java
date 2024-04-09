@@ -1,8 +1,8 @@
-package controller;
+package Presentacion;
 
 
 import model.articulo.Articulo;
-import view.View;
+import Presentacion.View;
 
 public class Controller {
 

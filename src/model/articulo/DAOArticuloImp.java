@@ -1,5 +1,72 @@
 package model.articulo;
 
+import database.DBConnection;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class DAOArticuloImp implements DAOArticulo{
 
+
+    @Override
+    public tArticulo buscarArticulo(int id) {
+        try (Connection c = DBConnection.connect();
+             Statement st = c.createStatement();
+             ResultSet rs = st.executeQuery("select * from Artículo where ID = 1")) {
+            tArticulo a = null;
+            while (rs.next()) {
+                a = new tArticulo(rs.getInt("ID"), rs.getString("Nombre"),
+                        rs.getString("Categoría"),rs.getString("Subcategoría") ,
+                        rs.getDouble("Precio"), rs.getString("Color"),
+                        rs.getInt("Stock"), rs.getString("Fecha lanzamiento"),
+                        rs.getDouble("Descuento"));
+            }
+            return a;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void altaArticulo(tArticulo a) {
+        try (Connection c = DBConnection.connect();
+             Statement st = c.createStatement();
+
+             ResultSet rs = st.executeQuery("insert into Artículo values (" + a.getID() + ", "+
+                     a.getNombre() +", "+ a.getCat() +", "+a.getSubcat()+", "+a.getPrecio()+" , "+
+                     a.getColor() +", "+a.getStock()+", "+a.getFechaLanz()+", "+a.getDescuento()+")")) {
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void bajaArticulo(tArticulo a) {
+        try (Connection c = DBConnection.connect();
+             Statement st = c.createStatement();
+
+             ResultSet rs = st.executeQuery("delete from Artículo where ID = "+a.getID()+"")) {
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void modificarArticulo(tArticulo a) {
+        try (Connection c = DBConnection.connect();
+             Statement st = c.createStatement();
+
+             ResultSet rs = st.executeQuery("update Artículo set  (" + a.getID() + ", "+
+                     a.getNombre() +", "+ a.getCat() +", "+a.getSubcat()+", "+a.getPrecio()+" , "+
+                     a.getColor() +", "+a.getStock()+", "+a.getFechaLanz()+", "+a.getDescuento()+")")) {
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
