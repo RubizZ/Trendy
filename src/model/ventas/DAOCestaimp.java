@@ -14,8 +14,7 @@ public class DAOCestaimp implements DAOCesta{
             String sql = "INSERT INTO Cesta VALUES ("
                     + toCesta.getID() + ", "
                     + toCesta.getCantidad() + ", "
-                    + toCesta.getIDArticulo() + ", "
-                    + toCesta.getIDUsuario() + ")";
+                    + toCesta.getIDArticulo() + ")";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
@@ -41,8 +40,7 @@ public class DAOCestaimp implements DAOCesta{
                 if (rS.next()) {
                     return new TOCesta(rS.getInt("Id"))
                             .setCantidad(rS.getInt("direccion"))
-                            .setIDArticulo(rS.getInt("id_cesta"))
-                            .setIDUsuario(rS.getInt("id_usuario"));
+                            .setIDArticulo(rS.getInt("id_cesta"));
                 } else {
                     System.out.println("No se ha encontrado la cesta con ID " + ID);
                 }
@@ -57,5 +55,23 @@ public class DAOCestaimp implements DAOCesta{
             //TODO Hacer excepciones
         }
         return null; //TODO Cambiar y hacer excepciones
+    }
+
+    @Override
+    public void cambiarCantidad(int ID, int cantidad) {
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "UPDATE Cesta SET cantidad = " + cantidad + " WHERE Id = " + ID;
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(sql);
+            } catch (SQLException e) {
+                System.out.println("No se ha podido modificar la cantidad de la cesta");
+                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
+                //TODO Hacer excepciones
+            }
+        } catch (SQLException e) {
+            System.out.println("No se ha podido conectar a la base de datos");
+            System.out.println(e.getMessage());
+            //TODO Hacer excepciones
+        }
     }
 }
