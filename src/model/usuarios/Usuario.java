@@ -1,6 +1,6 @@
 package model.usuarios;
 
-import controller.Controller;
+import presentacion.Controller;
 import model.articulo.ArticuloAbstracto;
 
 import java.util.Collections;
@@ -21,7 +21,7 @@ public class Usuario extends PersonaAbstracta {
     protected int saldo;
     protected int id;
 
-    protected List<ArticuloAbstracto> favoritos;
+    protected List<ArticuloAbstracto> favoritos;//tiene que tener un id a una lista de favoritos
 
     protected Usuario(Controller contr, int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, String Suscripcion, String Direccion, int Saldo) {
         super(contr);

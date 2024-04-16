@@ -1,8 +1,7 @@
 package model.usuarios;
 
-import controller.Controller;
+import presentacion.Controller;
 import model.articulo.ArticuloAbstracto;
-import model.usuarios.Persona;
 
 import java.util.Collections;
 import java.util.LinkedList;

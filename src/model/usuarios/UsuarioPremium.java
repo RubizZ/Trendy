@@ -1,7 +1,6 @@
 package model.usuarios;
 
-import controller.Controller;
-import model.usuarios.Usuario;
+import presentacion.Controller;
 
 public class UsuarioPremium extends Usuario {
 

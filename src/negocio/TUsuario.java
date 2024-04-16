@@ -1,6 +1,5 @@
-package model.usuarios;
+package negocio;
 
-import controller.Controller;
 import model.articulo.ArticuloAbstracto;
 
 import java.io.Serializable;
@@ -15,7 +14,7 @@ public class TUsuario implements Serializable {
     protected String fechaNacimiento;//TODO cambiar a tipo fecha
     protected char sexo;
     protected String pais;
-    protected String suscripcion;
+    protected int suscripcion;
     protected List<ArticuloAbstracto> favoritos;
     protected int id;
     protected String direccion;
@@ -25,7 +24,7 @@ public class TUsuario implements Serializable {
         this.id= Id;
     }
 
-    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, String Suscripcion, String Direccion, int Saldo) {
+    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, int Suscripcion, String Direccion, int Saldo) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
@@ -105,11 +104,11 @@ public class TUsuario implements Serializable {
         this.pais = pais;
     }
 
-    public String getSuscripcion() {
+    public int getSuscripcion() {
         return suscripcion;
     }
 
-    public void setSuscripcion(String suscripcion) {
+    public void setSuscripcion(int suscripcion) {
         this.suscripcion = suscripcion;
     }
 

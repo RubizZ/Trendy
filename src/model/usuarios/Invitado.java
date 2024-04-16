@@ -1,6 +1,6 @@
 package model.usuarios;
 
-import controller.Controller;
+import presentacion.Controller;
 
 public class Invitado extends PersonaAbstracta {
 

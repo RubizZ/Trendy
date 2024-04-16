@@ -1,5 +1,4 @@
-import controller.Controller;
-import model.articulo.Articulo;
+import presentacion.Controller;
 import model.PantalonCargo;
 import view.Productos;
 

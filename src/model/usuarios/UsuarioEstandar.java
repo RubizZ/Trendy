@@ -1,7 +1,6 @@
 package model.usuarios;
 
-import controller.Controller;
-import model.usuarios.Usuario;
+import presentacion.Controller;
 
 public class UsuarioEstandar extends Usuario {
     UsuarioEstandar(Controller contr, int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, String Suscripcion, String Direccion, int Saldo) {
