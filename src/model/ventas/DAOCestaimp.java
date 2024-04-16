@@ -12,13 +12,11 @@ public class DAOCestaimp implements DAOCesta{
     public void añadirCesta(TOCesta toCesta) {
         try (Connection connection = DBConnection.connect()) {
             String sql = "INSERT INTO Cesta VALUES ("
-                    + toCesta.getID() + ", "
-                    + toCesta.getCantidad() + ", "
-                    + toCesta.getIDArticulo() + ")";
+                    + toCesta.getID() + ")";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
-                System.out.println("Ha habido un error al añadir a la cesta");
+                System.out.println("Ha habido un error al añadir la cesta");
                 System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
                 //TODO Hacer excepciones
             }
@@ -31,6 +29,29 @@ public class DAOCestaimp implements DAOCesta{
     }
 
     @Override
+    public void añadirArticuloACesta(TOCesta toCesta) {
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "INSERT INTO Artículos_en_cesta VALUES ("
+                    + toCesta.getID() + ", "
+                    + toCesta.getIDArticulo() + ", "
+                    + toCesta.getCantidad() + ")";
+            try {
+                connection.createStatement().executeUpdate(sql);
+            } catch (SQLException e) {
+                System.out.println("Ha habido un error al añadir el articulo a la cesta");
+                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
+                //TODO Hacer excepciones
+            }
+
+        } catch (SQLException e) {
+            System.out.println("No se ha podido conectar a la base de datos");
+            System.out.println(e.getMessage());
+            //TODO Hacer excepciones
+        }
+    }
+
+
+    @Override
     public TOCesta getCesta(int ID) {
         try (Connection connection = DBConnection.connect()) {
             String sql = "SELECT * FROM Cesta WHERE Id = " + ID;
@@ -38,9 +59,7 @@ public class DAOCestaimp implements DAOCesta{
                  ResultSet rS = statement.executeQuery(sql)
             ) {
                 if (rS.next()) {
-                    return new TOCesta(rS.getInt("Id"))
-                            .setCantidad(rS.getInt("direccion"))
-                            .setIDArticulo(rS.getInt("id_cesta"));
+                    return new TOCesta(rS.getInt("Id"));
                 } else {
                     System.out.println("No se ha encontrado la cesta con ID " + ID);
                 }
@@ -60,7 +79,7 @@ public class DAOCestaimp implements DAOCesta{
     @Override
     public void cambiarCantidad(int ID, int cantidad) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "UPDATE Cesta SET cantidad = " + cantidad + " WHERE Id = " + ID;
+            String sql = "UPDATE Artículos_en_cesta SET cantidad = " + cantidad + " WHERE Id = " + ID;
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(sql);
             } catch (SQLException e) {
