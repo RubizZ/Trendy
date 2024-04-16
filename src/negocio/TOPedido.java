@@ -1,4 +1,4 @@
-package model.pedidos;
+package negocio;
 
 import java.io.Serializable;
 
@@ -9,29 +9,18 @@ public class TOPedido implements Serializable {
     private int IDCesta;
     private int IDUsuario;
     private String status;
+    private String fecha;
 
-
-    public TOPedido(int ID) {
-        this.ID = ID;
-    }
-
-    //TODO Preguntar si el Transfer Object deberia de poder clonarse
-    public TOPedido(TOPedido other, int ID) {
-        this(ID);
-        direccion = other.direccion;
-        IDCesta = other.IDCesta;
-        IDUsuario = other.IDUsuario;
-        status = other.status;
-    }
+    public TOPedido(){}
 
     public int getID() {
         return ID;
     }
 
-//    public TOPedido setID(int ID) {
-//        this.ID = ID;
-//        return this;
-//    } //TODO Ver que hacer con esto
+    public TOPedido setID(int ID) {
+        this.ID = ID;
+        return this;
+    }
 
     public String getDireccion() {
         return direccion;
@@ -66,6 +55,15 @@ public class TOPedido implements Serializable {
 
     public TOPedido setStatus(String status) {
         this.status = status;
+        return this;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public TOPedido setFecha(String fecha) {
+        this.fecha = fecha;
         return this;
     }
 }
