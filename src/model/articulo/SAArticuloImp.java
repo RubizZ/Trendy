@@ -21,8 +21,9 @@ public class SAArticuloImp implements SAArticulo{
     private double precio;
     private Articulo.Color color;
     private int stock;
-    private Categoria cat;
+    private Categoria cat;  //no se yo si esto se queda aqui
     private Subcategoria subcat;
+    private SACategorias cats = new SACategoriasImp();
 
     @Override
     public tArticulo buscarArticulo(int id) {
@@ -33,19 +34,23 @@ public class SAArticuloImp implements SAArticulo{
     }
 
     @Override
-    public void altaArticulo(tArticulo a) {
+    public void altaArticulo(tArticulo a, String fechal, int id, String genero, int descuento) {
+        //necesito que me llegue una categoria en si no? Si es hombre o mujer digo (puede ser vacio)
         //Que le llegue la fecha y el desceunto del controlador
         if(!dao.existeArticulo(a.getID())){
             dao.altaArticulo(a);
             //llamamos a una función de categorias con la fecha descuento id y el dao
             //que añadira el id a la tabla con su categoria
+            cats.altaArticuloCat(a.getID(), fechal, descuento, genero);
         }
     }
 
     @Override
     public void bajaArticulo(tArticulo a) {
         if(dao.existeArticulo(a.getID())){
+            cats.bajaArticuloCat(a.getID());
             dao.bajaArticulo(a);
+
         }
     }
 
