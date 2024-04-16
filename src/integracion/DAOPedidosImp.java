@@ -26,15 +26,11 @@ public class DAOPedidosImp implements DAOPedidos {
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
-                System.out.println("Ha habido un error al añadir el pedido");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
 
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
     }
 
@@ -54,19 +50,14 @@ public class DAOPedidosImp implements DAOPedidos {
                             .setStatus(rS.getString("status"))
                             .setFecha(rS.getString("fecha"));
                 } else {
-                    System.out.println("No se ha encontrado el pedido con ID " + ID);
+                    throw new RuntimeException("No se ha encontrado el pedido con ID " + ID);
                 }
             } catch (SQLException e) {
-                System.out.println("Ha habido un error en la base de datos");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return null; //TODO Cambiar y hacer excepciones
     }
 
     @Override
@@ -76,28 +67,27 @@ public class DAOPedidosImp implements DAOPedidos {
             try (Statement statement = connection.createStatement();
                  ResultSet rS = statement.executeQuery(sql)
             ) {
-                List<TOPedido> pedidos = new ArrayList<>();
-                while (rS.next()) {
-                    pedidos.add(new TOPedido()
-                            .setID(rS.getInt("Id"))
-                            .setDireccion(rS.getString("direccion"))
-                            .setIDCesta(rS.getInt("id_cesta"))
-                            .setIDUsuario(rS.getInt("id_usuario"))
-                            .setStatus(rS.getString("status"))
-                            .setFecha(rS.getString("fecha")));
-                }
-                return pedidos;
+                return getTOPedidosList(rS);
             } catch (SQLException e) {
-                System.out.println("Ha habido un error en la base de datos");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return null; //TODO Cambiar y hacer excepciones
+    }
+
+    private List<TOPedido> getTOPedidosList(ResultSet rS) throws SQLException {
+        List<TOPedido> pedidos = new ArrayList<>();
+        while (rS.next()) {
+            pedidos.add(new TOPedido()
+                    .setID(rS.getInt("Id"))
+                    .setDireccion(rS.getString("direccion"))
+                    .setIDCesta(rS.getInt("id_cesta"))
+                    .setIDUsuario(rS.getInt("id_usuario"))
+                    .setStatus(rS.getString("status"))
+                    .setFecha(rS.getString("fecha")));
+        }
+        return pedidos;
     }
 
     @Override
@@ -107,28 +97,13 @@ public class DAOPedidosImp implements DAOPedidos {
             try (Statement statement = connection.createStatement();
                  ResultSet rS = statement.executeQuery(sql)
             ) {
-                List<TOPedido> pedidos = new ArrayList<>();
-                while (rS.next()) {
-                    pedidos.add(new TOPedido()
-                            .setID(rS.getInt("Id"))
-                            .setDireccion(rS.getString("direccion"))
-                            .setIDCesta(rS.getInt("id_cesta"))
-                            .setIDUsuario(rS.getInt("id_usuario"))
-                            .setStatus(rS.getString("status"))
-                            .setFecha(rS.getString("fecha")));
-                }
-                return pedidos;
+                return getTOPedidosList(rS);
             } catch (SQLException e) {
-                System.out.println("Ha habido un error en la base de datos");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return null; //TODO Cambiar y hacer excepciones
     }
 
     @Override
@@ -138,14 +113,10 @@ public class DAOPedidosImp implements DAOPedidos {
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(sql);
             } catch (SQLException e) {
-                System.out.println("No se ha podido modificar el estado del pedido");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
     }
 
@@ -165,18 +136,13 @@ public class DAOPedidosImp implements DAOPedidos {
                             .setStatus(rS.getString("status"))
                             .setFecha(rS.getString("fecha"));
                 } else {
-                    System.out.println("No se ha encontrado el pedido");
+                    throw new RuntimeException("No se ha podido encontrar el ultimo pedido de la base de datos");
                 }
             } catch (SQLException e) {
-                System.out.println("Ha habido un error en la base de datos");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return null; //TODO Cambiar y hacer excepciones
     }
 }

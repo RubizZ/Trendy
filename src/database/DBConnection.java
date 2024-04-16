@@ -20,7 +20,7 @@ public class DBConnection {
                 System.out.println(rs.getString(2));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error: " + e.getErrorCode() + ". " + e.getMessage());
         }
     }
 }

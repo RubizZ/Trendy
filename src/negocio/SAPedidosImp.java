@@ -28,7 +28,7 @@ public class SAPedidosImp implements SAPedidos {
     private BOPedido transform(TOPedido pedido){
         BOPedido boPedido = new BOPedido();
         boPedido.setID(pedido.getID());
-        boPedido.setDireccion(BOPedido.Direccion.valueOf(pedido.getDireccion()));
+        boPedido.setDireccion(BOPedido.Direccion.parse(pedido.getDireccion()));
         boPedido.setIdCesta(pedido.getIDCesta());
         boPedido.setIdUsuario(pedido.getIDUsuario());
         boPedido.setStatus(BOPedido.Status.valueOf(pedido.getStatus()));

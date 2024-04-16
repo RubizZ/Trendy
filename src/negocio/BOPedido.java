@@ -30,7 +30,7 @@ public class BOPedido {
             return via.tipoVia + " " + via.nombre + ", " + numero + ", " + ciudad + ", " + provincia + ", " + codigoPostal;
         }
 
-        public static Direccion valueOf(String direccion) {
+        public static Direccion parse(String direccion) {
             String[] parts = direccion.split(", ");
             String[] viaParts = parts[0].split(" ");
             return new Direccion(new Via(Via.TipoVia.valueOf(viaParts[0]), viaParts[1]), Integer.parseInt(parts[1]), parts[2], parts[3], Integer.parseInt(parts[4]));
