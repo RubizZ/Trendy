@@ -14,7 +14,7 @@ public class DAOArticuloImp implements DAOArticulo{
     public tArticulo buscarArticulo(int id) {
         try (Connection c = DBConnection.connect();
              Statement st = c.createStatement();
-             ResultSet rs = st.executeQuery("select * from Artículo where ID = 1")) {
+             ResultSet rs = st.executeQuery("select * from Artículo where ID = id")) {
             tArticulo a = null;
             while (rs.next()) {
                 a = new tArticulo(rs.getInt("ID"), rs.getString("Nombre"),
