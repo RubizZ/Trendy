@@ -1,9 +1,6 @@
 package Presentacion;
 
 
-import model.articulo.Articulo;
-import Presentacion.View;
-
 public class Controller {
 
     private View artView;

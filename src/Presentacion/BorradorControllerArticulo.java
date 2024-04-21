@@ -1,7 +1,5 @@
 package Presentacion;
 
-import model.articulo.Articulo;
-
 public class BorradorControllerArticulo {
     private View artView;
     private Articulo artModel;

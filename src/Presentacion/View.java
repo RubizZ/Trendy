@@ -1,9 +1,5 @@
 package Presentacion;
 
-import model.articulo.Articulo;
-import model.articulo.ArticuloAbstracto;
-
-import java.util.Date;
 import java.util.List;
 
 public class View  {
