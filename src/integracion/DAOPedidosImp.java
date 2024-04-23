@@ -20,8 +20,8 @@ public class DAOPedidosImp implements DAOPedidos {
         try (Connection connection = DBConnection.connect()) {
             String sql = "INSERT INTO Pedidos (direccion, id_cesta, id_usuario, status, fecha) " + "VALUES (" +
                     "'" + toaCestaUsuario.getTOUsuario().getDireccion() + "', '"
-                    + toaCestaUsuario.getIDCesta() + "', '"
-                    + toaCestaUsuario.getIDUsuario() + "', 'reparto', current_date())";
+                    + toaCestaUsuario.getTOCesta().getIDCesta() + "', '"
+                    + toaCestaUsuario.getTOUsuario().getIDUsuario() + "', 'reparto', current_date())";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
