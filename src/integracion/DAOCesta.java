@@ -1,4 +1,6 @@
-package model.ventas;
+package integracion;
+
+import negocio.TOCesta;
 
 public interface DAOCesta {
     void añadirCesta(TOCesta toCesta);

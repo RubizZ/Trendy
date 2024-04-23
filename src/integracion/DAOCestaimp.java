@@ -1,6 +1,7 @@
-package model.ventas;
+package integracion;
 
 import database.DBConnection;
+import negocio.TOCesta;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

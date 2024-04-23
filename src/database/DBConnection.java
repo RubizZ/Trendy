@@ -12,15 +12,5 @@ public class DBConnection {
         return DriverManager.getConnection(URL, USER, PASS);
     }
 
-    public static void main(String[] args) {
-        try (Connection c = DBConnection.connect();
-             Statement st = c.createStatement();
-             ResultSet rs = st.executeQuery("select * from test where ID = 1")) {
-            while (rs.next()) {
-                System.out.println(rs.getString(2));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }

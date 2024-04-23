@@ -1,4 +1,4 @@
-package model.ventas;
+package negocio;
 
 public class BOCesta {
     private int id;

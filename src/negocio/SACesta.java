@@ -1,4 +1,4 @@
-package model.ventas;
+package negocio;
 
 public interface SACesta {
     void addCesta(TOCesta tOcesta);
