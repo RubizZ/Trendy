@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface DAOListas {
 
-    public List<Integer> buscaArticulosCategoria(String cat);
+    public List<Articulo> buscaArticulosCategoria(String cat);
 }

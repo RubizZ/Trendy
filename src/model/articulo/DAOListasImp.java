@@ -11,14 +11,17 @@ import java.util.List;
 
 public class DAOListasImp implements DAOListas{
     @Override
-    public List<Integer> buscaArticulosCategoria(String cat) {
+    public List<Articulo> buscaArticulosCategoria(String cat) {
 
         try (Connection c = DBConnection.connect();
              Statement st = c.createStatement();
-             ResultSet rs = st.executeQuery("select ID from ClasificacionArticulos where Categoria = cat")) {
-            List<Integer> l = new ArrayList<>();
+             ResultSet rs = st.executeQuery("select ID from ClasificacionArticulos where Categoria = '"+cat+"'")) {
+
+            DAOArticulo daoArt = new DAOArticuloImp();
+
+            List<Articulo> l = new ArrayList<>();
             while (rs.next()) {
-                l.add(rs.getInt("ID"));
+                l.add(new Articulo(daoArt.buscarArticulo(rs.getInt("ID"))));
             }
             return l;
         } catch (SQLException e) {
