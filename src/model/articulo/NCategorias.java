@@ -1,0 +1,8 @@
+package model.articulo;
+
+public interface NCategorias {
+
+    public void altaArticuloCat(int id, String fechal, int descuento, String genero);
+    public void bajaArticuloCat(int id);
+    public void modificarArticulo(int id, String fechal, int descuento, String genero);
+}
