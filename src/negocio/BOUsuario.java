@@ -40,44 +40,111 @@ public class BOUsuario extends PersonaAbstracta {
     }
 
 
-
-    protected void anyadirAFavoritos(ArticuloAbstracto a){
-        favoritos.add(a);
+    public String getNombre() {
+        return nombre;
     }
 
-    protected void eliminarDeFavoritos(ArticuloAbstracto a){
-        favoritos.remove(a);
+    public BOUsuario setNombre(String nombre) {
+        this.nombre = nombre;
+        return this;
     }
 
-    protected List<ArticuloAbstracto> pedirFavoritos(){
-        return Collections.unmodifiableList(favoritos);
+    public String getApellidos() {
+        return apellidos;
     }
 
-    protected void cambiarCorreo(String Correo){
-
+    public BOUsuario setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+        return this;
     }
 
-    protected void cambiarContrasenya(String Contrasenya){
-
-    }
-    protected void cambiarNombre(String Nombre){
-
-    }
-    protected void cambiarApellido(String Apellidos){
-
-    }
-    protected void cambiarFechaNac(String Fecha){
-
-    }
-    protected void cambiarSexo(char Sexo){
-
+    public String getCorreo_e() {
+        return correo_e;
     }
 
-    protected void cambiarPais(String Pais){
-
+    public BOUsuario setCorreo_e(String correo_e) {
+        this.correo_e = correo_e;
+        return this;
     }
 
-    protected void cambiarSuscrpcion(){
-        controlador.cambiarSuscripcion();
+    public String getContrasenya() {
+        return contrasenya;
+    }
+
+    public BOUsuario setContrasenya(String contrasenya) {
+        this.contrasenya = contrasenya;
+        return this;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public BOUsuario setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+        return this;
+    }
+
+    public char getSexo() {
+        return sexo;
+    }
+
+    public BOUsuario setSexo(char sexo) {
+        this.sexo = sexo;
+        return this;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public BOUsuario setPais(String pais) {
+        this.pais = pais;
+        return this;
+    }
+
+    public String getSuscripcion() {
+        return suscripcion;
+    }
+
+    public BOUsuario setSuscripcion(String suscripcion) {
+        this.suscripcion = suscripcion;
+        return this;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public BOUsuario setDireccion(String direccion) {
+        this.direccion = direccion;
+        return this;
+    }
+
+    public int getSaldo() {
+        return saldo;
+    }
+
+    public BOUsuario setSaldo(int saldo) {
+        this.saldo = saldo;
+        return this;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public BOUsuario setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public List<ArticuloAbstracto> getFavoritos() {
+        return favoritos;
+    }
+
+    public BOUsuario setFavoritos(List<ArticuloAbstracto> favoritos) {
+        this.favoritos = favoritos;
+        return this;
     }
 }
