@@ -1,9 +1,6 @@
 package model.ventas;
 
-import java.io.Serializable;
-
-public class TOCesta implements Serializable {
-
+public class BOCesta {
     private int ID;
 
     private int cantidad;
@@ -15,11 +12,8 @@ public class TOCesta implements Serializable {
 
 
 
-    public TOCesta(int ID) {
-        this.ID = ID;
-    }
 
-    public TOCesta(TOCesta other, int ID) {
+    public BOCesta(BOCesta other, int ID) {
 
         this(ID);
 
@@ -33,9 +27,8 @@ public class TOCesta implements Serializable {
         return ID;
     }
 
-
-    public TOCesta setID(int ID) {
-        this.ID = ID;
+    public BOCesta setID(int id){
+        this.ID = id;
         return this;
     }
 
@@ -43,7 +36,7 @@ public class TOCesta implements Serializable {
         return cantidad;
     }
 
-    public TOCesta setCantidad(int cantidad) {
+    public BOCesta setCantidad(int cantidad) {
         this.cantidad = cantidad;
         return this;
     }
@@ -52,7 +45,7 @@ public class TOCesta implements Serializable {
         return IDArticulo;
     }
 
-    public TOCesta setIDArticulo(int IDArticulo) {
+    public BOCesta setIDArticulo(int IDArticulo) {
         this.IDArticulo = IDArticulo;
         return this;
     }
