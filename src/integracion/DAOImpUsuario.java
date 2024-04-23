@@ -59,7 +59,7 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setNombre(rS.getString("nombre"))
                             .setApellidos(rS.getString("apellidos"))
                             .setPais(rS.getString("pais"))
-                            .setSexo(rS.getCharacterStream("sexo"))
+                            .setSexo(rS.("sexo"))
                             .setSuscripcion(rS.getInt("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
                             .setSaldo(rS.getInt("saldo"));

@@ -40,92 +40,112 @@ public class TUsuario implements Serializable {
     }
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombre () {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre (String nombre) {
+    public TUsuario setNombre(String nombre) {
         this.nombre = nombre;
+        return this;
     }
 
     public String getApellidos() {
         return apellidos;
     }
 
-    public void setApellidos(String apellidos) {
+    public TUsuario setApellidos(String apellidos) {
         this.apellidos = apellidos;
+        return this;
     }
 
     public String getCorreo_e() {
         return correo_e;
     }
 
-    public void setCorreo_e(String correo_e) {
+    public TUsuario setCorreo_e(String correo_e) {
         this.correo_e = correo_e;
+        return this;
     }
 
     public String getContrasenya() {
         return contrasenya;
     }
 
-    public void setContrasenya(String contrasenya) {
+    public TUsuario setContrasenya(String contrasenya) {
         this.contrasenya = contrasenya;
+        return this;
     }
 
     public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public TUsuario setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+        return this;
     }
 
     public char getSexo() {
         return sexo;
     }
 
-    public void setSexo(char sexo) {
+    public TUsuario setSexo(char sexo) {
         this.sexo = sexo;
+        return this;
     }
 
     public String getPais() {
         return pais;
     }
 
-    public void setPais(String pais) {
+    public TUsuario setPais(String pais) {
         this.pais = pais;
+        return this;
     }
 
     public int getSuscripcion() {
         return suscripcion;
     }
 
-    public void setSuscripcion(int suscripcion) {
+    public TUsuario setSuscripcion(int suscripcion) {
         this.suscripcion = suscripcion;
+        return this;
+    }
+
+    public List<ArticuloAbstracto> getFavoritos() {
+        return favoritos;
+    }
+
+    public TUsuario setFavoritos(List<ArticuloAbstracto> favoritos) {
+        this.favoritos = favoritos;
+        return this;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public TUsuario setId(int id) {
+        this.id = id;
+        return this;
     }
 
     public String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    public TUsuario setDireccion(String direccion) {
         this.direccion = direccion;
+        return this;
     }
 
     public int getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(int saldo) {
+    public TUsuario setSaldo(int saldo) {
         this.saldo = saldo;
+        return this;
     }
 
     @Override

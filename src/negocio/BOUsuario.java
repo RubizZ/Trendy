@@ -39,112 +39,99 @@ public class BOUsuario extends PersonaAbstracta {
         saldo = Saldo;
     }
 
-
     public String getNombre() {
         return nombre;
     }
 
-    public BOUsuario setNombre(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
-        return this;
     }
 
     public String getApellidos() {
         return apellidos;
     }
 
-    public BOUsuario setApellidos(String apellidos) {
+    public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
-        return this;
     }
 
     public String getCorreo_e() {
         return correo_e;
     }
 
-    public BOUsuario setCorreo_e(String correo_e) {
+    public void setCorreo_e(String correo_e) {
         this.correo_e = correo_e;
-        return this;
     }
 
     public String getContrasenya() {
         return contrasenya;
     }
 
-    public BOUsuario setContrasenya(String contrasenya) {
+    public void setContrasenya(String contrasenya) {
         this.contrasenya = contrasenya;
-        return this;
     }
 
     public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public BOUsuario setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
-        return this;
     }
 
     public char getSexo() {
         return sexo;
     }
 
-    public BOUsuario setSexo(char sexo) {
+    public void setSexo(char sexo) {
         this.sexo = sexo;
-        return this;
     }
 
     public String getPais() {
         return pais;
     }
 
-    public BOUsuario setPais(String pais) {
+    public void setPais(String pais) {
         this.pais = pais;
-        return this;
     }
 
     public String getSuscripcion() {
         return suscripcion;
     }
 
-    public BOUsuario setSuscripcion(String suscripcion) {
+    public void setSuscripcion(String suscripcion) {
         this.suscripcion = suscripcion;
-        return this;
     }
 
     public String getDireccion() {
         return direccion;
     }
 
-    public BOUsuario setDireccion(String direccion) {
+    public void setDireccion(String direccion) {
         this.direccion = direccion;
-        return this;
     }
 
     public int getSaldo() {
         return saldo;
     }
 
-    public BOUsuario setSaldo(int saldo) {
+    public void setSaldo(int saldo) {
         this.saldo = saldo;
-        return this;
     }
 
     public int getId() {
         return id;
     }
 
-    public BOUsuario setId(int id) {
+    public void setId(int id) {
         this.id = id;
-        return this;
     }
 
     public List<ArticuloAbstracto> getFavoritos() {
         return favoritos;
     }
 
-    public BOUsuario setFavoritos(List<ArticuloAbstracto> favoritos) {
+    public void setFavoritos(List<ArticuloAbstracto> favoritos) {
         this.favoritos = favoritos;
-        return this;
     }
 }
