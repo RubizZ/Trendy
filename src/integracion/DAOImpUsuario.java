@@ -35,20 +35,19 @@ public class DAOImpUsuario implements DAOUsuario {
             } catch (SQLException e) {
                 System.out.println("Ha habido un error en la base de datos");
                 System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
             System.out.println("No se ha podido conectar a la base de datos");
             System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return list;
     }
 
     @Override
-    public TUsuario getUsuario(String id) {
+    public TUsuario getUsuario(String correo, String contrasenya) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "SELECT * FROM Usuarios WHERE Id = " + id;
+            String sql = "SELECT * FROM Usuarios WHERE correo = '" + correo + "' AND contraseña = '" + contrasenya + "'";
             try (Statement statement = connection.createStatement();
                 ResultSet rS = statement.executeQuery(sql)
             ) {
@@ -64,17 +63,17 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setDireccion(rS.getString("Dirección"))
                             .setSaldo(rS.getInt("saldo"));
                 }else{
-                    System.out.println("No se ha encontrado el usuario con Id " + id);
+                    System.out.println("No se ha encontrado ningun usuario con ese correo en la base de datos");
                 }
             } catch (SQLException e) {
                 System.out.println("Ha habido un error en la base de datos");
                 System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
             System.out.println("No se ha podido conectar a la base de datos");
             System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
         return null;
     }
@@ -100,13 +99,13 @@ public class DAOImpUsuario implements DAOUsuario {
                 succesful = 0;
                 System.out.println("Ha habido un error al crear el usuario");
                 System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
             succesful = 0;
             System.out.println("No se ha podido conectar a la base de datos");
             System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
         return succesful;
     }
@@ -132,13 +131,13 @@ public class DAOImpUsuario implements DAOUsuario {
                 succesful = 0;
                 System.out.println("Ha habido un error al actualizar el usuario");
                 System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
             succesful = 0;
             System.out.println("No se ha podido conectar a la base de datos");
             System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
         return succesful;
     }
@@ -153,15 +152,41 @@ public class DAOImpUsuario implements DAOUsuario {
             } catch (SQLException e) {
                 System.out.println("Ha habido un error al actualizar el usuario");
                 System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
                 succesfull = 0;
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
             System.out.println("No se ha podido conectar a la base de datos");
             System.out.println(e.getMessage());
-            //TODO Hacer excepciones
             succesfull = 0;
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
         return succesfull;
+    }
+
+    @Override
+    public boolean existe(String correo) {
+        boolean existe = false;
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "SELECT * FROM Usuarios WHERE correo = '" + correo + "'";
+            try (Statement statement = connection.createStatement();
+                 ResultSet rS = statement.executeQuery(sql)
+            ) {
+                if(rS.next()){
+                    return true;
+                }else{
+                    System.out.println("No se ha encontrado el usuario con Id " + correo);
+                    return false;
+                }
+            } catch (SQLException e) {
+                System.out.println("Ha habido un error en la base de datos");
+                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
+            }
+        } catch (SQLException e) {
+            System.out.println("No se ha podido conectar a la base de datos");
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
+        }
     }
 }

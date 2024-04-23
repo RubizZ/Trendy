@@ -7,32 +7,30 @@ import java.util.Collection;
 
 public class SAUsuarioImp implements SAUsuario{
 
-    private DAOUsuario daoUsuario = new DAOImpUsuario();
+    private NUsuario nUsuario = new NUsuario();
 
     @Override
     public int create(TUsuario tUsuario) {
-        return daoUsuario.crearUsuario(tUsuario);
+        return nUsuario.create(tUsuario);
     }
 
     @Override
-    public TUsuario read(int id) {
-        return daoUsuario.getUsuario(Integer.toString(id));
+    public TUsuario read(TUsuario usuario) {
+        return nUsuario.read(usuario);
     }
 
     @Override
     public Collection<TUsuario> readAll() {
-        return daoUsuario.buscarUsuarios();
+        return nUsuario.readAll();
     }
 
     @Override
     public int update(TUsuario tUsuario) {
-        return daoUsuario.actualizarUsuario(tUsuario, tUsuario.getId(), tUsuario.getCorreo_e()
-                    , tUsuario.getNombre(), tUsuario.getApellidos(), tUsuario.getPais(), tUsuario.getSexo()
-                    , tUsuario.getSuscripcion(), tUsuario.getDireccion(), tUsuario.getSaldo());
+        return nUsuario.update(tUsuario);
     }
 
     @Override
     public int delete(int id) {
-        return daoUsuario.eliminarUsuario(Integer.toString(id));
+        return nUsuario.delete(id);
     }
 }
