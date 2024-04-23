@@ -10,9 +10,11 @@ public interface SAPedidos {
 
     Collection<TOPedido> getPedidosUsuario(int IDUsuario);
 
-    Collection<TOPedido> getPedidosStatus(BOPedido.Status status);
+    Collection<TOPedido> getPedidosStatus(TOStatusPedido TOStatusPedido);
 
     Collection<TOPedido> getPedidosFecha(Date fecha);
+
+    void cambiarStatus(int ID, TOStatusPedido TOStatusPedido);
 
     void cancelarPedido(int ID);
 }

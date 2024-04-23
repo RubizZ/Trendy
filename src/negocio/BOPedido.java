@@ -1,76 +1,45 @@
 package negocio;
 
-import utils.Direccion;
+import integracion.DAOPedidos;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 public class BOPedido {
 
-    public enum Status {
-        REPARTO, ENTREGADO, CANCELADO
+    private final DAOPedidos daoPedidos;
+
+    public BOPedido(DAOPedidos daoPedidos) {
+        this.daoPedidos = daoPedidos;
     }
 
-    private int ID;
-    private Direccion direccion;
-    private Status status;
-    private Date fecha;
-    private int idCesta;
-    private int idUsuario;
-
-    public int getID() {
-        return ID;
+    public void crearPedido(TOACestaUsuario toaCestaUsuario) {
+        daoPedidos.añadirPedido(toaCestaUsuario);
     }
 
-    public BOPedido setID(int ID) {
-        this.ID = ID;
-        return this;
+    public Collection<TOPedido> getAllPedidos() {
+        return daoPedidos.getAllPedidos();
     }
 
-    public Direccion getDireccion() {
-        return direccion;
+    public Collection<TOPedido> getPedidosUsuario(int IDUsuario) {
+        return daoPedidos.getPedidosUsuario(IDUsuario);
     }
 
-    public BOPedido setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-        return this;
+    public Collection<TOPedido> getPedidosStatus(TOStatusPedido TOStatusPedido) {
+        return daoPedidos.getAllPedidos().stream().filter(pedido -> Objects.equals(pedido.getStatus(), TOStatusPedido.toString())).toList();
     }
 
-    public Status getStatus() {
-        return status;
+    public Collection<TOPedido> getPedidosFecha(Date fecha) {
+        return daoPedidos.getAllPedidos().stream().filter(pedido -> Objects.equals(pedido.getFecha(), fecha.toString())).toList();
     }
 
-    public BOPedido setStatus(Status status) {
-        this.status = status;
-        return this;
+    public void cambiarStatus(int ID, TOStatusPedido statusPedido) {
+        daoPedidos.cambiarStatus(ID, statusPedido);
     }
 
-    public int getIdCesta() {
-        return idCesta;
-    }
-
-    public BOPedido setIdCesta(int idCesta) {
-        this.idCesta = idCesta;
-        return this;
-    }
-
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public BOPedido setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-        return this;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public BOPedido setFecha(Date fecha) {
-        this.fecha = fecha;
-        return this;
+    public void cancelarPedido(int ID) {
+        daoPedidos.cambiarStatus(ID, TOStatusPedido.CANCELADO);
     }
 
 }

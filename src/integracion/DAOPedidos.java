@@ -1,11 +1,13 @@
 package integracion;
 
+import negocio.TOACestaUsuario;
 import negocio.TOPedido;
+import negocio.TOStatusPedido;
 
 import java.util.Collection;
 
 public interface DAOPedidos {
-    void añadirPedido(TOPedido toPedido);
+    void añadirPedido(TOACestaUsuario toaCestaUsuario);
 
     TOPedido getPedido(int ID);
 
@@ -13,7 +15,7 @@ public interface DAOPedidos {
 
     Collection<TOPedido> getPedidosUsuario(int IDUsuario);
 
-    void cambiarStatus(int ID, String status);
+    void cambiarStatus(int ID, TOStatusPedido TOStatusPedido);
 
     TOPedido getLastPedido();
 }

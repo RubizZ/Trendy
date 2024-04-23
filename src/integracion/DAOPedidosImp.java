@@ -1,7 +1,9 @@
 package integracion;
 
 import database.DBConnection;
+import negocio.TOACestaUsuario;
 import negocio.TOPedido;
+import negocio.TOStatusPedido;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,15 +16,12 @@ import java.util.List;
 public class DAOPedidosImp implements DAOPedidos {
 
     @Override
-    public void añadirPedido(TOPedido toPedido) {
+    public void añadirPedido(TOACestaUsuario toaCestaUsuario) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "INSERT INTO Pedidos VALUES ("
-                    + "last_insert_id()" + ", '"
-                    + toPedido.getDireccion() + "', "
-                    + toPedido.getIDCesta() + ", "
-                    + toPedido.getIDUsuario() + ", '"
-                    + toPedido.getStatus() + "', '"
-                    + toPedido.getFecha() + "')";
+            String sql = "INSERT INTO Pedidos (direccion, id_cesta, id_usuario, status, fecha) " + "VALUES (" +
+                    "'" + toaCestaUsuario.getTOUsuario().getDireccion() + "', '"
+                    + toaCestaUsuario.getIDCesta() + "', '"
+                    + toaCestaUsuario.getIDUsuario() + "', 'reparto', current_date())";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
@@ -107,9 +106,9 @@ public class DAOPedidosImp implements DAOPedidos {
     }
 
     @Override
-    public void cambiarStatus(int ID, String status) {
+    public void cambiarStatus(int ID, TOStatusPedido status) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "UPDATE Pedidos SET status = '" + status + "' WHERE Id = " + ID;
+            String sql = "UPDATE Pedidos SET status = '" + status.toString().toLowerCase() + "' WHERE Id = " + ID;
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(sql);
             } catch (SQLException e) {
