@@ -1,4 +1,7 @@
-package model.articulo;
+package negocio;
+
+import integracion.DAOCategorias;
+import integracion.DAOCategoriasImp;
 
 public class NCategoriasImp {
 

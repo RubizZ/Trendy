@@ -1,9 +1,10 @@
-package Presentacion;
+package presentacion;
 
 import java.util.List;
 
-public class View  {
+public class ViewArticulo {
 
+    /*
     public void imprimirProducto(Articulo a){
 
         System.out.println("_______________________");
@@ -27,4 +28,6 @@ public class View  {
             System.out.println(a.getName());
         }
     }
+
+     */
 }

@@ -1,4 +1,8 @@
-package model.articulo;
+package negocio;
+
+import integracion.DAOListas;
+import integracion.DAOListasImp;
+import negocio.Articulo;
 
 import java.util.LinkedList;
 import java.util.List;

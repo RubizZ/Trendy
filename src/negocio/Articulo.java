@@ -1,4 +1,4 @@
-package model.articulo;
+package negocio;
 
 public class Articulo {
 

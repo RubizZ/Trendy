@@ -1,6 +1,7 @@
-package model.articulo;
+package integracion;
 
 import database.DBConnection;
+import negocio.tArticulo;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

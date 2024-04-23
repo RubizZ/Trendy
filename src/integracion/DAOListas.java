@@ -1,4 +1,6 @@
-package model.articulo;
+package integracion;
+
+import negocio.Articulo;
 
 import java.util.List;
 

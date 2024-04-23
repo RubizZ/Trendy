@@ -1,4 +1,4 @@
-package model.articulo;
+package negocio;
 
 import java.io.Serializable;
 

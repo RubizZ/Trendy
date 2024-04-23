@@ -1,12 +1,12 @@
-package Presentacion;
+package presentacion;
 
+public class BorradorControllerArticulo {
 
-public class Controller {
-
-    private View artView;
+    /*
+    private ViewArticulo artView;
     private Articulo artModel;
 
-    public Controller(View view, Articulo model){
+    public BorradorControllerArticulo(ViewArticulo view, Articulo model){
         this.artView =view;
         this.artModel = model;
     }
@@ -19,4 +19,5 @@ public class Controller {
         //artView.
     }
 
+     */
 }

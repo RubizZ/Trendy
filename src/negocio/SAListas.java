@@ -1,4 +1,4 @@
-package model.articulo;
+package negocio;
 
 import java.util.List;
 import java.util.function.Predicate;

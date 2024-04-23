@@ -1,6 +1,6 @@
-package model.articulo;
+package integracion;
 
-import java.sql.SQLException;
+import negocio.tArticulo;
 
 public interface DAOArticulo {
 

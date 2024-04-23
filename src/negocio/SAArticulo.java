@@ -1,6 +1,4 @@
-package model.articulo;
-
-import java.sql.SQLException;
+package negocio;
 
 public interface SAArticulo {
 

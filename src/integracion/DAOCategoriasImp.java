@@ -1,9 +1,8 @@
-package model.articulo;
+package integracion;
 
 import database.DBConnection;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 

@@ -1,6 +1,4 @@
-package model.articulo;
-
-import java.util.List;
+package negocio;
 
 public interface SACategorias {
 
