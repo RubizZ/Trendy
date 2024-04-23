@@ -4,15 +4,15 @@ import java.util.Collection;
 import java.util.Date;
 
 public interface SAPedidos {
-    void añadirPedido(BOPedido boPedido);
+    void crearPedido();
 
-    Collection<BOPedido> getAllPedidos();
+    Collection<TOPedido> getAllPedidos();
 
-    Collection<BOPedido> getPedidosUsuario(int IDUsuario);
+    Collection<TOPedido> getPedidosUsuario(int IDUsuario);
 
-    Collection<BOPedido> getPedidosStatus(BOPedido.Status status);
+    Collection<TOPedido> getPedidosStatus(BOPedido.Status status);
 
-    Collection<BOPedido> getPedidosFecha(Date fecha);
+    Collection<TOPedido> getPedidosFecha(Date fecha);
 
-    void cambiarStatus(int ID, BOPedido.Status status);
+    void cancelarPedido(int ID);
 }
