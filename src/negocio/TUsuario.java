@@ -20,6 +20,7 @@ public class TUsuario implements Serializable {
     protected String direccion;
     protected int saldo;
 
+    public TUsuario(){}
     public TUsuario (int Id) {
         this.id= Id;
     }

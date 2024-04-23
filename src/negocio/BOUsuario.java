@@ -1,7 +1,6 @@
 package negocio;
 
 import model.articulo.ArticuloAbstracto;
-import presentacion.Controller;
 
 import java.util.LinkedList;
 import java.util.List;

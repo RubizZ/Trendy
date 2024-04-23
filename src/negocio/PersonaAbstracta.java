@@ -1,7 +1,5 @@
 package negocio;
 
-import negocio.Persona;
-import presentacion.Controller;
 import model.articulo.ArticuloAbstracto;
 
 import java.util.Collections;

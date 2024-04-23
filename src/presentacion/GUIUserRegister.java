@@ -1,4 +1,8 @@
-package view;
+package presentacion;
+
+import negocio.SAUsuario;
+import negocio.SAUsuarioImp;
+import negocio.TUsuario;
 
 import javax.swing.*;
 
@@ -21,7 +25,13 @@ public class GUIUserRegister extends JPanel {
     private JTextField _pais;
     private JTextField _fechaNac;
     private DefaultComboBoxModel<String> sexoModelo;
+    private SAUsuarioImp saUsuario;
+    private TUsuario tUsuario;
 
+    public GUIUserRegister(){
+        saUsuario = new SAUsuarioImp();
+        initGUI();
+    }
     private void initGUI(){
         nombre = new JLabel("Nombre: ");
         this.add(nombre);
@@ -70,10 +80,25 @@ public class GUIUserRegister extends JPanel {
         setComboBox();
         JComboBox<String> comboBoxSexo = new JComboBox<>(sexoModelo);
         this.add(comboBoxSexo);
+
+        _cancel = new JButton("Cancelar");
+        _cancel.addActionListener((e) -> {
+            this.setVisible(false);
+        });
+
+        _createAccount = new JButton("Crear cuenta");
+        _createAccount.addActionListener((e) -> {
+            tUsuario = crearUsuario();
+            saUsuario.create(tUsuario);
+        });
     }
 
     private void setComboBox() {
         sexoModelo.addElement("M");
         sexoModelo.addElement("F");
+    }
+
+    private TUsuario crearUsuario(){
+        return new TUsuario();
     }
 }

@@ -1,7 +1,5 @@
 package negocio;
 
-import presentacion.Controller;
-
 public class Invitado extends PersonaAbstracta {
 
     Invitado(Controller contr) {
