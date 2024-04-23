@@ -49,6 +49,14 @@ public class BOCesta {
         return this;
     }
 
+    public int getIDUsuario(){
+        return IDUsuario;
+    }
+
+    public  BOCesta setIDUsuario(int idUsuario){
+        this.IDUsuario = idUsuario;
+        return this;
+    }
 
 
 
