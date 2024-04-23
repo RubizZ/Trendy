@@ -1,7 +1,7 @@
 package model.ventas;
 
 public class BOCesta {
-    private int ID;
+    private int id;
 
     private int cantidad;
 
@@ -15,8 +15,7 @@ public class BOCesta {
 
     public BOCesta(BOCesta other, int ID) {
 
-        this(ID);
-
+        id = ID;
         cantidad = other.cantidad;
         IDArticulo = other.IDArticulo;
         IDUsuario = other.IDUsuario;
@@ -24,11 +23,11 @@ public class BOCesta {
     }
 
     public int getID() {
-        return ID;
+        return id;
     }
 
     public BOCesta setID(int id){
-        this.ID = id;
+        this.id = id;
         return this;
     }
 
