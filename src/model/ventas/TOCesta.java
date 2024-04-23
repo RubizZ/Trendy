@@ -57,7 +57,13 @@ public class TOCesta implements Serializable {
         return this;
     }
 
+    public int getIDUsuario(){
+        return IDUsuario;
+    }
 
-
+    public  TOCesta setIDUsuario(int idUsuario){
+        this.IDUsuario = idUsuario;
+        return this;
+    }
 
 }
