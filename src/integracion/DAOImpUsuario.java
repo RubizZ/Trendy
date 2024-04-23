@@ -26,7 +26,7 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setNombre(rS.getString("nombre"))
                             .setApellidos(rS.getString("apellidos"))
                             .setPais(rS.getString("pais"))
-                            .setSexo(rS.getCharacterStream("sexo"))
+                            .setSexo((char) rS.getString("sexo").getBytes()[0])//TODO revisar si funciona
                             .setSuscripcion(rS.getInt("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
                             .setSaldo(rS.getInt("saldo")));
@@ -59,7 +59,7 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setNombre(rS.getString("nombre"))
                             .setApellidos(rS.getString("apellidos"))
                             .setPais(rS.getString("pais"))
-                            .setSexo(rS.("sexo"))
+                            .setSexo((char) rS.getString("sexo").getBytes()[0])//TODO revisar q funcione esa funcion
                             .setSuscripcion(rS.getInt("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
                             .setSaldo(rS.getInt("saldo"));

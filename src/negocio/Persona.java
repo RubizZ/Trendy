@@ -1,4 +1,4 @@
-package model.usuarios;
+package negocio;
 
 import model.articulo.Articulo;
 import model.articulo.ArticuloAbstracto;

@@ -1,5 +1,6 @@
 package model.usuarios;
 
+import negocio.PersonaAbstracta;
 import presentacion.Controller;
 import model.articulo.ArticuloAbstracto;
 

@@ -1,5 +1,6 @@
-package model.usuarios;
+package negocio;
 
+import negocio.Persona;
 import presentacion.Controller;
 import model.articulo.ArticuloAbstracto;
 

@@ -1,10 +1,8 @@
 package negocio;
 
 import model.articulo.ArticuloAbstracto;
-import model.usuarios.PersonaAbstracta;
 import presentacion.Controller;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 

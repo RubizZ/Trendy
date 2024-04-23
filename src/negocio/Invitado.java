@@ -1,4 +1,4 @@
-package model.usuarios;
+package negocio;
 
 import presentacion.Controller;
 
@@ -17,6 +17,5 @@ public class Invitado extends PersonaAbstracta {
         String fecha_nacimiento;//TODO cambiar a tipo fecha
         char sexo;
         String pais;
-        controlador.registro(nombre, apellidos, correo_e, contrasenya, fecha_nacimiento, sexo, pais);
     }
 }

@@ -3,55 +3,77 @@ package view;
 import javax.swing.*;
 
 public class GUIUserRegister extends JPanel {
-    JButton _cancel, _createAcount;
+    private JButton _cancel;
+    private JButton _createAccount;
+    private JLabel nombre;
+    private JLabel apellidos;
+    private JLabel contrasenya;
+    private JLabel repContrasenya;
+    private JLabel correo;
+    private JLabel pais;
+    private JLabel fechaNac;
+    private JLabel sexo;
+    private JTextField _nombre;
+    private JTextField _apellidos;
+    private JTextField _contrasenya;
+    private JTextField _repContrasenya;
+    private JTextField _correo;
+    private JTextField _pais;
+    private JTextField _fechaNac;
+    private DefaultComboBoxModel<String> sexoModelo;
 
     private void initGUI(){
-        JLabel nombre = new JLabel("Nombre: ");
+        nombre = new JLabel("Nombre: ");
         this.add(nombre);
 
-        JTextField _nombre = new JTextField();
+        _nombre = new JTextField();
         this.add(_nombre);
 
-        JLabel apellido = new JLabel("Nombre: ");
-        this.add(nombre);
+        apellidos = new JLabel("Apellidos: ");
+        this.add(apellidos);
 
-        JTextField _apellido = new JTextField();
-        this.add(_nombre);
+        _apellidos = new JTextField();
+        this.add(_apellidos);
 
-        JLabel contra = new JLabel("Nombre: ");
-        this.add(nombre);
+        contrasenya = new JLabel("Contraseña: ");
+        this.add(contrasenya);
 
-        JTextField _contra = new JTextField();
-        this.add(_nombre);
+        _contrasenya = new JTextField();
+        this.add(_contrasenya);
 
-        JLabel repContra = new JLabel("Nombre: ");
-        this.add(nombre);
+        repContrasenya = new JLabel("Confirmar contraseña: ");
+        this.add(repContrasenya);
 
-        JTextField _repContra = new JTextField();
-        this.add(_nombre);
+        _repContrasenya = new JTextField();
+        this.add(_repContrasenya);
 
-        JLabel correo = new JLabel("Nombre: ");
-        this.add(nombre);
+        correo = new JLabel("Correo: ");
+        this.add(correo);
 
-        JTextField _correo = new JTextField();
-        this.add(_nombre);
+        _correo = new JTextField();
+        this.add(_correo);
 
-        JLabel pais = new JLabel("Nombre: ");
-        this.add(nombre);
+        pais = new JLabel("Pais: ");
+        this.add(pais);
 
-        JTextField _pais = new JTextField();
-        this.add(_nombre);
+        _pais = new JTextField();
+        this.add(_pais);
 
-        JLabel fechaNac = new JLabel("Nombre: ");
-        this.add(nombre);
+        fechaNac = new JLabel("Fecha de nacimiento: ");
+        this.add(fechaNac);
 
-        JTextField _fechaNac = new JTextField();
-        this.add(_nombre);
+        _fechaNac = new JTextField();
+        this.add(_fechaNac);
 
-        JLabel sexo = new JLabel("Nombre: ");
-        this.add(nombre);
+        sexo = new JLabel("Sexo: ");
+        this.add(sexo);
+        setComboBox();
+        JComboBox<String> comboBoxSexo = new JComboBox<>(sexoModelo);
+        this.add(comboBoxSexo);
+    }
 
-        JComboBox<Object> _sexo = new JComboBox<>();
-        this.add(_sexo);
+    private void setComboBox() {
+        sexoModelo.addElement("M");
+        sexoModelo.addElement("F");
     }
 }
