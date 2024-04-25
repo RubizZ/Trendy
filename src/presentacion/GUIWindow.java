@@ -78,40 +78,11 @@ public class GUIWindow extends JFrame {
     private void initPanels() {
         mainPanel = new JPanel(new BorderLayout());
 
-        BiConsumer<JButton, JScrollPane> changePanel = (button, panel) -> {
-            mainPanel.remove(lastPanel);
+        BiConsumer<JButton, JScrollPane> changePanel = changePanelAction();
 
-            Transitions.makeWhiteFadeTransition(lastPanel, panel, 1, (from, to) -> {
-                mainPanel.remove(from);
-                mainPanel.add(to, BorderLayout.CENTER);
-            });
+        BiConsumer<JButton, MainGUIPanel> buttonAction = buttonAction(changePanel);
 
-            lastPanel = panel;
-
-            mainPanel.revalidate();
-            mainPanel.repaint();
-        };
-
-        BiConsumer<JButton, MainGUIPanel> buttonAction = (button, panel) -> {
-            if (lastPressedButton.getLeft() == button) {
-                if (lastPressedButton.getRight() <= 1) {
-                    panel.update();
-                } else {
-                    panel.reset();
-                }
-                lastPressedButton = Pair.of(button, lastPressedButton.getRight() + 1);
-            } else {
-                lastPressedButton = Pair.of(button, 0);
-                changePanel.accept(button, panel);
-            }
-        };
-
-        TriFunction<String, MainGUIPanel, BiConsumer<JButton, MainGUIPanel>, JButton> buttonCreator = (text, panel, action) -> {
-            JButton button = new JButton(text);
-            button.addActionListener(e -> action.accept(button, panel));
-            controlPanel.add(button);
-            return button;
-        };
+        TriFunction<String, MainGUIPanel, BiConsumer<JButton, MainGUIPanel>, JButton> buttonCreator = buttonCreatorFunction();
 
         controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
@@ -135,6 +106,47 @@ public class GUIWindow extends JFrame {
 
         mainPanel.add(homePanel, BorderLayout.CENTER);
         mainPanel.add(controlPanel, BorderLayout.SOUTH);
+    }
+
+    private TriFunction<String, MainGUIPanel, BiConsumer<JButton, MainGUIPanel>, JButton> buttonCreatorFunction() {
+        return (text, panel, action) -> {
+            JButton button = new JButton(text);
+            button.addActionListener(e -> action.accept(button, panel));
+            controlPanel.add(button);
+            return button;
+        };
+    }
+
+    private BiConsumer<JButton, MainGUIPanel> buttonAction(BiConsumer<JButton, JScrollPane> changePanel) {
+        return (button, panel) -> {
+            if (lastPressedButton.getLeft() == button) {
+                if (lastPressedButton.getRight() <= 1) {
+                    panel.update();
+                } else {
+                    panel.reset();
+                }
+                lastPressedButton = Pair.of(button, lastPressedButton.getRight() + 1);
+            } else {
+                lastPressedButton = Pair.of(button, 0);
+                changePanel.accept(button, panel);
+            }
+        };
+    }
+
+    private BiConsumer<JButton, JScrollPane> changePanelAction() {
+        return (button, panel) -> {
+            mainPanel.remove(lastPanel);
+
+            Transitions.makeWhiteFadeTransition(lastPanel, panel, 1, (from, to) -> {
+                mainPanel.remove(from);
+                mainPanel.add(to, BorderLayout.CENTER);
+            });
+
+            lastPanel = panel;
+
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        };
     }
 
     private void waitForAnimation() {
