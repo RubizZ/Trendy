@@ -3,6 +3,7 @@ package presentacion;
 import negocio.SAUsuario;
 import negocio.SAUsuarioImp;
 import negocio.TUsuario;
+import utils.ViewUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,11 +32,12 @@ public class GUIUserRegister extends JPanel {
     private JComboBox<String> comboBoxSexo;
     private SAUsuarioImp saUsuario;
     private TUsuario tUsuario;
-    private Frame _parent;
 
-    public GUIUserRegister(Frame parent){
+    private GUILogIn _parent;
+
+    public GUIUserRegister(GUILogIn parent){
         saUsuario = new SAUsuarioImp();
-        _parent = parent;
+        this._parent = parent;
         initGUI();
     }
     private void initGUI(){
@@ -124,7 +126,8 @@ public class GUIUserRegister extends JPanel {
 
         _cancel = new JButton("Cancelar");
         _cancel.addActionListener((e) -> {
-            this.setVisible(false);
+            ViewUtils.quit(this);
+            _parent.setVisible(true);
         });
         _cancel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.add(_cancel);
