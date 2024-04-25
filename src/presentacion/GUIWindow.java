@@ -21,6 +21,7 @@ public class GUIWindow extends JFrame {
     private JPanel controlPanel;
 
     private JButton lastPressedButton;
+    private JPanel lastPanel;
 
     private JButton homeButton;
     private JButton searchButton;
@@ -85,14 +86,15 @@ public class GUIWindow extends JFrame {
     private void initPanels() {
         mainPanel = new JPanel(new BorderLayout());
 
-        controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)
         homeButton = new JButton("Home");
         homeButton.addActionListener(e -> {
-            if(homeButton == lastPressedButton){
+            if (homeButton == lastPressedButton) {
                 homePanel.reset();
             } else {
                 lastPressedButton = homeButton;
-                mainPanel.remove(homePanel);
+                mainPanel.remove(lastPanel);
+                lastPanel = homePanel;
                 mainPanel.add(homePanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
                 mainPanel.revalidate();
                 mainPanel.repaint();
@@ -102,11 +104,12 @@ public class GUIWindow extends JFrame {
         controlPanel.add(homeButton);
         searchButton = new JButton("Search");
         searchButton.addActionListener(e -> {
-            if(searchButton == lastPressedButton){
+            if (searchButton == lastPressedButton) {
                 searchPanel.reset();
             } else {
                 lastPressedButton = searchButton;
-                mainPanel.remove(searchPanel);
+                mainPanel.remove(lastPanel);
+                lastPanel = searchPanel;
                 mainPanel.add(searchPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
                 mainPanel.revalidate();
                 mainPanel.repaint();
@@ -115,11 +118,12 @@ public class GUIWindow extends JFrame {
         controlPanel.add(searchButton);
         cestaButton = new JButton("Cesta");
         cestaButton.addActionListener(e -> {
-            if(cestaButton == lastPressedButton){
+            if (cestaButton == lastPressedButton) {
                 cestaPanel.reset();
             } else {
                 lastPressedButton = cestaButton;
-                mainPanel.remove(cestaPanel);
+                mainPanel.remove(lastPanel);
+                lastPanel = cestaPanel;
                 mainPanel.add(cestaPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
                 mainPanel.revalidate();
                 mainPanel.repaint();
@@ -128,14 +132,15 @@ public class GUIWindow extends JFrame {
         controlPanel.add(cestaButton);
         userButton = new JButton("User");
         userButton.addActionListener(e -> {
-            if(!saFachade.isLogged()) {
+            if (!saFachade.isLogged()) {
                 authDialog.open(this);
             } else {
-                if(userButton == lastPressedButton){
+                if (userButton == lastPressedButton) {
                     userPanel.reset();
                 } else {
                     lastPressedButton = userButton;
-                    mainPanel.remove(userPanel);
+                    mainPanel.remove(lastPanel);
+                    lastPanel = userPanel;
                     mainPanel.add(userPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
                     mainPanel.revalidate();
                     mainPanel.repaint();
@@ -146,7 +151,7 @@ public class GUIWindow extends JFrame {
 
         homePanel = new HomePanel(saFachade);
         userPanel = new GUIPerfil(saFachade);
-        cestaPanel = new CestaPanel(saFachade);
+        cestaPanel = new GUICesta(saFachade);
         searchPanel = new GUIPpalCategorias(saFachade);
         authDialog = new GUILogin(saFachade);
 
