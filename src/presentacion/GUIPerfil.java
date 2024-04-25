@@ -2,17 +2,28 @@ package presentacion;
 
 import negocio.SAUsuarioImp;
 import negocio.TUsuario;
+import utils.ViewUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class GUIPerfil extends JPanel {
 
     private SAUsuarioImp saUsuario;
     private TUsuario tUsuario;
 
-    public GUIPerfil(SAFachade fachade){
-        saUsuario = fachade;
+    private JTextField _nombre;
+    private JTextField _apellidos;
+    private JTextField _contrasenya;
+    private JTextField _repContrasenya;
+    private JTextField _correo;
+    private JTextField _pais;
+    private JTextField _anyoNac;
+    private JTextField _direccion;
+
+    public GUIPerfil(SAFacade facade){
+        saUsuario = facade;
         initGUI();
     }
 
@@ -27,6 +38,15 @@ public class GUIPerfil extends JPanel {
         panelIni.add(nombre);
 
         //PANEL DE MODIFICAR DATOS
+        JPanel panelMod = new JPanel();
+        panelMod.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        configurarPanelMod(mainPanel, panelMod);
+
+        //PANEL DE VER MIS PEDIDOS
+        JPanel panelPedidos = new JPanel();
+        panelPedidos.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        configurarPanelPedidos(mainPanel, panelPedidos);
+
 
 
         //BOTON PARA MODIFICAR DATOS
@@ -43,5 +63,108 @@ public class GUIPerfil extends JPanel {
         JButton act_suscripcion = new JButton("Actualizar suscripcion");
         act_suscripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelIni.add(act_suscripcion);
+
+        //BOTON PARA AÑADIR SALDO
+        JButton add_saldo = new JButton("Añadir saldo");
+        add_saldo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelIni.add(add_saldo);
+    }
+
+
+
+    private void addJLabel(String text, Container container){
+        JLabel label = new JLabel(text);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        container.add(label);
+    }
+
+
+    private void configurarPanelMod(Container mainPanel, Container modPanel){
+        JTextArea texto_ayuda = new JTextArea("Complete todos los campos aunque no los quiera cambiar");
+        texto_ayuda.setBackground(getForeground());
+        texto_ayuda.setLineWrap(true);
+        texto_ayuda.setWrapStyleWord(true);
+        texto_ayuda.setEditable(false);
+
+        addJLabel("Nombre", modPanel);
+        _nombre = new JTextField();
+        _nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        _nombre.setToolTipText("Introduzca su nombre");
+        modPanel.add(_nombre);
+
+        addJLabel("Apellidos", modPanel);
+        _apellidos = new JTextField();
+        _apellidos.setAlignmentX(Component.CENTER_ALIGNMENT);
+        _apellidos.setToolTipText("Intruduzca sus apellidos");
+        modPanel.add(_apellidos);
+
+        addJLabel("Contraseña", modPanel);
+        _contrasenya = new JTextField();
+        _contrasenya.setAlignmentX(Component.CENTER_ALIGNMENT);
+        _contrasenya.setToolTipText("Introduzca una contraseña");
+        modPanel.add(_contrasenya);
+
+        addJLabel("Correo", modPanel);
+        _correo = new JTextField();
+        _correo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        _correo.setToolTipText("Introduzca su correo electronico");
+        modPanel.add(_correo);
+
+        addJLabel("Pais", modPanel);
+        _pais = new JTextField();
+        _pais.setAlignmentX(Component.CENTER_ALIGNMENT);
+        _pais.setToolTipText("Intruduzca su pais");
+        modPanel.add(_pais);
+
+        addJLabel("Direccion", modPanel);
+        _direccion = new JTextField();
+        _direccion.setAlignmentX(Component.CENTER_ALIGNMENT);
+        _direccion.setToolTipText("Introduzca su direccion");
+        modPanel.add(_direccion);
+
+
+
+        JButton _cancel = new JButton("Cancelar");
+        _cancel.addActionListener((e) -> {
+            modPanel.setVisible(false);
+            mainPanel.setVisible(true);
+        });
+        _cancel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        modPanel.add(_cancel);
+
+        JButton _confirmar = new JButton("Confirmar");
+        _confirmar.addActionListener((e) -> {
+            TUsuario usuario = crearUsuario();
+            try{
+                saUsuario.update(usuario);
+            }catch(RuntimeException re){
+                throw new RuntimeException("No se han podido actualizar los datos: ");
+            }finally{
+                modPanel.setVisible(false);
+                mainPanel.setVisible(true);
+            }
+        });
+        _confirmar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        modPanel.add(_confirmar);
+    }
+
+    private void configurarPanelPedidos(JPanel mainPanel, JPanel panelPedidos) {
+        HashMap<Pedido, Status> tabla_pedidos = new HashMap<>();//TODO no se como se llama eso de ruben y javi
+        //TODO sacar la colecion de pedidos y ver como de ahi creo el mapa
+    }
+
+    private TUsuario crearUsuario(){
+        String nombre, apellidos, correo, contrasenya, pais, dir;
+        char sexo;
+        int anyo;
+        nombre = _nombre.getText();
+        apellidos = _apellidos.getText();
+        correo = _correo.getText();
+        contrasenya = _contrasenya.getText();
+        anyo = Integer.parseInt(_anyoNac.getText());
+        pais = _pais.getText();
+        dir = _direccion.getText();
+        //TODO pillar el sexo que ya tenia pero no se de donde se saca
+        return new TUsuario(nombre, apellidos, correo, contrasenya, anyo, sexo, pais, dir);
     }
 }
