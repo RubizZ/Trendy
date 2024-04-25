@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.List;
+
 public class SACategoriasImp implements SACategorias{
 
     BOCategorias ncat = new BOCategorias();
@@ -17,6 +19,11 @@ public class SACategoriasImp implements SACategorias{
     @Override
     public void modificarArticulo(int id, String fechal, int descuento, String genero) {
         ncat.modificarArticulo(id, fechal, descuento, genero);
+    }
+
+    @Override
+    public List<String> getCategorias() {
+        return ncat.getCategorias();
     }
 
 }

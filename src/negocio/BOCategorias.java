@@ -3,6 +3,8 @@ package negocio;
 import integracion.DAOCategorias;
 import integracion.DAOCategoriasImp;
 
+import java.util.List;
+
 public class BOCategorias {
 
     DAOCategorias dao = new DAOCategoriasImp();
@@ -37,5 +39,9 @@ public class BOCategorias {
         if(genero != ""){
             dao.modificarArticulo(id, fechal, descuento, genero);
         }
+    }
+
+    public List<String> getCategorias(){
+        return dao.getCategorias();
     }
 }
