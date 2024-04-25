@@ -12,7 +12,7 @@ public class ImageAnimation extends JPanel {
     private static final double SCALE = 0.5;
 
     private final BufferedImage fullImage;
-    private final int percentageLengthMs;
+    private final int expectedEndTimeMs;
     private final double animationSpeed;
 
     private boolean stop;
@@ -23,9 +23,9 @@ public class ImageAnimation extends JPanel {
     private int fps;
     private double deltaTime;
 
-    public ImageAnimation(BufferedImage image, int percentageLengthMs, double animationSpeed) {
+    public ImageAnimation(BufferedImage image, int expectedEndTimeMs, double animationSpeed) {
         this.fullImage = image;
-        this.percentageLengthMs = percentageLengthMs;
+        this.expectedEndTimeMs = expectedEndTimeMs;
         this.initTime = Long.MAX_VALUE;
         this.animationSpeed = animationSpeed;
 
@@ -39,7 +39,7 @@ public class ImageAnimation extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        percentage += (((double) (System.currentTimeMillis() - initTime) / percentageLengthMs) - percentage);
+        percentage += (((double) (System.currentTimeMillis() - initTime) / expectedEndTimeMs) - percentage);
         drawPercentageBar(g2d, (int) (getHeight() - (getHeight() * 0.1)), "Loading...", percentage);
 
         // Escribe trendy en grande encima del logo dependiendo del tamaño de la ventana
