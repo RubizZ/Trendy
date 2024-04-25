@@ -11,7 +11,7 @@ public class TUsuario implements Serializable {
     protected String apellidos;
     protected String correo_e;
     protected String contrasenya;
-    protected String fechaNacimiento;//TODO cambiar a tipo fecha
+    protected int anyoNacimiento;
     protected char sexo;
     protected String pais;
     protected int suscripcion;
@@ -25,19 +25,33 @@ public class TUsuario implements Serializable {
         this.id= Id;
     }
 
-    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, int Suscripcion, String Direccion, int Saldo) {
+    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, int Suscripcion, String Direccion, int Saldo) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
         correo_e =Correo;
         contrasenya = Contrasenya;
-        fechaNacimiento = fechaNac;
+        anyoNacimiento = anyoNac;
         sexo = Sexo;
         pais = Pais;
         favoritos = new LinkedList<>();
         suscripcion = Suscripcion;
         direccion = Direccion;
         saldo = Saldo;
+    }
+
+    public TUsuario(String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, String Direccion){
+        nombre = Nombre;
+        apellidos = Apellidos;
+        correo_e = Correo;
+        contrasenya = Contrasenya;
+        anyoNacimiento = anyoNac;
+        sexo = Sexo;
+        pais = Pais;
+        direccion = Direccion;
+        saldo = 0;
+        favoritos = new LinkedList<>();
+        //TODO suscripcion tiene q ser el id de la normal pero no se cual es
     }
 
 
@@ -77,12 +91,12 @@ public class TUsuario implements Serializable {
         return this;
     }
 
-    public String getFechaNacimiento() {
-        return fechaNacimiento;
+    public int getAnyoNacimiento() {
+        return anyoNacimiento;
     }
 
-    public TUsuario setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public TUsuario setAnyoNacimiento(int anyoNacimiento) {
+        this.anyoNacimiento = anyoNacimiento;
         return this;
     }
 

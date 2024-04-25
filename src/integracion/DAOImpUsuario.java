@@ -26,6 +26,7 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setNombre(rS.getString("nombre"))
                             .setApellidos(rS.getString("apellidos"))
                             .setPais(rS.getString("pais"))
+                            .setAnyoNacimiento(rS.getInt("anyo_nacimiento"))
                             .setSexo((char) rS.getString("sexo").getBytes()[0])//TODO revisar si funciona
                             .setSuscripcion(rS.getInt("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
@@ -33,13 +34,9 @@ public class DAOImpUsuario implements DAOUsuario {
                 }
                 return list;
             } catch (SQLException e) {
-                System.out.println("Ha habido un error en la base de datos");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
     }
@@ -58,6 +55,7 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setNombre(rS.getString("nombre"))
                             .setApellidos(rS.getString("apellidos"))
                             .setPais(rS.getString("pais"))
+                            .setAnyoNacimiento(rS.getInt("anyo_nacimiento"))
                             .setSexo((char) rS.getString("sexo").getBytes()[0])//TODO revisar q funcione esa funcion
                             .setSuscripcion(rS.getInt("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
@@ -66,24 +64,20 @@ public class DAOImpUsuario implements DAOUsuario {
                     System.out.println("No se ha encontrado ningun usuario con ese correo en la base de datos");
                 }
             } catch (SQLException e) {
-                System.out.println("Ha habido un error en la base de datos");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
         return null;
     }
 
     @Override
-    public int crearUsuario(TUsuario usuario) {
-        int succesful = 1;
+    public void crearUsuario(TUsuario usuario) {
         try (Connection connection = DBConnection.connect()) {
+            int id = getNuevoId();
             String sql = "INSERT INTO Usuarios VALUES ("
-                    + usuario.getId()+ ", '"
+                    + id + ", '"
                     + usuario.getCorreo_e() + "', '"
                     + usuario.getContrasenya() + "', '"
                     + usuario.getNombre() + "', '"
@@ -92,80 +86,58 @@ public class DAOImpUsuario implements DAOUsuario {
                     + usuario.getSexo() + "', '"
                     + usuario.getSuscripcion() + "', '"
                     + usuario.getDireccion() + "', "
-                    + usuario.getSaldo() + ")";
+                    + usuario.getSaldo() + ", "
+                    + usuario.getAnyoNacimiento() + ")";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
-                succesful = 0;
-                System.out.println("Ha habido un error al crear el usuario");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            succesful = 0;
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return succesful;
     }
 
     @Override
-    public int actualizarUsuario(TUsuario usuario, int ID, String correo, String nombre, String apellidos,
-                                  String pais, char sexo, int suscripcion, String direccion, int saldo) {
-        int succesful = 1;
+    public void actualizarUsuario(TUsuario usuario, int ID) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "UPDATE Usuarios SET ";
-            if(correo != null) sql = sql + "correo = '" + correo + "' ";
-            if(nombre != null) sql = sql + "nombre = '" + nombre + "'";
-            if(apellidos != null) sql = sql + "apellidos = '" + apellidos + "'";
-            if(pais != null) sql = sql + "pais = '" + pais + "'";
-            if(sexo != ' ') sql = sql + "sexo = '" + sexo + "'"; //si no queremos actualizar el sexo se pone espacio en lugar de null
-            if(suscripcion != 0) sql = sql + "suscripcion_id = " + suscripcion;// si no queremos actualizar suscripcion metemos 0 en lugar de null
-            if(direccion != null) sql = sql + "direccion = '" + direccion + "'";
-            if(saldo != 0) sql = sql + "saldo = " + (usuario.getSaldo()+saldo);
-            sql = sql + " WHERE Id = " + ID;
+            String sql = "UPDATE Usuarios SET " +
+                    "nombre = '" + usuario.getNombre() +
+                    "', apellidos = '" + usuario.getApellidos() +
+                    "', correo = '" + usuario.getCorreo_e() +
+                    "', contraseña = '" + usuario.getContrasenya() +
+                    "', anyo_nacimiento = " + usuario.getAnyoNacimiento() +
+                    ", sexo = '" + usuario.getSexo() +
+                    "', pais = '" + usuario.getPais() +
+                    "', suscripcion_id = " + usuario.getSuscripcion() +
+                    ", Dirección = '" + usuario.getDireccion() +
+                    "', saldo = " + usuario.getSaldo() + "WHERE ID = " + ID + ";";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
-                succesful = 0;
-                System.out.println("Ha habido un error al actualizar el usuario");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            succesful = 0;
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return succesful;
     }
 
     @Override
-    public int eliminarUsuario(String ID) {
-        int succesfull = 1;
+    public void eliminarUsuario(int ID) {
         try (Connection connection = DBConnection.connect()) {
             String sql = "DELETE FROM Usuarios WHERE Id = " + ID;
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
-                System.out.println("Ha habido un error al actualizar el usuario");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                succesfull = 0;
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            succesfull = 0;
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return succesfull;
     }
 
     @Override
-    public boolean existe(String correo) {
+    public boolean existe(String correo) {//TODO creo q no la usamos asi que se podria borrar
         boolean existe = false;
         try (Connection connection = DBConnection.connect()) {
             String sql = "SELECT * FROM Usuarios WHERE correo = '" + correo + "'";
@@ -175,18 +147,33 @@ public class DAOImpUsuario implements DAOUsuario {
                 if(rS.next()){
                     return true;
                 }else{
-                    System.out.println("No se ha encontrado el usuario con Id " + correo);
                     return false;
                 }
             } catch (SQLException e) {
-                System.out.println("Ha habido un error en la base de datos");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
+    }
+
+    @Override
+    public int getNuevoId() {
+        int nuevoId = 1;
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "SELECT MAX(ID) AS max_id FROM Usuarios";
+            try (Statement statement = connection.createStatement();
+                 ResultSet rS = statement.executeQuery(sql)
+            ) {
+                if(rS.next()){
+                    nuevoId = rS.getInt("max_id") + 1;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
+        }
+        return nuevoId;
     }
 }
