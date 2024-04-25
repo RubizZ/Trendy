@@ -80,8 +80,14 @@ public class GUIWindow extends JFrame {
 
         BiConsumer<JButton, JScrollPane> changePanel = (button, panel) -> {
             mainPanel.remove(lastPanel);
+
+            Transitions.makeWhiteFadeTransition(lastPanel, panel, 1, (from, to) -> {
+                mainPanel.remove(from);
+                mainPanel.add(to, BorderLayout.CENTER);
+            });
+
             lastPanel = panel;
-            mainPanel.add(panel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
+
             mainPanel.revalidate();
             mainPanel.repaint();
         };
