@@ -31,9 +31,11 @@ public class GUIUserRegister extends JPanel {
     private JComboBox<String> comboBoxSexo;
     private SAUsuarioImp saUsuario;
     private TUsuario tUsuario;
+    private Frame _parent;
 
-    public GUIUserRegister(){
+    public GUIUserRegister(Frame parent){
         saUsuario = new SAUsuarioImp();
+        _parent = parent;
         initGUI();
     }
     private void initGUI(){

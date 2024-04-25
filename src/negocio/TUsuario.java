@@ -1,6 +1,5 @@
 package negocio;
 
-import model.articulo.ArticuloAbstracto;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -15,7 +14,7 @@ public class TUsuario implements Serializable {
     protected char sexo;
     protected String pais;
     protected int suscripcion;
-    protected List<ArticuloAbstracto> favoritos;
+    protected List<Integer> favoritos;
     protected int id;
     protected String direccion;
     protected int saldo;
@@ -127,11 +126,11 @@ public class TUsuario implements Serializable {
         return this;
     }
 
-    public List<ArticuloAbstracto> getFavoritos() {
+    public List<Integer> getFavoritos() {
         return favoritos;
     }
 
-    public TUsuario setFavoritos(List<ArticuloAbstracto> favoritos) {
+    public TUsuario setFavoritos(List<Integer> favoritos) {
         this.favoritos = favoritos;
         return this;
     }

@@ -1,11 +1,10 @@
 package negocio;
 
-import model.articulo.ArticuloAbstracto;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Usuario extends PersonaAbstracta {
+public class Usuario {
     protected String nombre;
     protected String apellidos;
     protected String correo_e;
@@ -13,15 +12,14 @@ public class Usuario extends PersonaAbstracta {
     protected String fechaNacimiento;//TODO cambiar a tipo fecha
     protected char sexo;
     protected String pais;
-    protected String suscripcion;
+    protected int suscripcion;
     protected String direccion;
     protected int saldo;
     protected int id;
+    protected int id_cesta;
+    protected List<Integer> favoritos;//tiene una lista de los id de los articulos favoritos
 
-    protected List<ArticuloAbstracto> favoritos;//tiene que tener un id a una lista de favoritos
-
-    protected Usuario(Controller contr, int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, String Suscripcion, String Direccion, int Saldo) {
-        super(contr);
+    protected Usuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, int Suscripcion, String Direccion, int Saldo, int idCesta) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
@@ -34,6 +32,7 @@ public class Usuario extends PersonaAbstracta {
         suscripcion = Suscripcion;
         direccion = Direccion;
         saldo = Saldo;
+        id_cesta = idCesta;
     }
 
     public String getNombre() {
@@ -92,11 +91,11 @@ public class Usuario extends PersonaAbstracta {
         this.pais = pais;
     }
 
-    public String getSuscripcion() {
+    public int getSuscripcion() {
         return suscripcion;
     }
 
-    public void setSuscripcion(String suscripcion) {
+    public void setSuscripcion(int suscripcion) {
         this.suscripcion = suscripcion;
     }
 
@@ -124,11 +123,11 @@ public class Usuario extends PersonaAbstracta {
         this.id = id;
     }
 
-    public List<ArticuloAbstracto> getFavoritos() {
+    public List<Integer> getFavoritos() {
         return favoritos;
     }
 
-    public void setFavoritos(List<ArticuloAbstracto> favoritos) {
+    public void setFavoritos(List<Integer> favoritos) {
         this.favoritos = favoritos;
     }
 }
