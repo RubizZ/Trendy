@@ -2,13 +2,12 @@ package negocio;
 
 import integracion.DAOListas;
 import integracion.DAOListasImp;
-import negocio.Articulo;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class NListasImp {
+public class BOListas {
 
     DAOListas dao = new DAOListasImp();
 

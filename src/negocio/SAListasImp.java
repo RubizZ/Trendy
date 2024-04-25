@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 public class SAListasImp implements SAListas {
 
-    NListasImp nlistas = new NListasImp();
+    BOListas nlistas = new BOListas();
 
     @Override
     public List<Articulo> buscaArticulosCategoria(String cat) {

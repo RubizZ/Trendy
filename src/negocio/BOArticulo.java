@@ -3,10 +3,10 @@ package negocio;
 import integracion.DAOArticulo;
 import integracion.DAOArticuloImp;
 
-public class NArticulosImp {
+public class BOArticulo {
 
     DAOArticulo dao = new DAOArticuloImp();
-    private NCategoriasImp cats = new NCategoriasImp();
+    private BOCategorias cats = new BOCategorias();
 
     public tArticulo buscarArticulo(int id) {
         if(dao.existeArticulo(id)){

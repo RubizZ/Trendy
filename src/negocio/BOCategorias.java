@@ -3,7 +3,7 @@ package negocio;
 import integracion.DAOCategorias;
 import integracion.DAOCategoriasImp;
 
-public class NCategoriasImp {
+public class BOCategorias {
 
     DAOCategorias dao = new DAOCategoriasImp();
 
