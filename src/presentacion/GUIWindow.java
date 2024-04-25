@@ -3,6 +3,8 @@ package presentacion;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,15 +20,30 @@ public class GUIWindow extends JFrame {
 
     private JPanel controlPanel;
 
+    private JButton lastPressedButton;
+
+    private JButton homeButton;
+    private JButton searchButton;
+    private JButton cestaButton;
+    private JButton userButton;
+
     //TODO Hacer un patron que junte todo esto
-    private JPanel userPanel;
-    private JPanel cestaPanel;
-    private JPanel busquedaPanel;
+    private GoBackPanel homePanel;
+    private GoBackPanel searchPanel;
+    private GoBackPanel cestaPanel;
+    private GoBackPanel userPanel;
+    private JDialog authDialog;
 
     public GUIWindow(SAFacade saFachade) {
         this.saFachade = saFachade;
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
 
         playIntroAnimation();
         initPanels();
@@ -67,7 +84,76 @@ public class GUIWindow extends JFrame {
 
     private void initPanels() {
         mainPanel = new JPanel(new BorderLayout());
-        //TODO
+
+        controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        homeButton = new JButton("Home");
+        homeButton.addActionListener(e -> {
+            if(homeButton == lastPressedButton){
+                homePanel.reset();
+            } else {
+                lastPressedButton = homeButton;
+                mainPanel.remove(homePanel);
+                mainPanel.add(homePanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+
+        });
+        controlPanel.add(homeButton);
+        searchButton = new JButton("Search");
+        searchButton.addActionListener(e -> {
+            if(searchButton == lastPressedButton){
+                searchPanel.reset();
+            } else {
+                lastPressedButton = searchButton;
+                mainPanel.remove(searchPanel);
+                mainPanel.add(searchPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        controlPanel.add(searchButton);
+        cestaButton = new JButton("Cesta");
+        cestaButton.addActionListener(e -> {
+            if(cestaButton == lastPressedButton){
+                cestaPanel.reset();
+            } else {
+                lastPressedButton = cestaButton;
+                mainPanel.remove(cestaPanel);
+                mainPanel.add(cestaPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+        controlPanel.add(cestaButton);
+        userButton = new JButton("User");
+        userButton.addActionListener(e -> {
+            if(!saFachade.isLogged()) {
+                authDialog.open(this);
+            } else {
+                if(userButton == lastPressedButton){
+                    userPanel.reset();
+                } else {
+                    lastPressedButton = userButton;
+                    mainPanel.remove(userPanel);
+                    mainPanel.add(userPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
+                    mainPanel.revalidate();
+                    mainPanel.repaint();
+                }
+            }
+        });
+        controlPanel.add(userButton);
+
+        homePanel = new HomePanel(saFachade);
+        userPanel = new GUIPerfil(saFachade);
+        cestaPanel = new CestaPanel(saFachade);
+        searchPanel = new GUIPpalCategorias(saFachade);
+        authDialog = new GUILogin(saFachade);
+
+        lastPressedButton = homeButton;
+
+        mainPanel.add(homePanel, BorderLayout.CENTER);
+        mainPanel.add(controlPanel, BorderLayout.SOUTH);
     }
 
     private void waitForAnimation() {
