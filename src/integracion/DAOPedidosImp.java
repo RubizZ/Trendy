@@ -18,10 +18,10 @@ public class DAOPedidosImp implements DAOPedidos {
     @Override
     public void añadirPedido(TOACestaUsuario toaCestaUsuario) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "INSERT INTO Pedidos (direccion, id_cesta, id_usuario, status, fecha) " + "VALUES (" +
-                    "'" + toaCestaUsuario.getTOUsuario().getDireccion() + "', '"
-                    + toaCestaUsuario.getTOCesta().getIDCesta() + "', '"
-                    + toaCestaUsuario.getTOUsuario().getIDUsuario() + "', 'reparto', current_date())";
+            String sql = "INSERT INTO Pedidos (direccion, id_cesta, id_usuario) " + "VALUES (" +
+                    "'" + toaCestaUsuario.getTOUsuario().getDireccion() + "', "
+                    + toaCestaUsuario.getTOCesta().getIDCesta() + ", "
+                    + toaCestaUsuario.getTOUsuario().getIDUsuario() + ")";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
