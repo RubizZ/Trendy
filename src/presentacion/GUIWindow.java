@@ -1,5 +1,8 @@
 package presentacion;
 
+import org.apache.commons.lang3.function.TriFunction;
+import org.apache.commons.lang3.tuple.Pair;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 public class GUIWindow extends JFrame {
 
@@ -20,20 +24,8 @@ public class GUIWindow extends JFrame {
 
     private JPanel controlPanel;
 
-    private JButton lastPressedButton;
-    private JPanel lastPanel;
-
-    private JButton homeButton;
-    private JButton searchButton;
-    private JButton cestaButton;
-    private JButton userButton;
-
-    //TODO Hacer un patron que junte todo esto
-    private GoBackPanel homePanel;
-    private GoBackPanel searchPanel;
-    private GoBackPanel cestaPanel;
-    private GoBackPanel userPanel;
-    private JDialog authDialog;
+    private Pair<JButton, Integer> lastPressedButton;
+    private JScrollPane lastPanel;
 
     public GUIWindow(SAFacade saFachade) {
         this.saFachade = saFachade;
@@ -86,76 +78,54 @@ public class GUIWindow extends JFrame {
     private void initPanels() {
         mainPanel = new JPanel(new BorderLayout());
 
-        controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)
-        homeButton = new JButton("Home");
-        homeButton.addActionListener(e -> {
-            if (homeButton == lastPressedButton) {
-                homePanel.reset();
-            } else {
-                lastPressedButton = homeButton;
-                mainPanel.remove(lastPanel);
-                lastPanel = homePanel;
-                mainPanel.add(homePanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
+        BiConsumer<JButton, JScrollPane> changePanel = (button, panel) -> {
+            mainPanel.remove(lastPanel);
+            lastPanel = panel;
+            mainPanel.add(panel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        };
 
-        });
-        controlPanel.add(homeButton);
-        searchButton = new JButton("Search");
-        searchButton.addActionListener(e -> {
-            if (searchButton == lastPressedButton) {
-                searchPanel.reset();
+        BiConsumer<JButton, MainGUIPanel> buttonAction = (button, panel) -> {
+            if (lastPressedButton.getLeft() == button) {
+                if (lastPressedButton.getRight() <= 1) {
+                    panel.update();
+                } else {
+                    panel.reset();
+                }
+                lastPressedButton = Pair.of(button, lastPressedButton.getRight() + 1);
             } else {
-                lastPressedButton = searchButton;
-                mainPanel.remove(lastPanel);
-                lastPanel = searchPanel;
-                mainPanel.add(searchPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
-                mainPanel.revalidate();
-                mainPanel.repaint();
+                lastPressedButton = Pair.of(button, 0);
+                changePanel.accept(button, panel);
             }
-        });
-        controlPanel.add(searchButton);
-        cestaButton = new JButton("Cesta");
-        cestaButton.addActionListener(e -> {
-            if (cestaButton == lastPressedButton) {
-                cestaPanel.reset();
-            } else {
-                lastPressedButton = cestaButton;
-                mainPanel.remove(lastPanel);
-                lastPanel = cestaPanel;
-                mainPanel.add(cestaPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
-                mainPanel.revalidate();
-                mainPanel.repaint();
-            }
-        });
-        controlPanel.add(cestaButton);
-        userButton = new JButton("User");
-        userButton.addActionListener(e -> {
+        };
+
+        TriFunction<String, MainGUIPanel, BiConsumer<JButton, MainGUIPanel>, JButton> buttonCreator = (text, panel, action) -> {
+            JButton button = new JButton(text);
+            button.addActionListener(e -> action.accept(button, panel));
+            controlPanel.add(button);
+            return button;
+        };
+
+        controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        MainGUIPanel homePanel = new HomePanel(this, saFachade);
+        MainGUIPanel userPanel = new GUIPerfil(saFachade);
+        MainGUIPanel cestaPanel = new GUICesta(saFachade);
+        MainGUIPanel searchPanel = new GUIPpalCategorias(saFachade);
+        JDialog authDialog = new GUILogin(saFachade);
+
+        JButton homeButton = buttonCreator.apply("Home", homePanel, buttonAction);
+        lastPressedButton = Pair.of(homeButton, 0);
+        buttonCreator.apply("Search", searchPanel, buttonAction);
+        buttonCreator.apply("Cesta", cestaPanel, buttonAction);
+        buttonCreator.apply("User", userPanel, (button, panel) -> {
             if (!saFachade.isLogged()) {
                 authDialog.open(this);
             } else {
-                if (userButton == lastPressedButton) {
-                    userPanel.reset();
-                } else {
-                    lastPressedButton = userButton;
-                    mainPanel.remove(lastPanel);
-                    lastPanel = userPanel;
-                    mainPanel.add(userPanel, BorderLayout.CENTER); //TODO Revisar si hay que eliminar el panel anterior
-                    mainPanel.revalidate();
-                    mainPanel.repaint();
-                }
+                buttonAction.accept(button, panel);
             }
         });
-        controlPanel.add(userButton);
-
-        homePanel = new HomePanel(saFachade);
-        userPanel = new GUIPerfil(saFachade);
-        cestaPanel = new GUICesta(saFachade);
-        searchPanel = new GUIPpalCategorias(saFachade);
-        authDialog = new GUILogin(saFachade);
-
-        lastPressedButton = homeButton;
 
         mainPanel.add(homePanel, BorderLayout.CENTER);
         mainPanel.add(controlPanel, BorderLayout.SOUTH);
