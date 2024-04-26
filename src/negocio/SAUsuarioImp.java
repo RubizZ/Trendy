@@ -1,36 +1,31 @@
 package negocio;
 
-import integracion.DAOImpUsuario;
-import integracion.DAOUsuario;
-
 import java.util.Collection;
 
 public class SAUsuarioImp implements SAUsuario{
 
-    private NUsuario nUsuario = new NUsuario();
+    private BussinesDelegate bdUsuario = new BussinesDelegate();
 
     @Override
-    public int create(TUsuario tUsuario) {
-        return nUsuario.create(tUsuario);
+    public void create(TUsuario tUsuario) {
+        bdUsuario.create(tUsuario);
     }
 
     @Override
     public TUsuario read(TUsuario usuario) {
-        return nUsuario.read(usuario);
+        return bdUsuario.read(usuario);
     }
 
     @Override
     public Collection<TUsuario> readAll() {
-        return nUsuario.readAll();
+        return bdUsuario.readAll();
     }
 
     @Override
-    public int update(TUsuario tUsuario) {
-        return nUsuario.update(tUsuario);
+    public void update(TUsuario tUsuario) {bdUsuario.update(tUsuario);
     }
 
     @Override
-    public int delete(int id) {
-        return nUsuario.delete(id);
+    public void delete(int id) {bdUsuario.delete(id);
     }
 }
