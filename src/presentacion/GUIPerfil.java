@@ -21,6 +21,7 @@ public class GUIPerfil extends JPanel {
     private JTextField _pais;
     private JTextField _anyoNac;
     private JTextField _direccion;
+    private JPanel mainPanel;
 
     public GUIPerfil(SAFacade facade){
         saUsuario = facade;
@@ -29,7 +30,7 @@ public class GUIPerfil extends JPanel {
 
     private void initGUI() {
         //TODO no se como sacar el nombre del usuario aqui
-        JPanel mainPanel = new JPanel();
+        mainPanel = new JPanel();
 
         //PANEL QUE SE VA A MOSTRAR AL PRINCIPIO
         JPanel panelIni = new JPanel();
@@ -40,29 +41,53 @@ public class GUIPerfil extends JPanel {
         //PANEL DE MODIFICAR DATOS
         JPanel panelMod = new JPanel();
         panelMod.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        configurarPanelMod(mainPanel, panelMod);
+        panelMod.setVisible(false);
+        configurarPanelMod(panelIni, panelMod);
 
         //PANEL DE VER MIS PEDIDOS
         JPanel panelPedidos = new JPanel();
         panelPedidos.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        configurarPanelPedidos(mainPanel, panelPedidos);
+        panelPedidos.setVisible(false);
+        configurarPanelPedidos(panelIni, panelPedidos);
 
+        //PANEL DE ACTUALIZAR SUSCRIPCION
+        JPanel panelSuscr = new JPanel();
+        panelSuscr.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        panelSuscr.setVisible(false);
+
+
+        //PANEL DE AÑADIR SALDO
+        JPanel panelSaldo = new JPanel();
+        panelSaldo.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        panelSaldo.setVisible(false);
 
 
         //BOTON PARA MODIFICAR DATOS
         JButton mod_datos = new JButton("Modificar datos");
         mod_datos.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelIni.add(mod_datos);
+        mod_datos.addActionListener((e -> {
+            panelIni.setVisible(false);
+            panelMod.setVisible(true);
+        }));
 
         //BOTON PARA VER MIS PEDIDOS
         JButton ver_pedidos = new JButton("Ver mis pedidos");
         ver_pedidos.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelIni.add(ver_pedidos);
+        ver_pedidos.addActionListener((e -> {
+            panelIni.setVisible(false);
+            panelPedidos.setVisible(true);
+        }));
 
         //BOTON PARA ACTUALIZAR LA SUSCRIPCION
         JButton act_suscripcion = new JButton("Actualizar suscripcion");
         act_suscripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelIni.add(act_suscripcion);
+        act_suscripcion.addActionListener((e -> {
+            panelIni.setVisible(false);
+            panelSuscr.setVisible(true);
+        }));
 
         //BOTON PARA AÑADIR SALDO
         JButton add_saldo = new JButton("Añadir saldo");
@@ -149,8 +174,27 @@ public class GUIPerfil extends JPanel {
     }
 
     private void configurarPanelPedidos(JPanel mainPanel, JPanel panelPedidos) {
-        HashMap<Pedido, Status> tabla_pedidos = new HashMap<>();//TODO no se como se llama eso de ruben y javi
-        //TODO sacar la colecion de pedidos y ver como de ahi creo el mapa
+        //TODO creo que solo tengo que hacer una instancia de la tabla de pedidos que tienen
+        //que crear javi y ruben
+        JButton atras = new JButton("Atras");
+        panelPedidos.add(atras);
+        atras.addActionListener((e -> {
+            mainPanel.setVisible(true);
+            panelPedidos.setVisible(false);
+        }));
+    }
+
+    private void configurarPanelSaldo(JPanel mainPanel, JPanel panelSaldo) {
+        JLabel cant = new JLabel("Introduzca la cantidad que desea añadir");
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 200, 5);
+        JSpinner sumarASaldo = new JSpinner(spinnerModel);
+
+        JButton atras = new JButton("Atras");
+        panelSaldo.add(atras);
+        atras.addActionListener((e -> {
+            mainPanel.setVisible(true);
+            panelSaldo.setVisible(false);
+        }));
     }
 
     private TUsuario crearUsuario(){
