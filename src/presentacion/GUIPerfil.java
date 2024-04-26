@@ -186,8 +186,19 @@ public class GUIPerfil extends JPanel {
 
     private void configurarPanelSaldo(JPanel mainPanel, JPanel panelSaldo) {
         JLabel cant = new JLabel("Introduzca la cantidad que desea añadir");
+        cant.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelSaldo.add(cant);
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 200, 5);
         JSpinner sumarASaldo = new JSpinner(spinnerModel);
+        sumarASaldo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelSaldo.add(sumarASaldo);
+
+        JButton confirmar = new JButton("Confirmar");
+        confirmar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelSaldo.add(confirmar);
+        confirmar.addActionListener((e -> {
+
+        }));
 
         JButton atras = new JButton("Atras");
         panelSaldo.add(atras);
