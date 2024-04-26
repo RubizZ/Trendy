@@ -10,48 +10,52 @@ public class GUIArticulo extends JPanel {
 
     private Articulo art;
     private JButton atras;
+    private JButton cesta;
+    private JButton favoritos;
     private String categoria;
 
     private JPanel t;
     private JMenu tallas;
     private DefaultComboBoxModel<String> colores;
+    private JComboBox boxcolores;
+    private JSpinner uds;
 
-    GUIArticulo(Articulo art, String cat){
+    GUIArticulo(Articulo art, String cat) {
         this.art = art;
         this.categoria = cat;
         initGUI();
     }
 
-    private void initGUI(){
+    private void initGUI() {
         this.setLayout(new BorderLayout());
 
         JPanel arriba = new JPanel();
-        arriba.setLayout(new BoxLayout( arriba, BoxLayout.X_AXIS) );
+        arriba.setLayout(new BoxLayout(arriba, BoxLayout.X_AXIS));
 
         //BOTON ATRAS
         atras = new JButton("Atras");
         atras.setToolTipText("Vuelve a los articulos de la categoria seleccionada previamente");
-        atras.addActionListener((e)-> {
+        atras.addActionListener((e) -> {
             //llamar a la gui de los artículos en la categoría supongo
+            this.setVisible(false); //?? no estoy nada segura
         });
 
         arriba.add(atras);
-
-        add(Box.createRigidArea(new Dimension(30, 0)));
+        arriba.add(Box.createRigidArea(new Dimension(30, 0)));
 
         //NOMBRE Y PRECIO:
         JLabel nombre = new JLabel(this.art.getName());
         arriba.add(nombre);
-        add(Box.createRigidArea(new Dimension(10, 0)));
+        arriba.add(Box.createRigidArea(new Dimension(10, 0)));
 
-        JLabel precio = new JLabel(String.valueOf(this.art.getPrecio()));
+        JLabel precio = new JLabel(String.valueOf(this.art.getPrecio()) + " €");
         arriba.add(precio);
-        add(Box.createRigidArea(new Dimension(30, 0)));
+        arriba.add(Box.createRigidArea(new Dimension(30, 0)));
 
 
         //CATEGORIA Y SUBCATEGORIA
         JPanel info = new JPanel();
-        info.setLayout(new BoxLayout( info, BoxLayout.Y_AXIS));
+        info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
         JLabel cat = new JLabel("Categoria: " + this.categoria);
         info.add(cat);
         JLabel subcat = new JLabel("Subcategoria: " + art.getSubcat().toString());
@@ -61,14 +65,13 @@ public class GUIArticulo extends JPanel {
         this.add(arriba, BorderLayout.PAGE_START);
 
 
-
         //EL CENTRO, LA INFO DEL ARTICULO
         JPanel centro = new JPanel();
-        centro.setLayout(new BoxLayout( centro, BoxLayout.Y_AXIS));
+        centro.setLayout(new BoxLayout(centro, BoxLayout.Y_AXIS));
         centro.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         this.t = new JPanel();
-        t.setLayout(new BoxLayout( t, BoxLayout.X_AXIS));
+        t.setLayout(new BoxLayout(t, BoxLayout.X_AXIS));
 
         JLabel talla = new JLabel("Tallas:");
         //Botones de las tallas -> mejor hacemos el tipico menu
@@ -83,7 +86,6 @@ public class GUIArticulo extends JPanel {
         tallas.add(M);
         tallas.add(L);
         tallas.add(XL);
-       // if(S.isSelected())
 
         t.add(talla);
         t.add(tallas);
@@ -91,10 +93,43 @@ public class GUIArticulo extends JPanel {
 
         //Colores:
         JPanel color = new JPanel();
-        color.setLayout(new BoxLayout( this, BoxLayout.X_AXIS));
+        color.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         JLabel c = new JLabel("Color");
         colores = new DefaultComboBoxModel<>();
+        for (Color a : Color.values()) {
+            colores.addElement(art.colorToString(a));
+        }
+        boxcolores = new JComboBox(colores);
+        color.add(c);
+        color.add(boxcolores);
+        centro.add(color);
 
+        //Unidades:
+        JPanel unidades = new JPanel();
+        JLabel lunidades = new JLabel("Unidades a comprar");
+        uds = new JSpinner(new SpinnerNumberModel(1, 1, art.getStock(), 1));
+        unidades.add(lunidades);
+        unidades.add(uds);
+        centro.add(unidades);
+
+        this.add(centro, BorderLayout.CENTER);
+
+        //END, BOTONES
+        JPanel end = new JPanel();
+        end.setLayout(new BoxLayout(end, BoxLayout.X_AXIS));
+        end.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        cesta = new JButton("Añadir a cesta");
+        cesta.addActionListener((e) -> {
+            //se añade a la cesta (sa)
+        });
+        favoritos = new JButton("Añadir a favoritos");
+        favoritos.addActionListener(e -> {
+            //se añade a favoritos (sa)
+        });
+        end.add(cesta);
+        end.add(favoritos);
+
+        this.add(end, BorderLayout.PAGE_END);
     }
 
 }

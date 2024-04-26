@@ -9,7 +9,7 @@ public class Articulo {
     private int stock;
     private Subcategoria subcat;
 
-    public Articulo(tArticulo a){
+    public Articulo(tArticulo a) {
         this.ID = a.getID();
         this.name = a.getNombre();
         this.color = stringToColor(a.getColor());
@@ -18,18 +18,18 @@ public class Articulo {
         this.stock = a.getStock();
     }
 
-    enum Color{
+    enum Color {
         BLANCO, NEGRO, MARRON, ROJO, NARANJA, AMARILLO, BEIGE, VERDE, AZUL, ROSA, VIOLETA, GRIS;
     }
 
 
-    public enum Subcategoria{
+    public enum Subcategoria {
         CAMISETA, PANTALON, CHAQUETA, SUDADERA, ZAPATOS, BOLSOS, GORRAS, VESTIDOS, FALDAS, CHALECO, CALCETINES, JERSEY;
     }
 
-    public String colorToString(){
+    public static String colorToString(Color color) {
         String c = "";
-        switch(this.color){
+        switch (color) {
             case AZUL -> c = "Azul";
             case GRIS -> c = "Gris";
             case ROJO -> c = "Rojo";
@@ -42,15 +42,15 @@ public class Articulo {
             case NARANJA -> c = "Naranja";
             case VIOLETA -> c = "Violeta";
             case AMARILLO -> c = "Amarillo";
-            default-> c = "";
+            default -> c = "";
         }
         return c;
     }
 
 
-    public String subcategoriaToString(){
+    public String subcategoriaToString() {
         String c = "";
-        switch(this.subcat){
+        switch (this.subcat) {
             case BOLSOS -> c = "Bolsos";
             case FALDAS -> c = "Faldas";
             case GORRAS -> c = "Gorras";
@@ -68,9 +68,9 @@ public class Articulo {
         return c;
     }
 
-    public static Subcategoria stringToSubcat(String sub){
+    public static Subcategoria stringToSubcat(String sub) {
         Subcategoria c = null;
-        switch(sub.toUpperCase()){
+        switch (sub.toUpperCase()) {
             case "BOLSOS" -> c = Subcategoria.BOLSOS;
             case "FALDAS" -> c = Subcategoria.FALDAS;
             case "GORRAS" -> c = Subcategoria.GORRAS;
@@ -87,9 +87,9 @@ public class Articulo {
         return c;
     }
 
-    public Color stringToColor(String color){
+    public Color stringToColor(String color) {
         Color c = null;
-        switch(color.toUpperCase()){
+        switch (color.toUpperCase()) {
             case "AZUL" -> c = Color.AZUL;
             case "GRIS" -> c = Color.GRIS;
             case "ROJO" -> c = Color.ROJO;
@@ -100,7 +100,7 @@ public class Articulo {
             case "BLANCO" -> c = Color.BLANCO;
             case "MARRON" -> c = Color.MARRON;
             case "NARANJA" -> c = Color.NARANJA;
-            case "VIOLETA" ->  c = Color.VIOLETA;
+            case "VIOLETA" -> c = Color.VIOLETA;
             case "AMARILLO" -> c = Color.AMARILLO;
         }
 
