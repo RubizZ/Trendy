@@ -1,63 +1,76 @@
 package negocio;
 
-public class BOCesta {
-    private int id;
+import integracion.DAOCesta;
 
-    private int cantidad;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
-    private int IDArticulo;
+public class BOCesta implements Observable<CestaObserver> {
 
-    private int IDUsuario;
+    private DAOCesta daoCesta;
 
+    private Set<CestaObserver> observers;
 
+    private boolean isAuth;
+    private TOCesta toCesta;
 
-
-
-    public BOCesta(BOCesta other, int ID) {
-
-        id = ID;
-        cantidad = other.cantidad;
-        IDArticulo = other.IDArticulo;
-        IDUsuario = other.IDUsuario;
-
+    public BOCesta(DAOCesta daoCesta) {
+        this.observers = new HashSet<>();
+        this.daoCesta = daoCesta;
     }
 
-    public int getID() {
-        return id;
+    @Override
+    public void addObserver(CestaObserver observer) {
+        observers.add(observer);
     }
 
-    public BOCesta setID(int id){
-        this.id = id;
-        return this;
+    @Override
+    public void removeObserver(CestaObserver observer) {
+        observers.remove(observer);
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public void addArticuloACesta(TOArticuloEnCesta toArticuloEnCesta) {
+        if (toCesta.getListaArticulos().add(toArticuloEnCesta)) {
+            observers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
+            if (isAuth) {
+                daoCesta.añadirArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
+            }
+        } else {
+            throw new IllegalArgumentException("El articulo ya está en la cesta");
+        }
     }
 
-    public BOCesta setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-        return this;
+    public void actualizarArticuloEnCesta(TOArticuloEnCesta toArticuloEnCesta) {
+        TOArticuloEnCesta old = toCesta.getListaArticulos().stream().filter(toArticuloEnCesta1 -> toArticuloEnCesta1.equals(toArticuloEnCesta)).findFirst().orElseThrow(() -> new IllegalArgumentException("El articulo a actualizar no está en la cesta"));
+        toArticuloEnCesta.setFechaAñadido(old.getFechaAñadido());
+        toCesta.getListaArticulos().remove(old);
+        toCesta.getListaArticulos().add(toArticuloEnCesta);
+        observers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
+        if (isAuth) {
+            daoCesta.eliminarArticulo(toCesta.getIdCesta(), old);
+            daoCesta.añadirArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
+        }
     }
 
-    public int getIDArticulo() {
-        return IDArticulo;
+    public void removeArticuloEnCesta(TOArticuloEnCesta toArticuloEnCesta) {
+        if (toCesta.getListaArticulos().remove(toArticuloEnCesta)) {
+            observers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
+            if (isAuth) {
+                daoCesta.eliminarArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
+            }
+        } else {
+            throw new IllegalArgumentException("El articulo no está en la cesta");
+        }
     }
 
-    public BOCesta setIDArticulo(int IDArticulo) {
-        this.IDArticulo = IDArticulo;
-        return this;
+    public void onAuthChanged(boolean isAuth, int idUsuario) {
+        this.isAuth = isAuth;
+        if (isAuth) {
+            toCesta = daoCesta.getCesta(idUsuario);
+        } else {
+            toCesta = new TOCesta().setListaArticulos(new TreeSet<>());
+        }
+        observers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
     }
-
-    public int getIDUsuario(){
-        return IDUsuario;
-    }
-
-    public  BOCesta setIDUsuario(int idUsuario){
-        this.IDUsuario = idUsuario;
-        return this;
-    }
-
-
-
 }

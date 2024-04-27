@@ -1,68 +1,39 @@
 package negocio;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.TreeSet;
 
 public class TOCesta implements Serializable {
 
-    private int ID;
+    private int idCesta;
+    private TreeSet<TOArticuloEnCesta> listaArticulosAñadidos;
+    private int idUsuario;
 
-    private int cantidad;
-
-    private int IDArticulo;
-
-    private int IDUsuario;
-
-
-
-
-    public TOCesta(int ID) {
-        this.ID = ID;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public TOCesta(TOCesta other, int ID) {
-
-        this(ID);
-
-        cantidad = other.cantidad;
-        IDArticulo = other.IDArticulo;
-        IDUsuario = other.IDUsuario;
-
+    public Collection<TOArticuloEnCesta> getListaArticulos() {
+        return listaArticulosAñadidos;
     }
 
-    public int getID() {
-        return ID;
+    public int getIdCesta() {
+        return idCesta;
     }
 
-
-    public TOCesta setID(int ID) {
-        this.ID = ID;
+    public TOCesta setListaArticulos(TreeSet<TOArticuloEnCesta> listaArticulos) {
+        this.listaArticulosAñadidos = listaArticulos;
         return this;
     }
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public TOCesta setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public TOCesta setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
         return this;
     }
 
-    public int getIDArticulo() {
-        return IDArticulo;
-    }
-
-    public TOCesta setIDArticulo(int IDArticulo) {
-        this.IDArticulo = IDArticulo;
-        return this;
-    }
-
-    public int getIDUsuario(){
-        return IDUsuario;
-    }
-
-    public  TOCesta setIDUsuario(int idUsuario){
-        this.IDUsuario = idUsuario;
+    public TOCesta setIdCesta(int idCesta) {
+        this.idCesta = idCesta;
         return this;
     }
 

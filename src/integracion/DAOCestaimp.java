@@ -1,127 +1,69 @@
 package integracion;
 
 import database.DBConnection;
+import negocio.TOArticuloEnCesta;
 import negocio.TOCesta;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.TreeSet;
 
-public class DAOCestaimp implements DAOCesta{
+public class DAOCestaimp implements DAOCesta {
+
     @Override
-    public void añadirCesta(TOCesta toCesta) {
+    public void abrirCesta(int idUsuario) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "INSERT INTO Cesta VALUES ("
-                    + toCesta.getID() + ", "
-                    + toCesta.getIDUsuario() + ")";
-            try {
-                connection.createStatement().executeUpdate(sql);
-            } catch (SQLException e) {
-                System.out.println("Ha habido un error al añadir la cesta");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
-            }
-
+            String sql = "INSERT INTO Cesta (ID_usuario) VALUES (" + idUsuario + ")";
+            connection.createStatement().executeUpdate(sql);
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void añadirArticuloACesta(TOCesta toCesta) {
+    public void añadirArticulo(int idCesta, TOArticuloEnCesta toArticuloEnCesta) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "INSERT INTO Artículos_en_cesta VALUES ("
-                    + toCesta.getID() + ", "
-                    + toCesta.getIDArticulo() + ", "
-                    + toCesta.getCantidad() + ")";
-            try {
-                connection.createStatement().executeUpdate(sql);
-            } catch (SQLException e) {
-                System.out.println("Ha habido un error al añadir el articulo a la cesta");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
-            }
-
+            String sql = "INSERT INTO ArtículosEnCesta (ID_Cesta, ID_Artículo, Talla, Cantidad) VALUES (" +
+                    idCesta + ", " +
+                    toArticuloEnCesta.getIdArticulo() + ", " +
+                    "'" + toArticuloEnCesta.getTalla() + "', " +
+                    toArticuloEnCesta.getCantidad() +
+                    ")";
+            connection.createStatement().executeUpdate(sql);
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException(e);
         }
     }
 
-
     @Override
-    public TOCesta getCesta(int ID) {
+    public void eliminarArticulo(int idCesta, TOArticuloEnCesta toArticuloEnCesta) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "SELECT * FROM Cesta WHERE Id = " + ID;
-            try (Statement statement = connection.createStatement();
-                 ResultSet rS = statement.executeQuery(sql)
-            ) {
-                if (rS.next()) {
-                    return new TOCesta(rS.getInt("Id"))
-                            .setIDUsuario(rS.getInt("ID_Usuario"));
-                } else {
-                    System.out.println("No se ha encontrado la cesta con ID " + ID);
-                }
-            } catch (SQLException e) {
-                System.out.println("Ha habido un error en la base de datos");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
-            }
+            String sql = "DELETE FROM ArtículosEnCesta WHERE ID_Cesta = " + idCesta + " AND ID_Artículo = " +
+                    toArticuloEnCesta.getIdArticulo() + " AND Talla = '" + toArticuloEnCesta.getTalla() + "'";
+            connection.createStatement().executeUpdate(sql);
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException(e);
         }
-        return null; //TODO Cambiar y hacer excepciones
     }
 
     @Override
-    public TOCesta getArticuloEnCesta(int ID_Cesta, int Id_Articulo) {
-            try (Connection connection = DBConnection.connect()) {
-                String sql = "SELECT * FROM Artículos_en_cesta WHERE ID_Cesta = " + ID_Cesta + "ID_Articulo = " + Id_Articulo;
-                try (Statement statement = connection.createStatement();
-                     ResultSet rS = statement.executeQuery(sql)
-                ) {
-                    if (rS.next()) {
-                        return new TOCesta(rS.getInt("ID_Cesta"))
-                                .setIDArticulo(rS.getInt("ID_Articulo"))
-                                .setCantidad(rS.getInt("Cantidad"));
-                    } else {
-                        System.out.println("No se ha encontrado el articulo con ID " + Id_Articulo + " en la cesta " + ID_Cesta);
-                    }
-                } catch (SQLException e) {
-                    System.out.println("Ha habido un error en la base de datos");
-                    System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                    //TODO Hacer excepciones
-                }
-            } catch (SQLException e) {
-                System.out.println("No se ha podido conectar a la base de datos");
-                System.out.println(e.getMessage());
-                //TODO Hacer excepciones
-            }
-            return null; //TODO Cambiar y hacer excepciones
-
-    }
-
-    @Override
-    public void cambiarCantidad(int ID, int cantidad) {
+    public TOCesta getCesta(int idUsuario) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "UPDATE Artículos_en_cesta SET cantidad = " + cantidad + " WHERE Id = " + ID;
-            try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate(sql);
-            } catch (SQLException e) {
-                System.out.println("No se ha podido modificar la cantidad de la cesta");
-                System.out.println("ERROR: " + e.getErrorCode() + " SQLState: " + e.getSQLState() + " Message: " + e.getMessage());
-                //TODO Hacer excepciones
+            String sql = "SELECT ID FROM Cesta WHERE ID_usuario = " + idUsuario;
+            var resultSet = connection.createStatement().executeQuery(sql);
+            if (!resultSet.next()) return null; //TODO Pensar si lanzar excepcion o devolver null
+            TreeSet<TOArticuloEnCesta> listaArticulos = new TreeSet<>();
+            sql = "SELECT ID_Artículo, Talla, Cantidad FROM ArtículosEnCesta WHERE ID_Cesta = " + resultSet.getInt("ID");
+            resultSet = connection.createStatement().executeQuery(sql);
+            while (resultSet.next()) {
+                listaArticulos.add(new TOArticuloEnCesta()
+                        .setIdArticulo(resultSet.getInt("ID_Artículo"))
+                        .setTalla(TOArticuloEnCesta.Talla.valueOf(resultSet.getString("Talla")))
+                        .setCantidad(resultSet.getInt("Cantidad")));
             }
+            return new TOCesta().setIdCesta(resultSet.getInt("ID")).setIdUsuario(idUsuario).setListaArticulos(listaArticulos);
         } catch (SQLException e) {
-            System.out.println("No se ha podido conectar a la base de datos");
-            System.out.println(e.getMessage());
-            //TODO Hacer excepciones
+            throw new RuntimeException(e);
         }
     }
 }

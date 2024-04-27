@@ -1,29 +1,26 @@
 package negocio;
 
 
-import integracion.DAOCesta;
-import integracion.DAOCestaimp;
+public class SACestaimp implements SACesta {
 
-public class SACestaimp implements SACesta{
+    private final BusinessDelegate businessDelegate;
 
-    private DAOCesta daoCesta = new DAOCestaimp();
-    @Override
-    public void addCesta(TOCesta tOcesta) {
-        daoCesta.añadirCesta(tOcesta);
+    public SACestaimp(BusinessDelegate businessDelegate) {
+        this.businessDelegate = businessDelegate;
     }
 
     @Override
-    public TOCesta readCesta(int id) {
-        return daoCesta.getCesta(id);
+    public void addArticuloACesta(TOArticuloEnCesta toArticuloEnCesta) {
+        businessDelegate.addArticuloACesta(toArticuloEnCesta);
     }
 
     @Override
-    public void addArticuloACesta(TOCesta tOcesta) {
-        daoCesta.añadirArticuloACesta(tOcesta);
+    public void actualizarArticuloEnCesta(TOArticuloEnCesta toArticuloEnCesta) {
+        businessDelegate.actualizarArticuloEnCesta(toArticuloEnCesta);
     }
 
     @Override
-    public TOCesta readArticuloEnCesta(int id_cesta, int id_articulo) {
-        return daoCesta.getArticuloEnCesta(id_cesta, id_articulo);
+    public void removeArticuloDeCesta(TOArticuloEnCesta toArticuloEnCesta) {
+        businessDelegate.removeArticuloDeCesta(toArticuloEnCesta);
     }
 }

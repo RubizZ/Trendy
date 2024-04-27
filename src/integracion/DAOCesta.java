@@ -1,15 +1,14 @@
 package integracion;
 
+import negocio.TOArticuloEnCesta;
 import negocio.TOCesta;
 
 public interface DAOCesta {
-    void añadirCesta(TOCesta toCesta);
+    void abrirCesta(int idUsuario);
 
-    void añadirArticuloACesta(TOCesta toCesta);
+    void añadirArticulo(int idCesta, TOArticuloEnCesta toArticuloEnCesta);
 
-    TOCesta getCesta(int ID);
+    void eliminarArticulo(int idCesta, TOArticuloEnCesta toArticuloEnCesta);
 
-    TOCesta getArticuloEnCesta(int ID_Cesta, int ID_Articulo);
-    public void cambiarCantidad(int ID, int cantidad) ;
-
-    }
+    TOCesta getCesta(int idUsuario);
+}

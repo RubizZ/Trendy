@@ -1,12 +1,9 @@
 package negocio;
 
 public interface SACesta {
-    void addCesta(TOCesta tOcesta);
+    void addArticuloACesta(TOArticuloEnCesta toArticuloEnCesta);
 
-    TOCesta readCesta(int id);
+    void actualizarArticuloEnCesta(TOArticuloEnCesta toArticuloEnCesta);
 
-    void addArticuloACesta(TOCesta tOcesta);
-
-    TOCesta readArticuloEnCesta(int id_cesta, int id_articulo);
-
+    void removeArticuloDeCesta(TOArticuloEnCesta toArticuloEnCesta);
 }
