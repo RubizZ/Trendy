@@ -9,7 +9,7 @@ public class Usuario {
     protected String apellidos;
     protected String correo_e;
     protected String contrasenya;
-    protected String fechaNacimiento;//TODO cambiar a tipo fecha
+    protected int anyoNacimiento;//
     protected char sexo;
     protected String pais;
     protected int suscripcion;
@@ -19,13 +19,13 @@ public class Usuario {
     protected int id_cesta;
     protected List<Integer> favoritos;//tiene una lista de los id de los articulos favoritos
 
-    protected Usuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, String fechaNac, char Sexo, String Pais, int Suscripcion, String Direccion, int Saldo, int idCesta) {
+    protected Usuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, int Suscripcion, String Direccion, int Saldo, int idCesta) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
         correo_e =Correo;
         contrasenya = Contrasenya;
-        fechaNacimiento = fechaNac;
+        anyoNacimiento = anyoNac;
         sexo = Sexo;
         pais = Pais;
         favoritos = new LinkedList<>();
@@ -67,13 +67,11 @@ public class Usuario {
         this.contrasenya = contrasenya;
     }
 
-    public String getFechaNacimiento() {
-        return fechaNacimiento;
+    public int getAnyoNacimiento() {
+        return anyoNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
+    public void setFechaNacimiento(int anyoNacimiento) {this.anyoNacimiento = anyoNacimiento;}
 
     public char getSexo() {
         return sexo;

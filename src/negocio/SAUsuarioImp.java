@@ -12,8 +12,8 @@ public class SAUsuarioImp implements SAUsuario{
     }
 
     @Override
-    public TUsuario read(TUsuario usuario) {
-        return bdUsuario.read(usuario);
+    public TUsuario getUsuario() {
+        return bdUsuario.read();
     }
 
     @Override
@@ -27,5 +27,10 @@ public class SAUsuarioImp implements SAUsuario{
 
     @Override
     public void delete(int id) {bdUsuario.delete(id);
+    }
+
+    @Override
+    public void actualizarSaldo(int cantidad) {
+        bdUsuario.actualizarSaldo(cantidad);
     }
 }

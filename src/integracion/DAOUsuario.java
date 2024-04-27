@@ -12,4 +12,6 @@ public interface DAOUsuario {
     void eliminarUsuario(int ID);
     public boolean existe(String correo);
     int getNuevoId();
+    void actualizarCesta(int idUsuario, int idCesta);
+    void actualizarSaldo(int idUsuario, int cantidad);
 }
