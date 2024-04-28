@@ -32,7 +32,7 @@ public class BOCesta implements Observable<CestaObserver> {
 
     public void addArticuloACesta(TOArticuloEnCesta toArticuloEnCesta) {
         if (toCesta.getListaArticulos().add(toArticuloEnCesta)) {
-            observers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
+            observers.forEach(cestaObserver -> cestaObserver.onArticuloAdded(toArticuloEnCesta));
             if (isAuth) {
                 daoCesta.añadirArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
             }
@@ -46,7 +46,7 @@ public class BOCesta implements Observable<CestaObserver> {
         toArticuloEnCesta.setFechaAñadido(old.getFechaAñadido());
         toCesta.getListaArticulos().remove(old);
         toCesta.getListaArticulos().add(toArticuloEnCesta);
-        observers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
+        observers.forEach(cestaObserver -> cestaObserver.onArticuloUpdated(toArticuloEnCesta));
         if (isAuth) {
             daoCesta.eliminarArticulo(toCesta.getIdCesta(), old);
             daoCesta.añadirArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
@@ -55,7 +55,7 @@ public class BOCesta implements Observable<CestaObserver> {
 
     public void removeArticuloEnCesta(TOArticuloEnCesta toArticuloEnCesta) {
         if (toCesta.getListaArticulos().remove(toArticuloEnCesta)) {
-            observers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
+            observers.forEach(cestaObserver -> cestaObserver.onArticuloRemoved(toArticuloEnCesta));
             if (isAuth) {
                 daoCesta.eliminarArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
             }
