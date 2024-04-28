@@ -22,9 +22,10 @@ public class HomePanel extends MainGUIPanel {
 
     private void initGUI() {
 
-        contentPanel = new JPanel(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
-        add(Box.createVerticalGlue());
+        contentPanel.add(Box.createVerticalGlue());
 
         JLabel jlWelcome;
         if (saFachade.isLogged()) {
@@ -36,7 +37,7 @@ public class HomePanel extends MainGUIPanel {
         contentPanel.add(jlWelcome);
 
 
-        add(Box.createVerticalGlue());
+        contentPanel.add(Box.createVerticalGlue());
 
 
         jpArticulosExclusivos = new JPanel();
@@ -52,7 +53,7 @@ public class HomePanel extends MainGUIPanel {
         contentPanel.add(jspArticulosExclusivos);
 
 
-        add(Box.createVerticalGlue());
+        contentPanel.add(Box.createVerticalGlue());
 
 
         JPanel jpLastPedido = new JPanel();
@@ -67,6 +68,8 @@ public class HomePanel extends MainGUIPanel {
                 mainWindow.showPedido(lastPedido);
             }
         });
+
+        contentPanel.add(jpLastPedido);
 
         setViewportView(contentPanel);
     }
