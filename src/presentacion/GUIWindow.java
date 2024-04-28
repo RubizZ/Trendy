@@ -91,7 +91,7 @@ public class GUIWindow extends JFrame {
         MainGUIPanel userPanel = new GUIPerfil(saFachade);
         MainGUIPanel cestaPanel = new GUICesta(saFachade);
         MainGUIPanel searchPanel = new GUIPpalCategorias(saFachade);
-        JDialog authDialog = new GUILogin(saFachade);
+        GUILogin authDialog = new GUILogin(saFachade);
 
         controlPanel.add(Box.createHorizontalGlue());
         JButton homeButton = buttonCreator.apply("Home", homePanel, buttonAction);
@@ -142,17 +142,11 @@ public class GUIWindow extends JFrame {
 
     private BiConsumer<JButton, JScrollPane> changePanelAction() {
         return (button, panel) -> {
-            mainPanel.remove(lastPanel);
-
             Transitions.makeWhiteFadeTransition(lastPanel, panel, 1, (from, to) -> {
                 mainPanel.remove(from);
                 mainPanel.add(to, BorderLayout.CENTER);
             });
-
             lastPanel = panel;
-
-            mainPanel.revalidate();
-            mainPanel.repaint();
         };
     }
 
@@ -199,5 +193,8 @@ public class GUIWindow extends JFrame {
                 }
             }
         }
+    }
+
+    public void showPedido(PedidoView lastPedido) {
     }
 }

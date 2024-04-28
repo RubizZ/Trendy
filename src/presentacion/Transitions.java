@@ -2,9 +2,26 @@ package presentacion;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.function.BiConsumer;
 
 public class Transitions {
+
+    private static volatile Queue<Runnable> transitionQueue = new LinkedList<>();
+
+    private static final Thread transitionThread = new Thread(() -> {
+        while (true) {
+            if (!transitionQueue.isEmpty()) {
+                transitionQueue.poll().run();
+            }
+        }
+    });
+
+    static {
+        transitionThread.setName("Transition Thread");
+        transitionThread.start();
+    }
 
     /**
      * Makes a transition between two components
@@ -15,6 +32,10 @@ public class Transitions {
      * @param panelSetter params: (Component from, Component to), used to changes panels where the transition is happening
      */
     public static void makeWhiteFadeTransition(Component from, Component to, int delay, BiConsumer<Component, Component> panelSetter) {
+        transitionQueue.add(() -> whiteFadeRun(from, to, delay, panelSetter));
+    }
+
+    private static void whiteFadeRun(Component from, Component to, int delay, BiConsumer<Component, Component> panelSetter) {
         JPanel printPanel = new JPanel() {
             @Override
             public void paint(Graphics g) {
@@ -29,7 +50,7 @@ public class Transitions {
 
         printPanel.add(from);
 
-        for (int i = 0; i <= 200; i++) {
+        for (int i = 0; i <= 150; i++) {
             printPanel.setBackground(new Color(255, 255, 255, i));
             try {
                 Thread.sleep(delay * 2L);
@@ -43,7 +64,7 @@ public class Transitions {
         printPanel.remove(from);
         printPanel.add(to);
 
-        for (int i = 200; i >= 0; i--) {
+        for (int i = 150; i >= 0; i--) {
             printPanel.setBackground(new Color(255, 255, 255, i));
             try {
                 Thread.sleep(delay);
