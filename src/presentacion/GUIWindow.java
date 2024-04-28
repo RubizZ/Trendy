@@ -84,7 +84,8 @@ public class GUIWindow extends JFrame {
 
         TriFunction<String, MainGUIPanel, BiConsumer<JButton, MainGUIPanel>, JButton> buttonCreator = buttonCreatorFunction();
 
-        controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        controlPanel = new JPanel();
+        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
 
         MainGUIPanel homePanel = new HomePanel(this, saFachade);
         MainGUIPanel userPanel = new GUIPerfil(saFachade);
@@ -92,10 +93,14 @@ public class GUIWindow extends JFrame {
         MainGUIPanel searchPanel = new GUIPpalCategorias(saFachade);
         JDialog authDialog = new GUILogin(saFachade);
 
+        controlPanel.add(Box.createHorizontalGlue());
         JButton homeButton = buttonCreator.apply("Home", homePanel, buttonAction);
         lastPressedButton = Pair.of(homeButton, 0);
+        controlPanel.add(Box.createHorizontalGlue());
         buttonCreator.apply("Search", searchPanel, buttonAction);
+        controlPanel.add(Box.createHorizontalGlue());
         buttonCreator.apply("Cesta", cestaPanel, buttonAction);
+        controlPanel.add(Box.createHorizontalGlue());
         buttonCreator.apply("User", userPanel, (button, panel) -> {
             if (!saFachade.isLogged()) {
                 authDialog.open(this);
@@ -103,7 +108,9 @@ public class GUIWindow extends JFrame {
                 buttonAction.accept(button, panel);
             }
         });
+        controlPanel.add(Box.createHorizontalGlue());
 
+        lastPanel = homePanel;
         mainPanel.add(homePanel, BorderLayout.CENTER);
         mainPanel.add(controlPanel, BorderLayout.SOUTH);
     }
