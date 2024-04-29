@@ -3,9 +3,9 @@ package negocio;
 import java.util.Collection;
 
 public class BussinesDelegate {
-    private BOUsuario boUsuario = new BOUsuario();
-    public void create(TUsuario tUsuario) {
-        boUsuario.create(tUsuario);
+    private BOUsuario boUsuario;
+    public TUsuario create(TUsuario tUsuario) {
+        return boUsuario.create(tUsuario);
     }
 
     public TUsuario read() {

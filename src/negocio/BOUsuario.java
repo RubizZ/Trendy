@@ -4,8 +4,9 @@ import integracion.DAOImpUsuario;
 import integracion.DAOUsuario;
 
 import java.util.Collection;
+import java.util.Observable;
 
-public class BOUsuario {
+public class BOUsuario extends Observable {
     private DAOUsuario daoUsuario = new DAOImpUsuario();
     private TUsuario tUsuario;
 
@@ -13,12 +14,14 @@ public class BOUsuario {
         this.daoUsuario = daoUsuario;
     }
 
-    public void create(TUsuario tUsuario) {
-        daoUsuario.crearUsuario(tUsuario);
+    public TUsuario create(TUsuario tUsuario) {
+        this.tUsuario = daoUsuario.crearUsuario(tUsuario);
+        return this.tUsuario;
     }
 
     public TUsuario read() {
-        return daoUsuario.getUsuario(tUsuario.getCorreo_e(), tUsuario.getContrasenya());
+        this.tUsuario = daoUsuario.getUsuario(tUsuario.getCorreo_e(), tUsuario.getContrasenya());
+        return this.tUsuario;
     }
 
     public Collection<TUsuario> readAll() {

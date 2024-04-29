@@ -3,8 +3,8 @@ package negocio;
 import java.util.Collection;
 
 public interface SAUsuario {
-    public void create(TUsuario tUsuario);
-    public TUsuario getUsuario();
+    public boolean create(TUsuario tUsuario);
+    public boolean getUsuario();
     public Collection<TUsuario> readAll();
     public void update(TUsuario tUsuario);
     public void delete (int id);

@@ -7,7 +7,7 @@ import java.util.List;
 public interface DAOUsuario {
     public List<TUsuario> buscarUsuarios();
     public TUsuario getUsuario(String correo, String contrasenya);
-    public void crearUsuario (TUsuario usuario);
+    public TUsuario crearUsuario (TUsuario usuario);
     void actualizarUsuario(TUsuario usuario, int ID);
     void eliminarUsuario(int ID);
     public boolean existe(String correo);

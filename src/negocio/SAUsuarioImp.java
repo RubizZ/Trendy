@@ -7,13 +7,13 @@ public class SAUsuarioImp implements SAUsuario{
     private BussinesDelegate bdUsuario = new BussinesDelegate();
 
     @Override
-    public void create(TUsuario tUsuario) {
-        bdUsuario.create(tUsuario);
+    public boolean create(TUsuario tUsuario) {
+        return (bdUsuario.create(tUsuario) != null);
     }
 
     @Override
-    public TUsuario getUsuario() {
-        return bdUsuario.read();
+    public boolean getUsuario() {
+        return (bdUsuario.read() != null);
     }
 
     @Override

@@ -61,7 +61,7 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setDireccion(rS.getString("Dirección"))
                             .setSaldo(rS.getInt("saldo"));
                 }else{
-                    System.out.println("No se ha encontrado ningun usuario con ese correo en la base de datos");
+                    System.out.println("No se ha encontrado ningun usuario con ese correo o contraseña en la base de datos");
                 }
             } catch (SQLException e) {
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
@@ -73,7 +73,7 @@ public class DAOImpUsuario implements DAOUsuario {
     }
 
     @Override
-    public void crearUsuario(TUsuario usuario) {
+    public TUsuario crearUsuario(TUsuario usuario) {
         try (Connection connection = DBConnection.connect()) {
             int id = getNuevoId();
             String sql = "INSERT INTO Usuarios VALUES ("
@@ -96,6 +96,7 @@ public class DAOImpUsuario implements DAOUsuario {
         } catch (SQLException e) {
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
+        return usuario;
     }
 
     @Override
