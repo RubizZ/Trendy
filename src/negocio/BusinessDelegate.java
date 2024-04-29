@@ -18,6 +18,12 @@ public class BusinessDelegate {
     BOCategorias boCategorias = new BOCategorias(daocat);
     BOListas boListas = new BOListas(daolistas);
 
+    private DAOFactory daoFactory;
+
+    public BusinessDelegate(DAOFactory daoFactory){
+        this.daoFactory = daoFactory;
+    }
+
     public void altaArticuloStock(tStock s){
         bostock.altaArticuloStock(s);
     }
