@@ -1,0 +1,66 @@
+package negocio;
+
+public class Articulo {
+
+    private int ID;
+    private String name;
+    private double precio;
+    private Subcategoria subcat;
+
+    public Articulo(tArticulo a){
+        this.ID = a.getID();
+        this.name = a.getNombre();
+        this.subcat = stringToSubcat(a.getSubcat());
+        this.precio = a.getPrecio();
+    }
+
+
+    enum Subcategoria{
+        CAMISETA, PANTALON, CHAQUETA, SUDADERA, ZAPATOS, BOLSOS, GORRAS, VESTIDOS, FALDAS, CHALECO, CALCETINES, JERSEY;
+    }
+
+
+
+
+    public String subcategoriaToString(Subcategoria s){
+        String c = "";
+        switch(s){
+            case BOLSOS -> c = "Bolsos";
+            case FALDAS -> c = "Faldas";
+            case GORRAS -> c = "Gorras";
+            case JERSEY -> c = "Jersey";
+            case CHALECO -> c = "Chalecos";
+            case ZAPATOS -> c = "Zapatos";
+            case CAMISETA -> c = "Camisetas";
+            case CHAQUETA -> c = "Chaquetas";
+            case PANTALON -> c = "Pantalones";
+            case SUDADERA -> c = "Sudaderas";
+            case VESTIDOS -> c = "Vestidos";
+            case CALCETINES -> c = "Calcetines";
+            default -> c = "";
+        }
+        return c;
+    }
+
+    public Subcategoria stringToSubcat(String sub){
+        Subcategoria c = null;
+        switch(sub.toUpperCase()){
+            case "BOLSOS" -> c = Subcategoria.BOLSOS;
+            case "FALDAS" -> c = Subcategoria.FALDAS;
+            case "GORRAS" -> c = Subcategoria.GORRAS;
+            case "JERSEY" -> c = Subcategoria.JERSEY;
+            case "CHALECO" -> c = Subcategoria.CHALECO;
+            case "ZAPATOS" -> c = Subcategoria.ZAPATOS;
+            case "CAMISETA" -> c = Subcategoria.CAMISETA;
+            case "CHAQUETA" -> c = Subcategoria.CHAQUETA;
+            case "PANTALON" -> c = Subcategoria.PANTALON;
+            case "SUDADERA" -> c = Subcategoria.SUDADERA;
+            case "VESTIDOS" -> c = Subcategoria.VESTIDOS;
+            case "CALCETINES" -> c = Subcategoria.CALCETINES;
+        }
+        return c;
+    }
+
+
+
+}
