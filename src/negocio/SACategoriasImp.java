@@ -2,7 +2,11 @@ package negocio;
 
 public class SACategoriasImp implements SACategorias{
 
-    BOCategorias ncat = new BOCategorias();
+    BusinessDelegate ncat;
+
+    public SACategoriasImp(BusinessDelegate b){
+        ncat = b;
+    }
 
     @Override
     public void altaArticuloCat(int id, String fechal, int descuento, String genero) {
