@@ -1,6 +1,7 @@
 package presentacion;
 
 import negocio.SAUsuarioImp;
+import negocio.Suscripciones;
 import negocio.TUsuario;
 import utils.ViewUtils;
 
@@ -8,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-public class GUIPerfil extends JPanel {
+public class GUIPerfil extends MainGUIPanel {
 
     private SAUsuarioImp saUsuario;
     private TUsuario tUsuario;
@@ -61,6 +62,7 @@ public class GUIPerfil extends JPanel {
         JPanel panelSaldo = new JPanel();
         panelSaldo.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         panelSaldo.setVisible(false);
+        configurarPanelSaldo(panelIni,panelSaldo);
 
 
         //BOTON PARA MODIFICAR DATOS
@@ -96,12 +98,6 @@ public class GUIPerfil extends JPanel {
         panelIni.add(add_saldo);
     }
 
-    private void configurarPanelSuscr(JPanel panelIni, JPanel panelSuscr) {
-        JLabel mensaje = new JLabel("Elija la suscripcion que desea:");
-        JComboBox<String> comboBoxSusc = new JComboBox<>();
-        DefaultComboBoxModel<String> suscr = new DefaultComboBoxModel<>();
-
-    }
 
     private void addJLabel(String text, Container container){
         JLabel label = new JLabel(text);
@@ -218,10 +214,26 @@ public class GUIPerfil extends JPanel {
     }
     private void configurarPanelSuscr(JPanel panelIni, JPanel panelSuscr) {
         JLabel mensaje = new JLabel("Elija la suscripcion que desea:");
+        mensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelSuscr.add(mensaje);
         JComboBox<String> comboBoxSusc = new JComboBox<>();
         DefaultComboBoxModel<String> suscr = new DefaultComboBoxModel<>();
+        for(Suscripciones v: Suscripciones.values()){
+            suscr.addElement(v.name());
+        }
+        comboBoxSusc.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelSuscr.add(comboBoxSusc);
 
+        JButton confirmar = new JButton("Confirmar");
+        panelSuscr.add(confirmar);
+        confirmar.addActionListener((e -> saUsuario.actualizarSuscr(comboBoxSusc.getSelectedIndex())));
 
+        JButton atras = new JButton("Atras");
+        panelSuscr.add(atras);
+        atras.addActionListener((e -> {
+            mainPanel.setVisible(true);
+            panelIni.setVisible(false);
+        }));
     }
 
     
