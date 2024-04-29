@@ -216,6 +216,13 @@ public class GUIPerfil extends JPanel {
             panelSaldo.setVisible(false);
         }));
     }
+    private void configurarPanelSuscr(JPanel panelIni, JPanel panelSuscr) {
+        JLabel mensaje = new JLabel("Elija la suscripcion que desea:");
+        JComboBox<String> comboBoxSusc = new JComboBox<>();
+        DefaultComboBoxModel<String> suscr = new DefaultComboBoxModel<>();
+
+
+    }
 
     
 

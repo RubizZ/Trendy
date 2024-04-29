@@ -5,10 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Usuario {
-
-     enum Suscripciones{
-         NORMAL, PRIME, PREMIUM;
-     }
     protected String nombre;
     protected String apellidos;
     protected String correo_e;
