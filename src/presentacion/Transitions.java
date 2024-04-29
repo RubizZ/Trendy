@@ -24,12 +24,17 @@ public class Transitions {
     }
 
     /**
-     * Makes a transition between two components
+     * Makes a transition between two components. Uses a in-mid-out transition, where in is "from", out is "to",
+     * and mid is an auxiliar mid component that is used to make the transition. The panel setter is used twice,
+     * once to change the panel "from" to the auxiliar panel when the transition starts, and once to change the
+     * auxiliar panel to the panel "to" when the transition ends. That means that the panel setter should be able
+     * to transition through two components
      *
      * @param from        Component to transition from
      * @param to          Component to transition to
      * @param delay       delay between each step of the transition
-     * @param panelSetter params: (Component from, Component to), used to changes panels where the transition is happening
+     * @param panelSetter used to change from the first component to the second component in the container
+     *                    where the transition is happening, read the description for more information
      */
     public static void makeWhiteFadeTransition(Component from, Component to, int delay, BiConsumer<Component, Component> panelSetter) {
         transitionQueue.add(() -> whiteFadeRun(from, to, delay, panelSetter));
