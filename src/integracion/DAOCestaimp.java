@@ -1,6 +1,5 @@
 package integracion;
 
-import database.DBConnection;
 import negocio.TOArticuloEnCesta;
 import negocio.TOCesta;
 
