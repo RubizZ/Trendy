@@ -1,6 +1,7 @@
 package negocio;
 
 import integracion.*;
+import launcher.DAOFactory;
 
 import java.util.List;
 import java.util.function.Predicate;
