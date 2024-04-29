@@ -9,4 +9,5 @@ public interface SAUsuario {
     public void update(TUsuario tUsuario);
     public void delete (int id);
     public void actualizarSaldo(int cantidad);
+    public void actualizarSuscr(int id);
 }

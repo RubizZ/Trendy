@@ -38,4 +38,8 @@ public class BOUsuario {
     public void OnHacerPedido(int idCesta){
         daoUsuario.actualizarCesta(tUsuario.getId(), idCesta);
     }
+
+    public void actualizarSuscr(int id) {
+        daoUsuario.actualizarSuscripcion(tUsuario.getId(), id);
+    }
 }

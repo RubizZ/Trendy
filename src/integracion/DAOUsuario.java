@@ -14,4 +14,6 @@ public interface DAOUsuario {
     int getNuevoId();
     void actualizarCesta(int idUsuario, int idCesta);
     void actualizarSaldo(int idUsuario, int cantidad);
+
+    void actualizarSuscripcion(int idUsuario, int susc);
 }

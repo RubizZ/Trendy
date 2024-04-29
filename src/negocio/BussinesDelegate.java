@@ -23,4 +23,8 @@ public class BussinesDelegate {
     }
 
     public void actualizarSaldo(int cantidad){boUsuario.actualizarCesta(cantidad);}
+
+    public void actualizarSusc(int id) {
+        boUsuario.actualizarSuscr(id);
+    }
 }

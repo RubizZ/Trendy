@@ -206,4 +206,19 @@ public class DAOImpUsuario implements DAOUsuario {
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
     }
+
+    @Override
+    public void actualizarSuscripcion(int idUsuario, int susc) {
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "UPDATE Usuarios SET " +
+                    "suscripcion_id =  '+" + susc  + "' WHERE ID = " + idUsuario + ";";
+            try {
+                connection.createStatement().executeUpdate(sql);
+            } catch (SQLException e) {
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
+        }
+    }
 }

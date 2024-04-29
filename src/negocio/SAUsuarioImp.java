@@ -33,4 +33,9 @@ public class SAUsuarioImp implements SAUsuario{
     public void actualizarSaldo(int cantidad) {
         bdUsuario.actualizarSaldo(cantidad);
     }
+
+    @Override
+    public void actualizarSuscr(int id) {
+        bdUsuario.actualizarSusc(id);
+    }
 }
