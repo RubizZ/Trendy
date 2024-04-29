@@ -29,13 +29,13 @@ public class GUIPerfil extends JPanel {
     }
 
     private void initGUI() {
-        //TODO no se como sacar el nombre del usuario aqui
         mainPanel = new JPanel();
 
         //PANEL QUE SE VA A MOSTRAR AL PRINCIPIO
         JPanel panelIni = new JPanel();
         panelIni.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        JLabel nombre = new JLabel();//aqui quiero poner el nombre y apellidos del usuario logeado
+        JLabel nombre = new JLabel(saUsuario.getUsuario().getNombre() + " " +
+                saUsuario.getUsuario().getApellidos());
         panelIni.add(nombre);
 
         //PANEL DE MODIFICAR DATOS
@@ -203,7 +203,10 @@ public class GUIPerfil extends JPanel {
         confirmar.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelSaldo.add(confirmar);
         confirmar.addActionListener((e -> {
-
+            int cantidad = (int) sumarASaldo.getValue();
+            saUsuario.actualizarSaldo(cantidad);
+            mainPanel.setVisible(true);
+            panelSaldo.setVisible(false);
         }));
 
         JButton atras = new JButton("Atras");
@@ -227,7 +230,7 @@ public class GUIPerfil extends JPanel {
         anyo = Integer.parseInt(_anyoNac.getText());
         pais = _pais.getText();
         dir = _direccion.getText();
-        //TODO pillar el sexo que ya tenia pero no se de donde se saca
+        sexo = saUsuario.getUsuario().getSexo();
         return new TUsuario(nombre, apellidos, correo, contrasenya, anyo, sexo, pais, dir);
     }
 }

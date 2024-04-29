@@ -8,8 +8,8 @@ public class BussinesDelegate {
         boUsuario.create(tUsuario);
     }
 
-    public TUsuario read(TUsuario usuario) {
-        return boUsuario.read(usuario);
+    public TUsuario read() {
+        return boUsuario.read();
     }
 
     public Collection<TUsuario> readAll() {
@@ -21,4 +21,6 @@ public class BussinesDelegate {
 
     public void delete(int id) {boUsuario.delete(id);
     }
+
+    public void actualizarSaldo(int cantidad){boUsuario.actualizarCesta(cantidad);}
 }

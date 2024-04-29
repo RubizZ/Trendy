@@ -61,12 +61,12 @@ public class GUILogIn extends JDialog {
         mainPanel.add(this._forgotPassword);
 
         this._enter.addActionListener(e -> {
-           TUsuario loginUser = crearUsuario();
-              TUsuario TransferUsuario = saUsuario.read(loginUser);
-                if(TransferUsuario == null)
-                    JOptionPane.showMessageDialog(null, "Usuario o  contraseña no existente");
-                else
-                    ViewUtils.quit(this);
+           //TUsuario loginUser = crearUsuario();
+            TUsuario TransferUsuario = saUsuario.getUsuario();
+            if(TransferUsuario == null)
+                JOptionPane.showMessageDialog(null, "Usuario o  contraseña no existente");
+            else
+                ViewUtils.quit(this);
         });
 
         this._cancel.addActionListener(e -> {
