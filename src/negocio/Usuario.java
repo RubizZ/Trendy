@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Usuario {
+
+     enum Suscripciones{
+         NORMAL, PRIME, PREMIUM;
+     }
     protected String nombre;
     protected String apellidos;
     protected String correo_e;
@@ -12,14 +16,15 @@ public class Usuario {
     protected int anyoNacimiento;//
     protected char sexo;
     protected String pais;
-    protected int suscripcion;
+    protected Suscripciones suscripcion;
     protected String direccion;
     protected int saldo;
     protected int id;
     protected int id_cesta;
     protected List<Integer> favoritos;//tiene una lista de los id de los articulos favoritos
 
-    protected Usuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, int Suscripcion, String Direccion, int Saldo, int idCesta) {
+
+    protected Usuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, Suscripciones Suscripcion, String Direccion, int Saldo, int idCesta) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
@@ -89,11 +94,11 @@ public class Usuario {
         this.pais = pais;
     }
 
-    public int getSuscripcion() {
+    public Suscripciones getSuscripcion() {
         return suscripcion;
     }
 
-    public void setSuscripcion(int suscripcion) {
+    public void setSuscripcion(Suscripciones suscripcion) {
         this.suscripcion = suscripcion;
     }
 

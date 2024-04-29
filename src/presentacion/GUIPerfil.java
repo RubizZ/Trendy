@@ -54,6 +54,7 @@ public class GUIPerfil extends JPanel {
         JPanel panelSuscr = new JPanel();
         panelSuscr.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         panelSuscr.setVisible(false);
+        configurarPanelSuscr(panelIni, panelSuscr);
 
 
         //PANEL DE AÑADIR SALDO
@@ -95,7 +96,12 @@ public class GUIPerfil extends JPanel {
         panelIni.add(add_saldo);
     }
 
+    private void configurarPanelSuscr(JPanel panelIni, JPanel panelSuscr) {
+        JLabel mensaje = new JLabel("Elija la suscripcion que desea:");
+        JComboBox<String> comboBoxSusc = new JComboBox<>();
+        DefaultComboBoxModel<String> suscr = new DefaultComboBoxModel<>();
 
+    }
 
     private void addJLabel(String text, Container container){
         JLabel label = new JLabel(text);
@@ -210,6 +216,8 @@ public class GUIPerfil extends JPanel {
             panelSaldo.setVisible(false);
         }));
     }
+
+    
 
     private TUsuario crearUsuario(){
         String nombre, apellidos, correo, contrasenya, pais, dir;
