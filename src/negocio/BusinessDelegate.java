@@ -1,5 +1,7 @@
 package negocio;
 
+import java.util.Collection;
+import java.util.Date;
 import integracion.*;
 import launcher.DAOFactory;
 
@@ -16,12 +18,13 @@ public class BusinessDelegate {
     DAOArticulo daoart = new DAOArticuloImp();
     DAOListas daolistas = new DAOListasImp();
 
-
     BOStock bostock = new BOStock(daostock);
     BOArticulo boArticulo = new BOArticulo(daoart, daocat);
     BOCategorias boCategorias = new BOCategorias(daocat);
     BOListas boListas = new BOListas(daolistas);
 
+    DAOPedidos daoPedidos = new DAOPedidosImp();
+    BOPedido boPedido = new BOPedido(daoPedidos);
     DAOCesta daoCesta = new DAOCestaimp();
 
     BOCesta boCesta = new BOCesta(daoCesta);
@@ -34,7 +37,9 @@ public class BusinessDelegate {
     public BusinessDelegate(DAOFactory daoFactory){
         this.daoFactory = daoFactory;
     }
-
+    public void crearPedido() {
+        //TODO Hacer cuando este el usuario y la cesta
+    }
     public void altaArticuloStock(tStock s){
         bostock.altaArticuloStock(s);
     }
@@ -48,8 +53,15 @@ public class BusinessDelegate {
         return bostock.getStock(id, color, t);
     }
 
-    public tArticulo buscarArticulo(int id){
+    public Collection<TOPedido> getAllPedidos() {
+        return boPedido.getAllPedidos();
+    }
+
+    public tArticulo buscarArticulo(int id) {
         return boArticulo.buscarArticulo(id);
+    }
+    public Collection<TOPedido> getPedidosUsuario(int idUsuario) {
+        return boPedido.getPedidosUsuario(idUsuario);
     }
 
     public void altaArticulo(tArticulo a, String fechal,String genero, int descuento){
@@ -58,8 +70,11 @@ public class BusinessDelegate {
     public void bajaArticulo(tArticulo a){
         boArticulo.bajaArticulo(a);
     }
-    public void modificarArticulo(tArticulo a){
+    public void modificarArticulo(tArticulo a) {
         boArticulo.modificarArticulo(a);
+    }
+    public Collection<TOPedido> getPedidosStatus(TOStatusPedido toStatusPedido) {
+        return boPedido.getPedidosStatus(toStatusPedido);
     }
 
     public void altaArticuloCat(int id, String fechal, int descuento, String genero){
@@ -68,16 +83,26 @@ public class BusinessDelegate {
     public void bajaArticuloCat(int id){
         boCategorias.bajaArticuloCat(id);
     }
-    public void modificarArticulo(int id, String fechal, int descuento, String genero){
+    public void modificarArticulo(int id, String fechal, int descuento, String genero) {
         boCategorias.modificarArticulo(id, fechal, descuento, genero);
     }
-
-    public List<Articulo> buscaArticulosCategoria(String cat){
-        return boListas.buscaArticulosCategoria(cat);
+    public Collection<TOPedido> getPedidosFecha(Date fecha) {
+        return boPedido.getPedidosFecha(fecha);
     }
 
-    public List<Articulo> buscaFiltro(List<Articulo> lista, Predicate<Articulo> pred){
+    public List<Articulo> buscaArticulosCategoria(String cat) {
+        return boListas.buscaArticulosCategoria(cat);
+    }
+    public void cambiarStatus(int id, TOStatusPedido toStatusPedido) {
+        boPedido.cambiarStatus(id, toStatusPedido);
+    }
+
+    public List<Articulo> buscaFiltro(List<Articulo> lista, Predicate<Articulo> pred) {
         return boListas.buscaFiltro(lista, pred);
+    }
+
+    public void cancelarPedido(int id) {
+        boPedido.cancelarPedido(id);
     }
 
     public void addArticuloACesta(TOArticuloEnCesta toArticuloEnCesta) {
@@ -115,5 +140,4 @@ public class BusinessDelegate {
     public void actualizarSusc(int id) {
         boUsuario.actualizarSuscr(id);
     }
-
 }
