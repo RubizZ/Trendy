@@ -4,7 +4,11 @@ import java.util.Collection;
 
 public class SAUsuarioImp implements SAUsuario{
 
-    private BussinesDelegate bdUsuario = new BussinesDelegate();
+    private BusinessDelegate bdUsuario;
+
+    public SAUsuarioImp(BusinessDelegate bdUsuario) {
+        this.bdUsuario = bdUsuario;
+    }
 
     @Override
     public boolean create(TUsuario tUsuario) {

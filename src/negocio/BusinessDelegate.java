@@ -3,6 +3,7 @@ package negocio;
 import integracion.*;
 import launcher.DAOFactory;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -24,6 +25,9 @@ public class BusinessDelegate {
     DAOCesta daoCesta = new DAOCestaimp();
 
     BOCesta boCesta = new BOCesta(daoCesta);
+
+    DAOUsuario daoUsuario = new DAOImpUsuario();
+    BOUsuario boUsuario = new BOUsuario(daoUsuario);
 
     private DAOFactory daoFactory;
 
@@ -86,6 +90,30 @@ public class BusinessDelegate {
 
     public void removeArticuloDeCesta(TOArticuloEnCesta toArticuloEnCesta) {
         boCesta.removeArticuloEnCesta(toArticuloEnCesta);
+    }
+
+    public TUsuario create(TUsuario tUsuario) {
+        return boUsuario.create(tUsuario);
+    }
+
+    public TUsuario read() {
+        return boUsuario.read();
+    }
+
+    public Collection<TUsuario> readAll() {
+        return boUsuario.readAll();
+    }
+
+    public void update(TUsuario tUsuario) {boUsuario.update(tUsuario);
+    }
+
+    public void delete(int id) {boUsuario.delete(id);
+    }
+
+    public void actualizarSaldo(int cantidad){boUsuario.actualizarCesta(cantidad);}
+
+    public void actualizarSusc(int id) {
+        boUsuario.actualizarSuscr(id);
     }
 
 }
