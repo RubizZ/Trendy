@@ -1,6 +1,8 @@
 package view;
 
 import javax.swing.*;
+
+import negocio.SAFacade;
 import org.json.JSONObject;
 
 public class GUIAdmin extends JPanel{
@@ -27,27 +29,21 @@ public class GUIAdmin extends JPanel{
         bAñadirSaldo = new JButton("Añadir Saldo");
         bAñadirSaldo.setAlignmentX(CENTER_ALIGNMENT);
         bAñadirSaldo.addActionListener(e -> {
-            añadirSaldo = new JPanel();
-            añadirSaldo.setVisible(true);
-            this.setVisible(false);
+            initAñadirSaldo();
         });
         this.add(bAñadirSaldo);
 
         bCambiarSuscripcion = new JButton("Cambiar Suscripcion");
         bCambiarSuscripcion.setAlignmentX(CENTER_ALIGNMENT);
         bCambiarSuscripcion.addActionListener(e -> {
-            cambiarSuscripcion = new JPanel();
-            cambiarSuscripcion.setVisible(true);
-            this.setVisible(false);
+            initCambiarSuscripcion();
         });
         this.add(bCambiarSuscripcion);
 
         bCambiarEstadoPedido = new JButton("Cambiar Estado Pedido");
         bCambiarEstadoPedido.setAlignmentX(CENTER_ALIGNMENT);
         bCambiarEstadoPedido.addActionListener(e -> {
-            cambiarEstadoPedido = new JPanel();
-            cambiarEstadoPedido.setVisible(true);
-            this.setVisible(false);
+            initCambiarEstadoPedido();
         });
         this.add(bCambiarEstadoPedido);
 
@@ -59,6 +55,8 @@ public class GUIAdmin extends JPanel{
 
     private void initCrearArticulo(){
         this.crearArticulo = new JPanel();
+        this.setVisible(false);
+        this.crearArticulo.setVisible(true);
 
         JLabel lId = new JLabel("ID: ");
         JTextField tId = new JTextField();
@@ -88,12 +86,98 @@ public class GUIAdmin extends JPanel{
             json.put("stock", tStock.getText());
             json.put("subcategoria", tSubcategoria.getText());
 
+            saFacade.crearArticulo(json);
 
         });
 
         JButton bCancelar = new JButton("Cancelar");
         bCancelar.addActionListener(e -> {
             crearArticulo.setVisible(false);
+            this.setVisible(true);
+        });
+    }
+
+    private void initAñadirSaldo(){
+        this.añadirSaldo = new JPanel();
+        this.setVisible(false);
+        this.añadirSaldo.setVisible(true);
+
+        JLabel lId = new JLabel("ID: ");
+        JTextField tId = new JTextField();
+
+        JLabel lSaldo = new JLabel("Saldo: ");
+        JTextField tSaldo = new JTextField();
+
+        JButton bAñadir = new JButton("Añadir");
+        bAñadir.addActionListener(e -> {
+            JSONObject json = new JSONObject();
+            json.put("id", tId.getText());
+            json.put("saldo", tSaldo.getText());
+
+            saFacade.añadirSaldo(json);
+        });
+
+        JButton bCancelar = new JButton("Cancelar");
+        bCancelar.addActionListener(e -> {
+            añadirSaldo.setVisible(false);
+            this.setVisible(true);
+        });
+    }
+
+    private void initCambiarSuscripcion(){
+        this.cambiarSuscripcion = new JPanel();
+        this.setVisible(false);
+        this.cambiarSuscripcion.setVisible(true);
+
+        JLabel lId = new JLabel("ID: ");
+        JTextField tId = new JTextField();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        //TODO hay que añadir todas las subscripciones desde algun lado
+
+        JComboBox<String> cbSuscripcion = new JComboBox<>(model);
+
+
+        JButton bCambiar = new JButton("Cambiar");
+        bCambiar.addActionListener(e -> {
+            JSONObject json = new JSONObject();
+            json.put("id", tId.getText());
+            json.put("suscripcion", cbSuscripcion.getSelectedItem());
+
+            saFacade.cambiarSuscripcion(json);
+        });
+
+        JButton bCancelar = new JButton("Cancelar");
+        bCancelar.addActionListener(e -> {
+            cambiarSuscripcion.setVisible(false);
+            this.setVisible(true);
+        });
+    }
+
+    private void initCambiarEstadoPedido(){
+        this.cambiarEstadoPedido = new JPanel();
+        this.setVisible(false);
+        this.cambiarEstadoPedido.setVisible(true);
+
+        JLabel lId = new JLabel("ID: ");
+        JTextField tId = new JTextField();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        //TODO hay que añadir todos los estados de pedido desde algun lado
+
+        JComboBox<String> cbEstado = new JComboBox<>(model);
+
+
+        JButton bCambiar = new JButton("Cambiar");
+        bCambiar.addActionListener(e -> {
+            JSONObject json = new JSONObject();
+            json.put("id", tId.getText());
+            json.put("estado", cbEstado.getSelectedItem());
+
+            saFacade.cambiaEstadoPedido(json);
+        });
+
+        JButton bCancelar = new JButton("Cancelar");
+        bCancelar.addActionListener(e -> {
+            cambiarEstadoPedido.setVisible(false);
             this.setVisible(true);
         });
     }
