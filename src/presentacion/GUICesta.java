@@ -52,10 +52,7 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
             articulo.add(new JLabel(art.getCantidad() + ""));
             panelMap.put(art.getIdArticulo()+"", articulo);
         }
-        for (HashMap.Entry<String, JPanel> entry : panelMap.entrySet()) {
-            JPanel panel = entry.getValue();
-            mainPanel.add(panel);
-        }
+        rellenarCesta();
     }
 
     @Override
@@ -65,16 +62,36 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
         _articulo.add(new JLabel(articulo.getTalla() + ""));
         _articulo.add(new JLabel(articulo.getCantidad() + ""));
         panelMap.put(articulo.getIdArticulo()+"", _articulo);
-        //TODO hacer lo mismo que en onChanged de añadir paneles al main
+        mainPanel.add(_articulo);
     }
 
     @Override
     public void onArticuloUpdated(TOArticuloEnCesta articulo) {
+        //ELIMINAMOS EL PANEL CON LA INFORMACION ANTIGUA
+        JPanel eliminar = panelMap.get(articulo.getIdArticulo()+"");
+        //CREAMOS UN PANEL CON LOS DATOS DEL ARTICULO CAMBIADOS
+        JPanel _articulo = new JPanel(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+        _articulo.add(new JLabel(articulo.toString()));//nombre¿?
+        _articulo.add(new JLabel(articulo.getTalla() + ""));
+        _articulo.add(new JLabel(articulo.getCantidad() + ""));
+        panelMap.put(articulo.getIdArticulo()+"", _articulo);
+        mainPanel.add(_articulo);
+        //TODO no se si tengo que eliminar lo que habia y volver a mater todo o notificar de
+        //TODO alguna manera al panel para que se actualice con los cambios
 
     }
 
     @Override
     public void onArticuloRemoved(TOArticuloEnCesta articulo) {
+        JPanel eliminar = panelMap.get(articulo.getIdArticulo()+"");
+        panelMap.remove(eliminar);
+        mainPanel.remove(eliminar);
+    }
 
+    private void rellenarCesta(){
+        for (HashMap.Entry<String, JPanel> entry : panelMap.entrySet()) {
+            JPanel panel = entry.getValue();
+            mainPanel.add(panel);
+        }
     }
 }
