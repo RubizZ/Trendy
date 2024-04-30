@@ -25,7 +25,7 @@ public class ImageAnimation extends JPanel {
     private double rotacion;
     private int fps;
     private double deltaTime;
-    private Clip clip;
+    private Clip audio;
 
     public ImageAnimation(BufferedImage image, int expectedEndTimeMs, double animationSpeed) {
         this.fullImage = image;
@@ -113,7 +113,10 @@ public class ImageAnimation extends JPanel {
             if (rotacion >= 359) rotacion = (rotacion + 0.1) % 360;
             if (rotacion >= 359.9 && stop) {
                 timer.stop();
-                //clip.stop();
+                FloatControl gainControl = (FloatControl) audio.getControl(FloatControl.Type.MASTER_GAIN);
+                VolumeShifter volumeShifter = new VolumeShifter(gainControl);
+                volumeShifter.shiftVolumeTo(0F);
+
             }
 
             updateFPS();
@@ -134,24 +137,20 @@ public class ImageAnimation extends JPanel {
     }
 
     private void playSound(String s) {
-        try{
+        try {
             // Crea un objeto URL que apunta al archivo de audio
             URL url = this.getClass().getClassLoader().getResource(s);
             // Obtiene un AudioInputStream del archivo de audio
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             // Obtiene un Clip de línea de audio y lo abre
-            clip = AudioSystem.getClip();
-            clip.open(audioIn);
+            audio = AudioSystem.getClip();
+            audio.open(audioIn);
 
             // Empieza la cancion en el microsegundo:
-            clip.setMicrosecondPosition(177_000_000);
+            audio.setMicrosecondPosition(177_000_000);
             // Inicia la reproducción del sonido
-            clip.start();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+            audio.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
 

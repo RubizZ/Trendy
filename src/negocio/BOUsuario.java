@@ -10,7 +10,7 @@ public class BOUsuario extends Observable {
     private DAOUsuario daoUsuario = new DAOImpUsuario();
     private TUsuario tUsuario;
 
-    public BOUsuario(DAOUsuario daoUsuario){
+    public BOUsuario(DAOUsuario daoUsuario) {
         this.daoUsuario = daoUsuario;
     }
 
@@ -20,6 +20,7 @@ public class BOUsuario extends Observable {
     }
 
     public TUsuario read() {
+        if (tUsuario == null) return null;
         this.tUsuario = daoUsuario.getUsuario(tUsuario.getCorreo_e(), tUsuario.getContrasenya());
         return this.tUsuario;
     }
@@ -37,8 +38,11 @@ public class BOUsuario extends Observable {
         daoUsuario.eliminarUsuario(id);
     }
 
-    public void actualizarCesta(int cantidad){ daoUsuario.actualizarCesta(tUsuario.getId(), cantidad); }
-    public void OnHacerPedido(int idCesta){
+    public void actualizarCesta(int cantidad) {
+        daoUsuario.actualizarCesta(tUsuario.getId(), cantidad);
+    }
+
+    public void OnHacerPedido(int idCesta) {
         daoUsuario.actualizarCesta(tUsuario.getId(), idCesta);
     }
 
