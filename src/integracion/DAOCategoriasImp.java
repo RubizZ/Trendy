@@ -10,7 +10,7 @@ public class DAOCategoriasImp implements DAOCategorias {
         try (Connection c = DBConnection.connect();
              Statement st = c.createStatement();
         ) {
-            st.executeUpdate("insert into ClasificacionArticulos values ('" + id + "', '" +
+            st.executeUpdate("insert into ClasificacionArticulos values ('" + id + "', '" + //TODO Quitar comillas en enteros
                     cat + "', '" + descuento + "', '" + fechal + "')");
         } catch (SQLException e) {
             throw new RuntimeException(e);
