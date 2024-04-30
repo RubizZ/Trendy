@@ -5,6 +5,7 @@ import negocio.BusinessDelegate;
 
 public interface SAFactory {
 
+    //TODO Hacer la fabrica de SA
 
     AbstractSA getTestSA(BusinessDelegate businessDelegate);
 
