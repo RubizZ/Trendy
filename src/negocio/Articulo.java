@@ -15,14 +15,14 @@ public class Articulo {
     }
 
 
-    enum Subcategoria{
+    public enum Subcategoria{
         CAMISETA, PANTALON, CHAQUETA, SUDADERA, ZAPATOS, BOLSOS, GORRAS, VESTIDOS, FALDAS, CHALECO, CALCETINES, JERSEY;
     }
 
 
 
 
-    public String subcategoriaToString(Subcategoria s){
+    public static String subcategoriaToString(Subcategoria s){
         String c = "";
         switch(s){
             case BOLSOS -> c = "Bolsos";
@@ -62,5 +62,35 @@ public class Articulo {
     }
 
 
+    public int getID() {
+        return ID;
+    }
 
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public Subcategoria getSubcat() {
+        return subcat;
+    }
+
+    public void setSubcat(Subcategoria subcat) {
+        this.subcat = subcat;
+    }
 }

@@ -1,24 +1,31 @@
 package presentacion;
 
 import negocio.Articulo;
+import negocio.BOStock;
+import negocio.tArticulo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
-public class GUICategoria extends JPanel {
+public class GUICategoria extends JPanel implements ActionListener {
     //Después de haberle dado a una categoría en si
-    Map<JButton, String> articulos;
+    //Map<JButton, String> articulos;
     //Boton ccon el nombre del artículo, precio del artículo
+    Map<JButton, Articulo> articulos;
     private SAFacade sa;
     private String cat;
     private JButton atras;
     private JMenu filtro;
+    private GUIPpalCategorias guippal;
 
-    GUICategoria(SAFacade sa, String cat) {
+    GUICategoria(SAFacade sa, String cat, GUIPpalCategorias ppal) {
         this.sa = sa;
         this.cat = cat;
+        this.guippal = guippal;
         initGUI();
     }
 
@@ -34,10 +41,8 @@ public class GUICategoria extends JPanel {
         for (Articulo a : lista) {
             JButton botonart = new JButton(a.getName());
             botonart.setToolTipText("Muestra este articulo");
-            botonart.addActionListener((e) -> {
-                //mandar a interfaz de un artículo
-            });
-            articulos.put(botonart, String.valueOf(a.getPrecio()) + "€");
+            botonart.addActionListener(this);
+            articulos.put(botonart, a);
         }
 
         for (JButton b : this.articulos.keySet()) {
@@ -52,6 +57,7 @@ public class GUICategoria extends JPanel {
         atras.setToolTipText("Vuelve a las categorías");
         atras.addActionListener((e) -> {
             //llamar a la gui de categorias supongo
+            this.guippal.setVisible(true);
             this.setVisible(false); //?? no estoy segura
         });
         atras.setAlignmentX(LEFT_ALIGNMENT);
@@ -63,8 +69,8 @@ public class GUICategoria extends JPanel {
         filtro.setAlignmentX(RIGHT_ALIGNMENT);
 
         JMenu mcolor = new JMenu("Color");
-        for (Color a : Color.values()) {
-            JCheckBoxMenuItem colores = new JCheckBoxMenuItem(Articulo.colorToString(a));
+        for (BOStock.Color a : BOStock.Color.values()) {
+            JCheckBoxMenuItem colores = new JCheckBoxMenuItem(BOStock.colorToString(a));
             mcolor.add(colores);
         }
         filtro.add(mcolor);
@@ -83,7 +89,7 @@ public class GUICategoria extends JPanel {
         filtro.add(precio);
 
         JMenu msubcat = new JMenu("Subcategoria");
-        for (Subcategoria a : Subcategoria.values()) {
+        for (Articulo.Subcategoria a : Articulo.Subcategoria.values()) {
             JCheckBoxMenuItem subcat = new JCheckBoxMenuItem(Articulo.subcategoriaToString(a));
             msubcat.add(subcat);
         }
@@ -105,5 +111,13 @@ public class GUICategoria extends JPanel {
 
         arriba.add(filtro);
         this.add(arriba, BorderLayout.PAGE_START);
+    }
+
+    public void actionPerformed(ActionEvent e){
+        Articulo a = this.articulos.get(e.getSource());
+        if(a != null){
+            GUIArticulo art = new GUIArticulo(a, cat, this, this.sa);
+            this.setVisible(false);
+        }
     }
 }

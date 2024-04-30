@@ -1,18 +1,19 @@
 package presentacion;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Set;
 
-public class GUIPpalCategorias extends JPanel {
+public class GUIPpalCategorias extends JPanel implements ActionListener {
     //Lo que es mostrar la lista de categorías
 
-    private Set<JButton> categorias;
+    private List<JButton> categorias;
     private List<String> lcat;
     private SAFacade sa;
 
-    GUIPpalCategorias(int n, SAFacade sa){
-        this.ncat = n;
+    GUIPpalCategorias(SAFacade sa){
         this.sa = sa;
         lcat = this.sa.getCategorias();
         initGUI();
@@ -21,19 +22,21 @@ public class GUIPpalCategorias extends JPanel {
     private void initGUI(){
         this.setLayout(new BoxLayout( this, BoxLayout.Y_AXIS) );
         this.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-        //Hay que hacer los botones de cada categoría
 
         for(int i = 0; i < this.lcat.size(); i++){
             JButton cat = new JButton(lcat.get(i));
-            cat.addActionListener((e) -> {
-                //abrir interfaz de una categoria
-            });
+            cat.addActionListener(this);
             categorias.add(cat);
+            this.add(cat);
         }
+    }
 
-        for(JButton b : categorias){
-            this.add(b);
+    public void actionPerformed(ActionEvent e){
+        int i = 0;
+        while( i < this.categorias.size() && e.getSource() != this.categorias.get(i)) i++;
+        if(i < this.categorias.size()){
+            GUICategoria guicat = new GUICategoria(sa, this.categorias.get(i).getName(), this);
+            this.setVisible(false);
         }
-
     }
 }
