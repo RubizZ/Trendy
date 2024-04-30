@@ -20,6 +20,7 @@ public class BOUsuario extends Observable {
     }
 
     public TUsuario read() {
+        if(this.tUsuario == null)return null;
         this.tUsuario = daoUsuario.getUsuario(tUsuario.getCorreo_e(), tUsuario.getContrasenya());
         return this.tUsuario;
     }
