@@ -1,6 +1,5 @@
 package integracion;
 
-import database.DBConnection;
 import negocio.Articulo;
 
 import java.sql.Connection;
@@ -10,13 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DAOListasImp implements DAOListas{
+public class DAOListasImp implements DAOListas {
     @Override
     public List<Articulo> buscaArticulosCategoria(String cat) {
 
         try (Connection c = DBConnection.connect();
              Statement st = c.createStatement();
-             ResultSet rs = st.executeQuery("select ID from ClasificacionArticulos where Categoria = '"+cat+"'")) {
+             ResultSet rs = st.executeQuery("select ID from ClasificacionArticulos where Categoria = '" + cat + "'")) {
 
             DAOArticulo daoArt = new DAOArticuloImp();
 

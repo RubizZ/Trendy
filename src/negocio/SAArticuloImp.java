@@ -2,7 +2,11 @@ package negocio;
 
 public class SAArticuloImp implements SAArticulo{
 
-    BOArticulo nart = new BOArticulo();
+    BusinessDelegate nart;
+
+    public SAArticuloImp(BusinessDelegate nart){
+        this.nart = nart;
+    }
 
     @Override
     public tArticulo buscarArticulo(int id) {
