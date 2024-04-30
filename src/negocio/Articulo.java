@@ -19,8 +19,13 @@ public class Articulo {
         CAMISETA, PANTALON, CHAQUETA, SUDADERA, ZAPATOS, BOLSOS, GORRAS, VESTIDOS, FALDAS, CHALECO, CALCETINES, JERSEY;
     }
 
+    public String getName() {
+        return name;
+    }
 
-
+    public double getPrecio() {
+        return precio;
+    }
 
     public String subcategoriaToString(Subcategoria s){
         String c = "";
