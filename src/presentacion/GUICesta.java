@@ -5,17 +5,18 @@ import negocio.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.TreeSet;
 
 public class GUICesta extends MainGuiPanel implements CestaObserver{
 
     SAFacade facade;
     JPanel mainPanel;
+    private HashMap<String, JPanel> panelMap;
+
     public GUICesta(SAFacade saFacade) {
         facade = saFacade;
+        panelMap = new HashMap<>();
         initGui();
     }
 
@@ -38,6 +39,7 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
     @Override
     public void onCestaChanged(TOCesta cesta) {
         mainPanel.removeAll();//elimino lo antiguo
+        panelMap.clear();
         TreeSet<TOArticuloEnCesta> lista = (TreeSet<TOArticuloEnCesta>) cesta.getListaArticulos();
         Iterator<TOArticuloEnCesta> art_it = lista.iterator();
         TOArticuloEnCesta art;
@@ -48,13 +50,22 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
             articulo.add(new JLabel(art.toString()));//nombre¿?
             articulo.add(new JLabel(art.getTalla() + ""));
             articulo.add(new JLabel(art.getCantidad() + ""));
-            mainPanel.add(articulo);
+            panelMap.put(art.getIdArticulo()+"", articulo);
+        }
+        for (HashMap.Entry<String, JPanel> entry : panelMap.entrySet()) {
+            JPanel panel = entry.getValue();
+            mainPanel.add(panel);
         }
     }
 
     @Override
     public void onArticuloAdded(TOArticuloEnCesta articulo) {
-
+        JPanel _articulo = new JPanel(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
+        _articulo.add(new JLabel(articulo.toString()));//nombre¿?
+        _articulo.add(new JLabel(articulo.getTalla() + ""));
+        _articulo.add(new JLabel(articulo.getCantidad() + ""));
+        panelMap.put(articulo.getIdArticulo()+"", _articulo);
+        //TODO hacer lo mismo que en onChanged de añadir paneles al main
     }
 
     @Override
