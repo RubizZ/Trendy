@@ -37,7 +37,7 @@ public class BOUsuario extends Observable {
         daoUsuario.eliminarUsuario(id);
     }
 
-    public void actualizarCesta(int cantidad){ daoUsuario.actualizarCesta(tUsuario.getId(), cantidad); }
+    public void actualizarSaldo(double cantidad){ daoUsuario.actualizarSaldo(tUsuario.getId(), cantidad); }
     public void OnHacerPedido(int idCesta){
         daoUsuario.actualizarCesta(tUsuario.getId(), idCesta);
     }

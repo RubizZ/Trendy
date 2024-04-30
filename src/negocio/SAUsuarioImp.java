@@ -34,7 +34,7 @@ public class SAUsuarioImp implements SAUsuario{
     }
 
     @Override
-    public void actualizarSaldo(int cantidad) {
+    public void actualizarSaldo(double cantidad) {
         bdUsuario.actualizarSaldo(cantidad);
     }
 

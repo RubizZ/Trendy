@@ -59,7 +59,7 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setSexo((char) rS.getString("sexo").getBytes()[0])//TODO revisar q funcione esa funcion
                             .setSuscripcion(rS.getInt("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
-                            .setSaldo(rS.getInt("saldo"));
+                            .setSaldo(rS.getDouble("saldo"));
                 }else{
                     return null;
                 }
@@ -173,7 +173,7 @@ public class DAOImpUsuario implements DAOUsuario {
     }
 
     @Override
-    public void actualizarSaldo(int idUsuario, int cantidad) {
+    public void actualizarSaldo(int idUsuario, double cantidad) {
         try (Connection connection = DBConnection.connect()) {
             String sql = "UPDATE Usuarios SET " +
                     "saldo = saldo +" + cantidad  + "WHERE ID = " + idUsuario + ";";
