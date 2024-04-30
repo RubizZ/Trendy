@@ -61,7 +61,7 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setDireccion(rS.getString("Dirección"))
                             .setSaldo(rS.getInt("saldo"));
                 }else{
-                    System.out.println("No se ha encontrado ningun usuario con ese correo o contraseña en la base de datos");
+                    return null;
                 }
             } catch (SQLException e) {
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
@@ -69,7 +69,6 @@ public class DAOImpUsuario implements DAOUsuario {
         } catch (SQLException e) {
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return null;
     }
 
     @Override
@@ -137,26 +136,6 @@ public class DAOImpUsuario implements DAOUsuario {
         }
     }
 
-    @Override
-    public boolean existe(String correo) {//TODO creo q no la usamos asi que se podria borrar
-        boolean existe = false;
-        try (Connection connection = DBConnection.connect()) {
-            String sql = "SELECT * FROM Usuarios WHERE correo = '" + correo + "'";
-            try (Statement statement = connection.createStatement();
-                 ResultSet rS = statement.executeQuery(sql)
-            ) {
-                if(rS.next()){
-                    return true;
-                }else{
-                    return false;
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
-        }
-    }
 
     @Override
     public int getNuevoId() {
