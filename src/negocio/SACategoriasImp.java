@@ -6,6 +6,7 @@ public class SACategoriasImp implements SACategorias{
 
     public SACategoriasImp(BusinessDelegate b){
         ncat = b;
+
     }
 
     @Override
@@ -21,6 +22,11 @@ public class SACategoriasImp implements SACategorias{
     @Override
     public void modificarArticulo(int id, String fechal, int descuento, String genero) {
         ncat.modificarArticulo(id, fechal, descuento, genero);
+    }
+
+    @Override
+    public void actualizaExclusivos() {
+
     }
 
 }

@@ -9,8 +9,8 @@ public class SAStockImp implements SAStock{
     }
 
     @Override
-    public void altaArticuloStock(tStock s) {
-        bd.altaArticuloStock(s);
+    public void altaArticuloStock(int id, int s) {
+        bd.altaArticuloStock(id, s);
     }
 
     @Override

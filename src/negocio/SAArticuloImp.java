@@ -14,8 +14,8 @@ public class SAArticuloImp implements SAArticulo{
     }
 
     @Override
-    public void altaArticulo(tArticulo a, String fechal, String genero, int descuento) {
-        nart.altaArticulo(a, fechal, genero, descuento);
+    public void altaArticulo(tArticulo a, String fechal, String genero, int descuento, int s) {
+        nart.altaArticulo(a, fechal, genero, descuento, s);
     }
 
     @Override

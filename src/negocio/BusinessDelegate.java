@@ -19,7 +19,7 @@ public class BusinessDelegate {
     DAOListas daolistas = new DAOListasImp();
 
     BOStock bostock = new BOStock(daostock);
-    BOArticulo boArticulo = new BOArticulo(daoart, daocat);
+    BOArticulo boArticulo = new BOArticulo(daoart, daocat, daostock);
     BOCategorias boCategorias = new BOCategorias(daocat);
     BOListas boListas = new BOListas(daolistas);
 
@@ -40,8 +40,8 @@ public class BusinessDelegate {
     public void crearPedido() {
         //TODO Hacer cuando este el usuario y la cesta
     }
-    public void altaArticuloStock(tStock s){
-        bostock.altaArticuloStock(s);
+    public void altaArticuloStock(int id, int s){
+        bostock.altaArticuloStock( id, s);
     }
     public void bajaArticuloStock(int id){
         bostock.bajaArticuloStock(id);
@@ -64,8 +64,8 @@ public class BusinessDelegate {
         return boPedido.getPedidosUsuario(idUsuario);
     }
 
-    public void altaArticulo(tArticulo a, String fechal,String genero, int descuento){
-        boArticulo.altaArticulo(a, fechal, genero, descuento);
+    public void altaArticulo(tArticulo a, String fechal,String genero, int descuento, int s){
+        boArticulo.altaArticulo(a, fechal, genero, descuento, s);
     }
     public void bajaArticulo(tArticulo a){
         boArticulo.bajaArticulo(a);
@@ -85,6 +85,9 @@ public class BusinessDelegate {
     }
     public void modificarArticulo(int id, String fechal, int descuento, String genero) {
         boCategorias.modificarArticulo(id, fechal, descuento, genero);
+    }
+    public void actualizaExclusivos(){
+        boCategorias.actualizaExclusivos();
     }
     public Collection<TOPedido> getPedidosFecha(Date fecha) {
         return boPedido.getPedidosFecha(fecha);
