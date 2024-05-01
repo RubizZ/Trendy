@@ -17,14 +17,14 @@ public class TUsuario implements Serializable {
     protected List<Integer> favoritos;
     protected int id;
     protected String direccion;
-    protected int saldo;
+    protected double saldo;
 
     public TUsuario(){}
     public TUsuario (int Id) {
         this.id= Id;
     }
 
-    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, int Suscripcion, String Direccion, int Saldo) {
+    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, int Suscripcion, String Direccion, double Saldo) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
@@ -50,7 +50,7 @@ public class TUsuario implements Serializable {
         direccion = Direccion;
         saldo = 0;
         favoritos = new LinkedList<>();
-        //TODO suscripcion tiene q ser el id de la normal pero no se cual es
+        suscripcion = 0;
     }
 
 
@@ -153,11 +153,11 @@ public class TUsuario implements Serializable {
         return this;
     }
 
-    public int getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public TUsuario setSaldo(int saldo) {
+    public TUsuario setSaldo(double saldo) {
         this.saldo = saldo;
         return this;
     }

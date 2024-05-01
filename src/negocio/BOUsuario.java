@@ -4,8 +4,9 @@ import integracion.DAOImpUsuario;
 import integracion.DAOUsuario;
 
 import java.util.Collection;
+import java.util.Observable;
 
-public class BOUsuario {
+public class BOUsuario extends Observable {
     private DAOUsuario daoUsuario = new DAOImpUsuario();
     private TUsuario tUsuario;
 
@@ -13,12 +14,15 @@ public class BOUsuario {
         this.daoUsuario = daoUsuario;
     }
 
-    public void create(TUsuario tUsuario) {
-        daoUsuario.crearUsuario(tUsuario);
+    public TUsuario create(TUsuario tUsuario) {
+        this.tUsuario = daoUsuario.crearUsuario(tUsuario);
+        return this.tUsuario;
     }
 
     public TUsuario read() {
-        return daoUsuario.getUsuario(tUsuario.getCorreo_e(), tUsuario.getContrasenya());
+        if(this.tUsuario == null)return null;
+        this.tUsuario = daoUsuario.getUsuario(tUsuario.getCorreo_e(), tUsuario.getContrasenya());
+        return this.tUsuario;
     }
 
     public Collection<TUsuario> readAll() {
@@ -34,7 +38,7 @@ public class BOUsuario {
         daoUsuario.eliminarUsuario(id);
     }
 
-    public void actualizarCesta(int cantidad){ daoUsuario.actualizarCesta(tUsuario.getId(), cantidad); }
+    public void actualizarSaldo(double cantidad){ daoUsuario.actualizarSaldo(tUsuario.getId(), cantidad); }
     public void OnHacerPedido(int idCesta){
         daoUsuario.actualizarCesta(tUsuario.getId(), idCesta);
     }

@@ -59,9 +59,9 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setSexo((char) rS.getString("sexo").getBytes()[0])//TODO revisar q funcione esa funcion
                             .setSuscripcion(rS.getInt("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
-                            .setSaldo(rS.getInt("saldo"));
+                            .setSaldo(rS.getDouble("saldo"));
                 }else{
-                    System.out.println("No se ha encontrado ningun usuario con ese correo en la base de datos");
+                    return null;
                 }
             } catch (SQLException e) {
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
@@ -69,11 +69,10 @@ public class DAOImpUsuario implements DAOUsuario {
         } catch (SQLException e) {
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
-        return null;
     }
 
     @Override
-    public void crearUsuario(TUsuario usuario) {
+    public TUsuario crearUsuario(TUsuario usuario) {
         try (Connection connection = DBConnection.connect()) {
             int id = getNuevoId();
             String sql = "INSERT INTO Usuarios VALUES ("
@@ -96,6 +95,7 @@ public class DAOImpUsuario implements DAOUsuario {
         } catch (SQLException e) {
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }
+        return usuario;
     }
 
     @Override
@@ -136,26 +136,6 @@ public class DAOImpUsuario implements DAOUsuario {
         }
     }
 
-    @Override
-    public boolean existe(String correo) {//TODO creo q no la usamos asi que se podria borrar
-        boolean existe = false;
-        try (Connection connection = DBConnection.connect()) {
-            String sql = "SELECT * FROM Usuarios WHERE correo = '" + correo + "'";
-            try (Statement statement = connection.createStatement();
-                 ResultSet rS = statement.executeQuery(sql)
-            ) {
-                if(rS.next()){
-                    return true;
-                }else{
-                    return false;
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
-        }
-    }
 
     @Override
     public int getNuevoId() {
@@ -193,7 +173,7 @@ public class DAOImpUsuario implements DAOUsuario {
     }
 
     @Override
-    public void actualizarSaldo(int idUsuario, int cantidad) {
+    public void actualizarSaldo(int idUsuario, double cantidad) {
         try (Connection connection = DBConnection.connect()) {
             String sql = "UPDATE Usuarios SET " +
                     "saldo = saldo +" + cantidad  + "WHERE ID = " + idUsuario + ";";

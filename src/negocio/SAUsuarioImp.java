@@ -4,16 +4,20 @@ import java.util.Collection;
 
 public class SAUsuarioImp implements SAUsuario{
 
-    private BussinesDelegate bdUsuario = new BussinesDelegate();
+    private BusinessDelegate bdUsuario;
 
-    @Override
-    public void create(TUsuario tUsuario) {
-        bdUsuario.create(tUsuario);
+    public SAUsuarioImp(BusinessDelegate bdUsuario) {
+        this.bdUsuario = bdUsuario;
     }
 
     @Override
-    public TUsuario getUsuario() {
-        return bdUsuario.read();
+    public boolean create(TUsuario tUsuario) {
+        return (bdUsuario.create(tUsuario) != null);
+    }
+
+    @Override
+    public boolean getUsuario() {
+        return (bdUsuario.read() != null);
     }
 
     @Override
@@ -30,7 +34,7 @@ public class SAUsuarioImp implements SAUsuario{
     }
 
     @Override
-    public void actualizarSaldo(int cantidad) {
+    public void actualizarSaldo(double cantidad) {
         bdUsuario.actualizarSaldo(cantidad);
     }
 
