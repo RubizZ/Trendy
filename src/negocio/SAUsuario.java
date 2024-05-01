@@ -10,4 +10,8 @@ public interface SAUsuario {
     public void delete (int id);
     public void actualizarSaldo(int cantidad);
     public void actualizarSuscr(int id);
+
+    void login(String correo, String contraseña);
+
+    void logout();
 }

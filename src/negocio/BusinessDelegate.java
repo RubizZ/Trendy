@@ -148,4 +148,12 @@ public class BusinessDelegate {
     public void removeArticuloDeFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
         boCesta.removeArticuloDeFavoritos(toArticuloEnFavoritos);
     }
+
+    public void login(String correo, String contraseña) {
+        boUsuario.login(correo, contraseña);
+    }
+
+    public void logout() {
+        boUsuario.logout();
+    }
 }

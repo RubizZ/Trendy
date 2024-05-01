@@ -141,6 +141,14 @@ public class SAFacade {
         saUsuario.actualizarSuscr(id);
     }
 
+    public void login(String correo, String contraseña) {
+        saUsuario.login(correo, contraseña);
+    }
+
+    public void logout() {
+        saUsuario.logout();
+    }
+
     //FUNCIONES MODULO CESTA
 
     public void addArticuloACesta(TOArticuloEnCesta toArticuloEnCesta){

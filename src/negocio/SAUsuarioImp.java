@@ -40,4 +40,14 @@ public class SAUsuarioImp extends AbstractSA implements SAUsuario{
     public void actualizarSuscr(int id) {
         businessDelegate.actualizarSusc(id);
     }
+
+    @Override
+    public void login(String correo, String contraseña) {
+        businessDelegate.login(correo, contraseña);
+    }
+
+    @Override
+    public void logout() {
+        businessDelegate.logout();
+    }
 }
