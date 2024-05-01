@@ -123,7 +123,7 @@ public class SAFacade {
         return saUsuario.create(tUsuario);
     }
 
-    public boolean getUsuario(){
+    public String getUsuario() {
         return saUsuario.getUsuario();
     }
 

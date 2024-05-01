@@ -14,8 +14,8 @@ public class SAUsuarioImp extends AbstractSA implements SAUsuario {
     }
 
     @Override
-    public boolean getUsuario() {
-        return (businessDelegate.read() != null);
+    public String getUsuario() {
+        return businessDelegate.read().getNombre();
     }
 
     @Override
@@ -24,11 +24,13 @@ public class SAUsuarioImp extends AbstractSA implements SAUsuario {
     }
 
     @Override
-    public void update(TUsuario tUsuario) {businessDelegate.update(tUsuario);
+    public void update(TUsuario tUsuario) {
+        businessDelegate.update(tUsuario);
     }
 
     @Override
-    public void delete(int id) {businessDelegate.delete(id);
+    public void delete(int id) {
+        businessDelegate.delete(id);
     }
 
     @Override

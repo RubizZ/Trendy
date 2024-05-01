@@ -167,7 +167,7 @@ public class GUIWindow extends JFrame {
         buttonCreator.apply(searchIcon, searchPanel, buttonAction);
         buttonCreator.apply(cestaIcon, cestaPanel, buttonAction);
         buttonCreator.apply(userIcon, userPanel, (panel) -> {
-            if (!saFacade.getUsuario()) {
+            if (saFacade.getUsuario().isEmpty()) {
                 authDialog.open(this);
             } else {
                 buttonAction.accept(panel);
