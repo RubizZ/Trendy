@@ -71,7 +71,7 @@ public class GUIWindow extends JFrame {
             }
         }
     }
-  
+
     private void setIconAndPlayIntroAnimation() {
         try {
             Random random = new Random();
@@ -137,7 +137,7 @@ public class GUIWindow extends JFrame {
 
         controlPanel = new JPanel();
         controlPanel.setLayout(new GridLayout(1, 0));
-
+        controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         homePanel = new HomePanel(this, saFacade);
         userPanel = new GUIPerfil(saFacade);
