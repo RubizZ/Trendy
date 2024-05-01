@@ -2,7 +2,7 @@ package presentacion;
 
 import negocio.Articulo;
 import negocio.BOStock;
-import negocio.tArticulo;
+import negocio.SAFacade;
 
 import javax.swing.*;
 import java.awt.*;
@@ -113,9 +113,9 @@ public class GUICategoria extends JPanel implements ActionListener {
         this.add(arriba, BorderLayout.PAGE_START);
     }
 
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         Articulo a = this.articulos.get(e.getSource());
-        if(a != null){
+        if (a != null) {
             GUIArticulo art = new GUIArticulo(a, cat, this, this.sa);
             this.setVisible(false);
         }

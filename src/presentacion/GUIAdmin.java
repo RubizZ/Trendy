@@ -1,14 +1,13 @@
-package view;
+package presentacion;
 
-import javax.swing.*;
-
-import jdk.jshell.execution.JdiDefaultExecutionControl;
 import negocio.SAFacade;
 import negocio.TOStatusPedido;
 import negocio.tArticulo;
 
+import javax.swing.*;
 
-public class GUIAdmin extends JPanel{
+
+public class GUIAdmin extends JPanel {
 
     private JPanel crearArticulo;
     private JPanel añadirSaldo;
@@ -18,12 +17,12 @@ public class GUIAdmin extends JPanel{
     private SAFacade saFacade;
 
 
-    public GUIAdmin(SAFacade SaFacade){
+    public GUIAdmin(SAFacade SaFacade) {
         this.saFacade = SaFacade;
         initGUI();
     }
 
-    private void initGUI(){
+    private void initGUI() {
 
         bCrearArticulo = new JButton("Crear Articulo");
         bCrearArticulo.setAlignmentX(CENTER_ALIGNMENT);
@@ -59,7 +58,7 @@ public class GUIAdmin extends JPanel{
         //cambiar estado pedido
     }
 
-    private void initCrearArticulo(){
+    private void initCrearArticulo() {
         this.crearArticulo = new JPanel();
         this.setVisible(false);
         this.crearArticulo.setVisible(true);
@@ -116,7 +115,7 @@ public class GUIAdmin extends JPanel{
         JButton bCrear = new JButton("Crear");
         this.crearArticulo.add(bCrear);
         bCrear.addActionListener(e -> {
-            tArticulo art =  new tArticulo(Integer.parseInt(tId.getText()), tNombre.getText(), tSubcategoria.getText(), Double.parseDouble(tPrecio.getText()));
+            tArticulo art = new tArticulo(Integer.parseInt(tId.getText()), tNombre.getText(), tSubcategoria.getText(), Double.parseDouble(tPrecio.getText()));
             saFacade.altaArticulo(art, tFecha.getText(), (String) cbGenero.getSelectedItem(), Integer.parseInt(tDescuento.getText()), Integer.parseInt(tStock.getText()));
         });
 
@@ -129,7 +128,7 @@ public class GUIAdmin extends JPanel{
 
     }
 
-    private void initAñadirSaldo(){
+    private void initAñadirSaldo() {
         this.añadirSaldo = new JPanel();
         this.setVisible(false);
         this.añadirSaldo.setVisible(true);
@@ -159,7 +158,7 @@ public class GUIAdmin extends JPanel{
         });
     }
 
-    private void initCambiarSuscripcion(){
+    private void initCambiarSuscripcion() {
         this.cambiarSuscripcion = new JPanel();
         this.setVisible(false);
         this.cambiarSuscripcion.setVisible(true);
@@ -189,7 +188,7 @@ public class GUIAdmin extends JPanel{
         });
     }
 
-    private void initCambiarEstadoPedido(){
+    private void initCambiarEstadoPedido() {
         this.cambiarEstadoPedido = new JPanel();
         this.setVisible(false);
         this.cambiarEstadoPedido.setVisible(true);
