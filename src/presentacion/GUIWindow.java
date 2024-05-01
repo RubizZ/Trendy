@@ -1,5 +1,7 @@
 package presentacion;
 
+import negocio.SAFacade;
+import negocio.TOPedido;
 import org.apache.commons.lang3.function.TriFunction;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -9,14 +11,17 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class GUIWindow extends JFrame {
 
-    private final SAFacade saFachade;
+    private final SAFacade saFacade;
 
     private Thread introAnimationThread;
 
@@ -24,11 +29,15 @@ public class GUIWindow extends JFrame {
 
     private JPanel controlPanel;
 
-    private Pair<JButton, Integer> lastPressedButton;
-    private JScrollPane lastPanel;
+    private Pair<MainGUIPanel, Integer> lastPanel;
+    private MainGUIPanel homePanel;
+    private MainGUIPanel userPanel;
+    private MainGUIPanel cestaPanel;
+    private MainGUIPanel searchPanel;
+    private GUILogin authDialog;
 
-    public GUIWindow(SAFacade saFachade) {
-        this.saFachade = saFachade;
+    public GUIWindow(SAFacade saFacade) {
+        this.saFacade = saFacade;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -38,18 +47,55 @@ public class GUIWindow extends JFrame {
             }
         });
 
-        playIntroAnimation();
+        setIconAndPlayIntroAnimation();
+        autoLogin();
         initPanels();
         waitForAnimation();
     }
 
-    private void playIntroAnimation() {
+    private void autoLogin() {
+        File login = new File("trendy-storage/login.txt");
+        if (login.exists()) {
+            String[] credentials = null;
+            try {
+                FileReader reader = new FileReader(login);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                credentials = new String[2];
+                credentials[0] = bufferedReader.readLine();
+                credentials[1] = bufferedReader.readLine();
+            } catch (IOException e) {
+            }
+
+            if (credentials != null) {
+                saFacade.login(credentials[0], credentials[1]);
+            }
+        }
+    }
+  
+    private void setIconAndPlayIntroAnimation() {
         try {
             Random random = new Random();
             int loadingTimeMs = random.nextInt(1000, 3000);
 
-            File img = new File("resources/imgs/trendy_logo.png");
+            File img = new File("resources/imgs/trendy_logo.png"); //TODO Usar getResource
             BufferedImage imgBuffered = ImageIO.read(img);
+
+            // Define los bordes a recortar
+            int margin = 130;
+
+            // Obtiene las dimensiones de la imagen original
+            int originalWidth = imgBuffered.getWidth();
+            int originalHeight = imgBuffered.getHeight();
+
+            // Define las dimensiones de la imagen recortada
+            int croppedWidth = originalWidth - 2 * margin;
+            int croppedHeight = originalHeight - 2 * margin;
+
+            // Crea la imagen recortada
+            BufferedImage croppedImage = imgBuffered.getSubimage(margin, margin, croppedWidth, croppedHeight);
+
+            setIconImage(croppedImage);
+
             ImageAnimation introAnimation = new ImageAnimation(imgBuffered, loadingTimeMs, 1.5);
 
             introAnimationThread = new Thread(introAnimation::play);
@@ -78,76 +124,87 @@ public class GUIWindow extends JFrame {
     private void initPanels() {
         mainPanel = new JPanel(new BorderLayout());
 
-        BiConsumer<JButton, JScrollPane> changePanel = changePanelAction();
+        JLabel trendy = new JLabel("Trendy");
+        trendy.setFont(new Font("Arial", Font.BOLD, 30));
+        trendy.setHorizontalAlignment(SwingConstants.CENTER);
+        mainPanel.add(trendy, BorderLayout.NORTH);
 
-        BiConsumer<JButton, MainGUIPanel> buttonAction = buttonAction(changePanel);
+        Consumer<JScrollPane> changePanel = changePanelAction();
 
-        TriFunction<String, MainGUIPanel, BiConsumer<JButton, MainGUIPanel>, JButton> buttonCreator = buttonCreatorFunction();
+        Consumer<MainGUIPanel> buttonAction = buttonAction(changePanel);
+
+        TriFunction<Icon, MainGUIPanel, Consumer<MainGUIPanel>, JButton> buttonCreator = buttonCreatorFunction();
 
         controlPanel = new JPanel();
-        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
+        controlPanel.setLayout(new GridLayout(1, 0));
 
-        MainGUIPanel homePanel = new HomePanel(this, saFachade);
-        MainGUIPanel userPanel = new GUIPerfil(saFachade);
-        MainGUIPanel cestaPanel = new GUICesta(saFachade);
-        MainGUIPanel searchPanel = new GUIPpalCategorias(saFachade);
-        GUILogin authDialog = new GUILogin(saFachade);
 
-        controlPanel.add(Box.createHorizontalGlue());
-        JButton homeButton = buttonCreator.apply("Home", homePanel, buttonAction);
-        lastPressedButton = Pair.of(homeButton, 0);
-        controlPanel.add(Box.createHorizontalGlue());
-        buttonCreator.apply("Search", searchPanel, buttonAction);
-        controlPanel.add(Box.createHorizontalGlue());
-        buttonCreator.apply("Cesta", cestaPanel, buttonAction);
-        controlPanel.add(Box.createHorizontalGlue());
-        buttonCreator.apply("User", userPanel, (button, panel) -> {
-            if (!saFachade.isLogged()) {
-                authDialog.open(this);
-            } else {
-                buttonAction.accept(button, panel);
-            }
-        });
-        controlPanel.add(Box.createHorizontalGlue());
+        homePanel = new HomePanel(this, saFacade);
+        userPanel = new GUIPerfil(saFacade);
+        cestaPanel = new GUICesta(saFacade);
+        searchPanel = new GUIPpalCategorias(saFacade);
+        authDialog = new GUILogin(saFacade);
 
-        lastPanel = homePanel;
         mainPanel.add(homePanel, BorderLayout.CENTER);
         mainPanel.add(controlPanel, BorderLayout.SOUTH);
+
+        URL homeURL = ClassLoader.getSystemResource("imgs/home.png");
+        URL searchURL = ClassLoader.getSystemResource("imgs/search.png");
+        URL cestaURL = ClassLoader.getSystemResource("imgs/shopping_cart.png");
+        URL userURL = ClassLoader.getSystemResource("imgs/user.png");
+
+        ImageIcon homeIcon = new ImageIcon(homeURL, "Home");
+        homeIcon.setImage(homeIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+        ImageIcon searchIcon = new ImageIcon(searchURL, "Search");
+        searchIcon.setImage(searchIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+        ImageIcon cestaIcon = new ImageIcon(cestaURL, "Cesta");
+        cestaIcon.setImage(cestaIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+        ImageIcon userIcon = new ImageIcon(userURL, "User");
+        userIcon.setImage(userIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+
+        buttonCreator.apply(homeIcon, homePanel, buttonAction);
+        lastPanel = Pair.of(homePanel, 0);
+        buttonCreator.apply(searchIcon, searchPanel, buttonAction);
+        buttonCreator.apply(cestaIcon, cestaPanel, buttonAction);
+        buttonCreator.apply(userIcon, userPanel, (panel) -> {
+            if (saFacade.getUsuario().isEmpty()) {
+                authDialog.open(this);
+            } else {
+                buttonAction.accept(panel);
+            }
+        });
     }
 
-    private TriFunction<String, MainGUIPanel, BiConsumer<JButton, MainGUIPanel>, JButton> buttonCreatorFunction() {
-        return (text, panel, action) -> {
-            JButton button = new JButton(text);
-            button.addActionListener(e -> action.accept(button, panel));
+    private TriFunction<Icon, MainGUIPanel, Consumer<MainGUIPanel>, JButton> buttonCreatorFunction() {
+        return (icon, panel, action) -> {
+            JButton button = new JButton(icon);
+            button.addActionListener(e -> action.accept(panel));
             controlPanel.add(button);
             return button;
         };
     }
 
-    private BiConsumer<JButton, MainGUIPanel> buttonAction(BiConsumer<JButton, JScrollPane> changePanel) {
-        return (button, panel) -> {
-            if (lastPressedButton.getLeft() == button) {
-                if (lastPressedButton.getRight() <= 1) {
+    private Consumer<MainGUIPanel> buttonAction(Consumer<JScrollPane> changePanel) {
+        return (panel) -> {
+            if (lastPanel.getLeft() == panel) {
+                if (lastPanel.getRight() <= 1) {
                     panel.update();
                 } else {
                     panel.reset();
                 }
-                lastPressedButton = Pair.of(button, lastPressedButton.getRight() + 1);
+                lastPanel = Pair.of(panel, lastPanel.getRight() + 1);
             } else {
-                lastPressedButton = Pair.of(button, 0);
-                changePanel.accept(button, panel);
+                changePanel.accept(panel);
+                lastPanel = Pair.of(panel, 0);
             }
         };
     }
 
-    private BiConsumer<JButton, JScrollPane> changePanelAction() {
-        return (button, panel) -> {
-            Transitions.makeWhiteFadeTransition(lastPanel, panel, 1, (from, to) -> {
-                mainPanel.remove(from);
-                mainPanel.add(to, BorderLayout.CENTER);
-            });
-            lastPanel = panel;
-        };
+    private Consumer<JScrollPane> changePanelAction() {
+        return (panel) -> Transitions.makeWhiteFadeTransition(lastPanel.getLeft(), panel, 1, (from, to) -> {
+            mainPanel.remove(from);
+            mainPanel.add(to, BorderLayout.CENTER);
+        });
     }
 
     private void waitForAnimation() {
@@ -160,7 +217,8 @@ public class GUIWindow extends JFrame {
         }
 
         setContentPane(mainPanel);
-        pack();
+        revalidate();
+        repaint();
     }
 
     private void setLocationRelativeToMouseAndSetSize() {
@@ -195,6 +253,15 @@ public class GUIWindow extends JFrame {
         }
     }
 
-    public void showPedido(PedidoView lastPedido) {
+
+    public void showPedido(TOPedido lastPedido) {
+        buttonAction(changePanelAction()).accept(userPanel);
+        //TODO userPanel.showPedido(lastPedido);
+    }
+
+
+    public void showGUIPedidos() {
+        buttonAction(changePanelAction()).accept(userPanel);
+        //TODO userPanel.goToPedidos();
     }
 }

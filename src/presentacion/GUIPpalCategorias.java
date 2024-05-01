@@ -1,12 +1,14 @@
 package presentacion;
 
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Set;
+import negocio.SAFacade;
 
-public class GUIPpalCategorias extends JPanel implements ActionListener {
+public class GUIPpalCategorias extends JPanel, MainGUIPanel  implements ActionListener {
     //Lo que es mostrar la lista de categorías
 
     private List<JButton> categorias;
@@ -38,5 +40,14 @@ public class GUIPpalCategorias extends JPanel implements ActionListener {
             GUICategoria guicat = new GUICategoria(sa, this.categorias.get(i).getName(), this);
             this.setVisible(false);
         }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void reset() {
+
     }
 }

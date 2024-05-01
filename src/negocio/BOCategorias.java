@@ -44,7 +44,9 @@ public class BOCategorias {
         }
     }
 
-    public List<String> getCategorias(){
-        return dao.getCategorias();
+    public List<String> getCategorias() return dao.getCategorias();
+        
+    public void actualizaExclusivos(){
+        dao.actualizaExclusivos();
     }
 }

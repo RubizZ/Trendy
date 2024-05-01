@@ -1,6 +1,11 @@
 package presentacion;
 
+import negocio.SAFacade;
+import negocio.TOPedido;
+import negocio.TOStatusPedido;
+
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,8 +15,9 @@ public class HomePanel extends MainGUIPanel {
     private final GUIWindow mainWindow;
     private JPanel contentPanel;
     private final SAFacade saFachade;
-    private PedidoView lastPedido;
+    private TOPedido lastPedido;
     private JPanel jpArticulosExclusivos;
+    private JPanel jpLastPedido;
 
     public HomePanel(GUIWindow mainWindow, SAFacade saFachade) {
         super();
@@ -25,49 +31,33 @@ public class HomePanel extends MainGUIPanel {
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
-        contentPanel.add(Box.createVerticalGlue());
-
-        JLabel jlWelcome;
-        if (saFachade.isLogged()) {
-            jlWelcome = new JLabel("Bonjour invité, " + saFachade.getLoggedUser().getUsername());
+        JPanel jpTitle = new JPanel();
+        JLabel jlWelcome = new JLabel();
+        jlWelcome.setFont(new Font("Arial", Font.BOLD, 20));
+        if (!saFachade.getUsuario().isEmpty()) {
+            jlWelcome.setText("Hola, " + saFachade.getUsuario()); //TODO Añadir getUsername()
         } else {
-            jlWelcome = new JLabel("Benvinguts");
+            jlWelcome.setText("Bienvenido!");
         }
-        jlWelcome.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-        contentPanel.add(jlWelcome);
-
-
-        contentPanel.add(Box.createVerticalGlue());
-
+        jpTitle.add(jlWelcome);
+        jpTitle.setBorder(BorderFactory.createTitledBorder("Home"));
+        contentPanel.add(jpTitle);
 
         jpArticulosExclusivos = new JPanel();
-        jpArticulosExclusivos.setLayout(new BoxLayout(jpArticulosExclusivos, BoxLayout.X_AXIS));
-        jpArticulosExclusivos.setAlignmentX(JPanel.LEFT_ALIGNMENT);
 
-        jpArticulosExclusivos.add(Box.createHorizontalGlue());
         putArticulosExclusivos();
 
-        JScrollPane jspArticulosExclusivos = new JScrollPane(jpArticulosExclusivos,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane jspArticulosExclusivos = new JScrollPane(jpArticulosExclusivos, VERTICAL_SCROLLBAR_NEVER, HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        jspArticulosExclusivos.setBorder(new TitledBorder("Articulos exclusivos"));
+
         contentPanel.add(jspArticulosExclusivos);
 
-
-        contentPanel.add(Box.createVerticalGlue());
-
-
-        JPanel jpLastPedido = new JPanel();
-        jpLastPedido.setLayout(new BoxLayout(jpLastPedido, BoxLayout.Y_AXIS));
-        jpLastPedido.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        jpLastPedido = new JPanel();
 
         updatePedido(jpLastPedido);
 
-        jpLastPedido.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mainWindow.showPedido(lastPedido);
-            }
-        });
+        jpLastPedido.setBorder(new TitledBorder("Ultimo pedido"));
 
         contentPanel.add(jpLastPedido);
 
@@ -76,18 +66,38 @@ public class HomePanel extends MainGUIPanel {
 
     private void putArticulosExclusivos() {
         jpArticulosExclusivos.removeAll();
-        for (ArticuloView articulo : saFachade.getArticulosExclusivos()) {
-            jpArticulosExclusivos.add(articulo);
-            jpArticulosExclusivos.add(Box.createHorizontalGlue());
-        }
+
+        saFachade.buscaArticulosCategoria("Exclusivos").forEach(articulo -> {
+            JPanel jpArticulo = new JPanel(new BorderLayout());
+            jpArticulo.add(new JLabel(articulo.getName()), BorderLayout.NORTH);
+            jpArticulo.add(new JLabel(articulo.getPrecio() + "€"), BorderLayout.SOUTH);
+            jpArticulo.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    //mainWindow.showArticulo(articulo); //TODO
+                }
+            });
+            jpArticulosExclusivos.add(jpArticulo);
+        });
+
+        jpArticulosExclusivos.add(new JLabel("No hay articulos exclusivos")); //TODO Borrar
+
     }
 
     private void emptyLastPedido(JPanel jpLastPedido) {
         jpLastPedido.removeAll();
 
-        JPanel jpLastPedidoTitle = new JPanel(new BorderLayout());
-        jpLastPedidoTitle.add(new JLabel("No tens cap comanda activa"), BorderLayout.WEST);
-        jpLastPedido.add(jpLastPedidoTitle);
+        JPanel jpLastPedidoPanel = new JPanel();
+        jpLastPedidoPanel.setLayout(new BorderLayout());
+
+        JLabel noHayPedidos = new JLabel("No hay pedidos");
+        noHayPedidos.setFont(new Font("Arial", Font.BOLD, 20));
+        jpLastPedidoPanel.add(noHayPedidos, BorderLayout.NORTH);
+        JButton crearPedidoButton = new JButton("Hacer pedido");
+        crearPedidoButton.addActionListener(e -> mainWindow.showGUIPedidos());
+        jpLastPedidoPanel.add(crearPedidoButton, BorderLayout.SOUTH);
+
+        jpLastPedido.add(jpLastPedidoPanel);
     }
 
     private void notEmptyLastPedido(JPanel jpLastPedido) {
@@ -95,18 +105,26 @@ public class HomePanel extends MainGUIPanel {
         jpLastPedido.removeAll();
 
         JPanel jpLastPedidoTitle = new JPanel(new BorderLayout());
-        jpLastPedidoTitle.add(new JLabel("Últim comanda: + " + lastPedido.getID()), BorderLayout.WEST);
-        jpLastPedidoTitle.add(new JLabel(lastPedido.getFecha().toString()), BorderLayout.EAST);
+        jpLastPedidoTitle.add(new JLabel("Ultimo pedido: + " + lastPedido.getID()), BorderLayout.WEST);
+        jpLastPedidoTitle.add(new JLabel(lastPedido.getFecha()), BorderLayout.EAST);
         jpLastPedido.add(jpLastPedidoTitle);
 
         JPanel jpLastPedidoStatus = new JPanel(new BorderLayout());
-        jpLastPedidoStatus.add(new JLabel("Estat: " + lastPedido.getStatus().toString()), BorderLayout.WEST);
-        if (lastPedido.getStatus() == TOStatusPedido.REPARTO) {
+
+        jpLastPedidoStatus.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainWindow.showPedido(lastPedido);
+            }
+        });
+
+        jpLastPedidoStatus.add(new JLabel("Estado: " + lastPedido.getStatus()), BorderLayout.WEST);
+        if (lastPedido.getStatus().equals(TOStatusPedido.REPARTO.toString())) {
             JButton cancelarPedidoButton = new JButton("Cancelar pedido");
             cancelarPedidoButton.addActionListener(e -> {
                 int sel = JOptionPane.showConfirmDialog(this, "Estas seguro de que quieres cancelar el pedido?", "Cancelar pedido", JOptionPane.YES_NO_OPTION);
                 if (sel == JOptionPane.YES_OPTION) {
-                    saFachade.cancelarPedido(lastPedido);
+                    saFachade.cancelarPedido(lastPedido.getID());
                     jpLastPedidoStatus.remove(cancelarPedidoButton);
                     lastPedido = saFachade.getLastPedido();
                     if (lastPedido != null) {
@@ -137,7 +155,7 @@ public class HomePanel extends MainGUIPanel {
     @Override
     public void update() {
         putArticulosExclusivos();
-        updatePedido(jpArticulosExclusivos);
+        updatePedido(jpLastPedido);
     }
 
     @Override
