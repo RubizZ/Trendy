@@ -42,17 +42,17 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
         panelMap.clear();
         TreeSet<TOArticuloEnCesta> lista = (TreeSet<TOArticuloEnCesta>) cesta.getListaArticulos();
         Iterator<TOArticuloEnCesta> art_it = lista.iterator();
-        TOArticuloEnCesta art;
-        //TODO ver como elimino un panel del mainpanel, no se si puedo tenerlo con una clave asociada o qué
         while(art_it.hasNext()){
-            art = art_it.next();
+            TOArticuloEnCesta art = art_it.next();
             JPanel articulo = new JPanel(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
             articulo.add(new JLabel(art.toString()));//nombre¿?
             articulo.add(new JLabel(art.getTalla() + ""));
             articulo.add(new JLabel(art.getCantidad() + ""));
+            addButtons(articulo, art);
             panelMap.put(art.getIdArticulo()+"", articulo);
+            mainPanel.add(articulo);
         }
-        rellenarCesta();
+        mainPanel.repaint();
     }
 
     @Override
@@ -61,24 +61,26 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
         _articulo.add(new JLabel(articulo.toString()));//nombre¿?
         _articulo.add(new JLabel(articulo.getTalla() + ""));
         _articulo.add(new JLabel(articulo.getCantidad() + ""));
+        addButtons(_articulo, articulo);
         panelMap.put(articulo.getIdArticulo()+"", _articulo);
         mainPanel.add(_articulo);
+        mainPanel.repaint();
+
     }
 
     @Override
     public void onArticuloUpdated(TOArticuloEnCesta articulo) {
         //ELIMINAMOS EL PANEL CON LA INFORMACION ANTIGUA
         JPanel eliminar = panelMap.get(articulo.getIdArticulo()+"");
-        //CREAMOS UN PANEL CON LOS DATOS DEL ARTICULO CAMBIADOS
+        //CREO UN PANEL CON LOS DATOS DEL ARTICULO CAMBIADOS
         JPanel _articulo = new JPanel(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
         _articulo.add(new JLabel(articulo.toString()));//nombre¿?
         _articulo.add(new JLabel(articulo.getTalla() + ""));
         _articulo.add(new JLabel(articulo.getCantidad() + ""));
+        addButtons(_articulo, articulo);
         panelMap.put(articulo.getIdArticulo()+"", _articulo);
         mainPanel.add(_articulo);
-        //TODO no se si tengo que eliminar lo que habia y volver a mater todo o notificar de
-        //TODO alguna manera al panel para que se actualice con los cambios
-
+        mainPanel.repaint();
     }
 
     @Override
@@ -86,12 +88,23 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
         JPanel eliminar = panelMap.get(articulo.getIdArticulo()+"");
         panelMap.remove(eliminar);
         mainPanel.remove(eliminar);
+        mainPanel.repaint();
     }
 
-    private void rellenarCesta(){
-        for (HashMap.Entry<String, JPanel> entry : panelMap.entrySet()) {
-            JPanel panel = entry.getValue();
-            mainPanel.add(panel);
-        }
+    private void addButtons(JPanel panel, TOArticuloEnCesta art){
+        int stock = facade.getStock(art.getIdArticulo(),art.getColor(),art.getTalla());
+        SpinnerNumberModel cantidad = new SpinnerNumberModel(0,0,stock, 1);
+        JSpinner unidades = new JSpinner(cantidad);
+        panel.add(unidades);
+        JButton anyadir = new JButton("Confirmar");
+        panel.add(anyadir);
+        anyadir.addActionListener((e -> {
+            int uds = (int) unidades.getValue();
+            if(uds == 0){
+                facade.removeArticuloDeCesta(art);
+            }
+            art.setCantidad(uds);
+        }));
     }
+
 }
