@@ -110,9 +110,7 @@ public class GUIAdmin extends JPanel{
 
         JButton bAñadir = new JButton("Añadir");
         bAñadir.addActionListener(e -> {
-            JSONObject json = new JSONObject();
-            json.put("id", tId.getText());
-            json.put("saldo", tSaldo.getText());
+            saFacade.actualizarSaldo(tId.getText(), tSaldo.getText());
 
             saFacade.añadirSaldo(json);
         });
