@@ -1,4 +1,3 @@
-
 package negocio;
 
 public record Direccion(Via via, int numero, String ciudad, String provincia, int codigoPostal) {

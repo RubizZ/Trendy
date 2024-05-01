@@ -27,10 +27,11 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setApellidos(rS.getString("apellidos"))
                             .setPais(rS.getString("pais"))
                             .setAnyoNacimiento(rS.getInt("anyo_nacimiento"))
-                            .setSexo((char) rS.getString("sexo").getBytes()[0])//TODO revisar si funciona
-                            .setSuscripcion(rS.getInt("suscripcion_id"))
+                            .setSexo((char) rS.getByte("sexo"))//TODO revisar si funciona
+                            .setSuscripcion(rS.getString("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
-                            .setSaldo(rS.getInt("saldo")));
+                            .setSaldo(rS.getDouble("saldo"))
+                            .setAdmin(rS.getBoolean("admin")));
                 }
                 return list;
             } catch (SQLException e) {
@@ -46,9 +47,9 @@ public class DAOImpUsuario implements DAOUsuario {
         try (Connection connection = DBConnection.connect()) {
             String sql = "SELECT * FROM Usuarios WHERE correo = '" + correo + "' AND contraseña = '" + contrasenya + "'";
             try (Statement statement = connection.createStatement();
-                ResultSet rS = statement.executeQuery(sql)
+                 ResultSet rS = statement.executeQuery(sql)
             ) {
-                if(rS.next()){
+                if (rS.next()) {
                     return new TUsuario(rS.getInt("ID"))
                             .setCorreo_e(rS.getString("correo"))
                             .setContrasenya(rS.getString("contraseña"))
@@ -56,11 +57,13 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setApellidos(rS.getString("apellidos"))
                             .setPais(rS.getString("pais"))
                             .setAnyoNacimiento(rS.getInt("anyo_nacimiento"))
-                            .setSexo((char) rS.getString("sexo").getBytes()[0])//TODO revisar q funcione esa funcion
-                            .setSuscripcion(rS.getInt("suscripcion_id"))
+                            .setSexo((char) rS.getByte("sexo"))//TODO revisar q funcione esa funcion
+                            .setSuscripcion(rS.getString("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
-                            .setSaldo(rS.getDouble("saldo"));
-                }else{
+                            .setSaldo(rS.getDouble("saldo"))
+                            .setAdmin(rS.getBoolean("admin"));
+
+                } else {
                     return null;
                 }
             } catch (SQLException e) {
@@ -111,7 +114,7 @@ public class DAOImpUsuario implements DAOUsuario {
                     "', pais = '" + usuario.getPais() +
                     "', suscripcion_id = " + usuario.getSuscripcion() +
                     ", Dirección = '" + usuario.getDireccion() +
-                    "', saldo = " + usuario.getSaldo() + "WHERE ID = " + ID + ";";
+                    "', saldo = " + usuario.getSaldo() + " WHERE ID = " + ID;
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {

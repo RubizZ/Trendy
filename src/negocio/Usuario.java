@@ -18,9 +18,9 @@ public class Usuario {
     protected int id;
     protected int id_cesta;
     protected List<Integer> favoritos;//tiene una lista de los id de los articulos favoritos
+    protected boolean admin = false;
 
-
-    protected Usuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, Suscripciones Suscripcion, String Direccion, double Saldo, int idCesta) {
+    protected Usuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, Suscripciones Suscripcion, String Direccion, int Saldo, int idCesta, boolean Admin) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
@@ -34,6 +34,7 @@ public class Usuario {
         direccion = Direccion;
         saldo = Saldo;
         id_cesta = idCesta;
+        admin = Admin;
     }
 
     public String getNombre() {
@@ -128,5 +129,13 @@ public class Usuario {
 
     public void setFavoritos(List<Integer> favoritos) {
         this.favoritos = favoritos;
+    }
+
+    public boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean Admin) {
+        this.admin = Admin;
     }
 }

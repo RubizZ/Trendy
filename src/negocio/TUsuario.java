@@ -13,22 +13,22 @@ public class TUsuario implements Serializable {
     protected int anyoNacimiento;
     protected char sexo;
     protected String pais;
-    protected int suscripcion;
+    protected String suscripcion;
     protected List<Integer> favoritos;
     protected int id;
     protected String direccion;
     protected double saldo;
+    protected boolean admin = false;
 
-    public TUsuario(){}
-    public TUsuario (int Id) {
-        this.id= Id;
+    public TUsuario(int Id) {
+        this.id = Id;
     }
 
-    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, int Suscripcion, String Direccion, double Saldo) {
+    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, String Suscripcion, String Direccion, double Saldo, boolean Admin) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
-        correo_e =Correo;
+        correo_e = Correo;
         contrasenya = Contrasenya;
         anyoNacimiento = anyoNac;
         sexo = Sexo;
@@ -37,9 +37,10 @@ public class TUsuario implements Serializable {
         suscripcion = Suscripcion;
         direccion = Direccion;
         saldo = Saldo;
+        admin = Admin;
     }
 
-    public TUsuario(String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, String Direccion){
+    public TUsuario(String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, String Direccion, boolean Admin) {
         nombre = Nombre;
         apellidos = Apellidos;
         correo_e = Correo;
@@ -50,6 +51,8 @@ public class TUsuario implements Serializable {
         direccion = Direccion;
         saldo = 0;
         favoritos = new LinkedList<>();
+        admin = Admin;
+        //TODO suscripcion tiene q ser el id de la normal pero no se cual es
         suscripcion = 0;
     }
 
@@ -117,11 +120,11 @@ public class TUsuario implements Serializable {
         return this;
     }
 
-    public int getSuscripcion() {
+    public String getSuscripcion() {
         return suscripcion;
     }
 
-    public TUsuario setSuscripcion(int suscripcion) {
+    public TUsuario setSuscripcion(String suscripcion) {
         this.suscripcion = suscripcion;
         return this;
     }
@@ -159,6 +162,15 @@ public class TUsuario implements Serializable {
 
     public TUsuario setSaldo(double saldo) {
         this.saldo = saldo;
+        return this;
+    }
+
+    public boolean getAdmin() {
+        return admin;
+    }
+
+    public TUsuario setAdmin(boolean admin) {
+        this.admin = admin;
         return this;
     }
 
