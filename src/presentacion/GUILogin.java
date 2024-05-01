@@ -2,7 +2,9 @@ package presentacion;
 
 import negocio.SAFacade;
 
-public class GUILogin {
+import javax.swing.*;
+
+public class GUILogin extends JDialog {
     public GUILogin(SAFacade saFacade) {
     }
 

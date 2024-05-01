@@ -56,6 +56,7 @@ public class BOUsuario implements Observable<AuthObserver> {
     }
 
     public void onHacerPedido(int idCesta) { //TODO Hacer con PedidoObserver
+
         daoUsuario.actualizarCesta(tUsuario.getId(), idCesta);
     }
 

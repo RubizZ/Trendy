@@ -32,6 +32,7 @@ public class SAFacade {
     }
 
     //FUNCIONES MÓDULO ARTÍCULOS
+
     public tArticulo buscarArticulo(int id) {
         return saArticulo.buscarArticulo(id);
     }
@@ -83,7 +84,6 @@ public class SAFacade {
     public int getStock(int id, String color, String t) {
         return saStock.getStock(id, color, t);
     }
-
 
     //FUNCIONES MODULO PEDIDOS
     public void crearPedido() {
@@ -175,5 +175,6 @@ public class SAFacade {
 
     public void removeArticuloDeFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
         saCesta.removeArticuloDeFavoritos(toArticuloEnFavoritos);
+
     }
 }

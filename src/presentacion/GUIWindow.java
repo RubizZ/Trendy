@@ -71,7 +71,7 @@ public class GUIWindow extends JFrame {
             }
         }
     }
-
+  
     private void setIconAndPlayIntroAnimation() {
         try {
             Random random = new Random();
