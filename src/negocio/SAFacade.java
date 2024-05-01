@@ -37,8 +37,8 @@ public class SAFacade {
         return saArticulo.buscarArticulo(id);
     }
 
-    public void altaArticulo(tArticulo a, String fechal, String genero, int descuento) {
-        saArticulo.altaArticulo(a, fechal, genero, descuento);
+    public void altaArticulo(tArticulo a, String fechal, String genero, int descuento, int stock) {
+        saArticulo.altaArticulo(a, fechal, genero, descuento, stock);
     }
 
     public void bajaArticulo(tArticulo a) {
@@ -147,12 +147,20 @@ public class SAFacade {
         saUsuario.actualizarSuscr(id);
     }
 
+    public void actualizarSuscrAdmin(int userID, int id) {
+        saUsuario.actualizarSuscrAdmin(userID, id);
+    }
+
     public void login(String correo, String contraseña) {
         saUsuario.login(correo, contraseña);
     }
 
     public void logout() {
         saUsuario.logout();
+    }
+
+    public void actualizarSaldoAdmin(int cantidad, int id) {
+        saUsuario.actualizarSaldoAdmin(cantidad, id);
     }
 
     //FUNCIONES MODULO CESTA

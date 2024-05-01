@@ -29,7 +29,8 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setSexo((char) rS.getByte("sexo"))//TODO revisar si funciona
                             .setSuscripcion(rS.getString("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
-                            .setSaldo(rS.getDouble("saldo")));
+                            .setSaldo(rS.getDouble("saldo"))
+                            .setAdmin(rS.getBoolean("admin")));
                 }
                 return list;
             } catch (SQLException e) {
@@ -58,7 +59,9 @@ public class DAOImpUsuario implements DAOUsuario {
                             .setSexo((char) rS.getByte("sexo"))//TODO revisar q funcione esa funcion
                             .setSuscripcion(rS.getString("suscripcion_id"))
                             .setDireccion(rS.getString("Dirección"))
-                            .setSaldo(rS.getDouble("saldo"));
+                            .setSaldo(rS.getDouble("saldo"))
+                            .setAdmin(rS.getBoolean("admin"));
+
                 } else {
                     return null;
                 }
@@ -110,7 +113,7 @@ public class DAOImpUsuario implements DAOUsuario {
                     "', pais = '" + usuario.getPais() +
                     "', suscripcion_id = " + usuario.getSuscripcion() +
                     ", Dirección = '" + usuario.getDireccion() +
-                    "', saldo = " + usuario.getSaldo() + "WHERE ID = " + ID + ";";
+                    "', saldo = " + usuario.getSaldo() + " WHERE ID = " + ID;
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
@@ -160,7 +163,7 @@ public class DAOImpUsuario implements DAOUsuario {
     public void actualizarCesta(int idUsuario, int idCesta) {
         try (Connection connection = DBConnection.connect()) {
             String sql = "UPDATE Usuarios SET " +
-                    "cesta_activa_id = " + idCesta + "WHERE ID = " + idUsuario + ";";
+                    "cesta_activa_id =  '+"  + idCesta + "'WHERE ID = " + idUsuario + ";";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
@@ -175,7 +178,8 @@ public class DAOImpUsuario implements DAOUsuario {
     public void actualizarSaldo(int idUsuario, int cantidad) {
         try (Connection connection = DBConnection.connect()) {
             String sql = "UPDATE Usuarios SET " +
-                    "saldo = saldo +" + cantidad + "WHERE ID = " + idUsuario + ";";
+                    "saldo = saldo '+" + cantidad + "'WHERE ID = " + idUsuario + ";";
+
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {
