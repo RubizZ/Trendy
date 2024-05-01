@@ -143,4 +143,20 @@ public class BusinessDelegate {
     public void actualizarSusc(int id) {
         boUsuario.actualizarSuscr(id);
     }
+
+    public void addArticuloAFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
+        boCesta.addArticuloAFavoritos(toArticuloEnFavoritos);
+    }
+
+    public void removeArticuloDeFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
+        boCesta.removeArticuloDeFavoritos(toArticuloEnFavoritos);
+    }
+
+    public void login(String correo, String contraseña) {
+        boUsuario.login(correo, contraseña);
+    }
+
+    public void logout() {
+        boUsuario.logout();
+    }
 }

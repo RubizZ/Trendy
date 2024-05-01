@@ -2,44 +2,55 @@ package negocio;
 
 import java.util.Collection;
 
-public class SAUsuarioImp implements SAUsuario{
 
-    private BusinessDelegate bdUsuario;
+public class SAUsuarioImp extends AbstractSA implements SAUsuario {
 
     public SAUsuarioImp(BusinessDelegate bdUsuario) {
-        this.bdUsuario = bdUsuario;
+        super(bdUsuario);
     }
 
     @Override
     public boolean create(TUsuario tUsuario) {
-        return (bdUsuario.create(tUsuario) != null);
+        return (businessDelegate.create(tUsuario) != null);
     }
 
     @Override
-    public boolean getUsuario() {
-        return (bdUsuario.read() != null);
+    public String getUsuario() {
+        return businessDelegate.read().getNombre();
     }
 
     @Override
     public Collection<TUsuario> readAll() {
-        return bdUsuario.readAll();
+        return businessDelegate.readAll();
     }
 
     @Override
-    public void update(TUsuario tUsuario) {bdUsuario.update(tUsuario);
+    public void update(TUsuario tUsuario) {
+        businessDelegate.update(tUsuario);
     }
 
     @Override
-    public void delete(int id) {bdUsuario.delete(id);
+    public void delete(int id) {
+        businessDelegate.delete(id);
     }
 
     @Override
     public void actualizarSaldo(int cantidad) {
-        bdUsuario.actualizarSaldo(cantidad);
+        businessDelegate.actualizarSaldo(cantidad);
     }
 
     @Override
     public void actualizarSuscr(int id) {
-        bdUsuario.actualizarSusc(id);
+        businessDelegate.actualizarSusc(id);
+    }
+
+    @Override
+    public void login(String correo, String contraseña) {
+        businessDelegate.login(correo, contraseña);
+    }
+
+    @Override
+    public void logout() {
+        businessDelegate.logout();
     }
 }
