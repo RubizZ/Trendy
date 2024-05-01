@@ -7,7 +7,7 @@ public class Articulo {
     private double precio;
     private Subcategoria subcat;
 
-    public Articulo(tArticulo a){
+    public Articulo(tArticulo a) {
         this.ID = a.getID();
         this.name = a.getNombre();
         this.subcat = stringToSubcat(a.getSubcat());
@@ -15,16 +15,21 @@ public class Articulo {
     }
 
 
-    enum Subcategoria{
+    enum Subcategoria {
         CAMISETA, PANTALON, CHAQUETA, SUDADERA, ZAPATOS, BOLSOS, GORRAS, VESTIDOS, FALDAS, CHALECO, CALCETINES, JERSEY;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public double getPrecio() {
+        return precio;
+    }
 
-
-    public String subcategoriaToString(Subcategoria s){
+    public String subcategoriaToString(Subcategoria s) {
         String c = "";
-        switch(s){
+        switch (s) {
             case BOLSOS -> c = "Bolsos";
             case FALDAS -> c = "Faldas";
             case GORRAS -> c = "Gorras";
@@ -42,9 +47,9 @@ public class Articulo {
         return c;
     }
 
-    public Subcategoria stringToSubcat(String sub){
+    public Subcategoria stringToSubcat(String sub) {
         Subcategoria c = null;
-        switch(sub.toUpperCase()){
+        switch (sub.toUpperCase()) {
             case "BOLSOS" -> c = Subcategoria.BOLSOS;
             case "FALDAS" -> c = Subcategoria.FALDAS;
             case "GORRAS" -> c = Subcategoria.GORRAS;
@@ -60,7 +65,6 @@ public class Articulo {
         }
         return c;
     }
-
 
 
 }
