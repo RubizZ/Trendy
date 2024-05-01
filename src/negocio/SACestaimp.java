@@ -1,12 +1,11 @@
 package negocio;
 
 
-public class SACestaimp implements SACesta {
+public class SACestaimp extends AbstractSA implements SACesta {
 
-    private final BusinessDelegate businessDelegate;
 
     public SACestaimp(BusinessDelegate businessDelegate) {
-        this.businessDelegate = businessDelegate;
+        super(businessDelegate);
     }
 
     @Override
@@ -22,5 +21,15 @@ public class SACestaimp implements SACesta {
     @Override
     public void removeArticuloDeCesta(TOArticuloEnCesta toArticuloEnCesta) {
         businessDelegate.removeArticuloDeCesta(toArticuloEnCesta);
+    }
+
+    @Override
+    public void addArticuloAFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
+        businessDelegate.addArticuloAFavoritos(toArticuloEnFavoritos);
+    }
+
+    @Override
+    public void removeArticuloDeFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
+        businessDelegate.removeArticuloDeFavoritos(toArticuloEnFavoritos);
     }
 }

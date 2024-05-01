@@ -65,10 +65,21 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
         panelMap.put(articulo.getIdArticulo()+"", _articulo);
         mainPanel.add(_articulo);
         mainPanel.repaint();
+import negocio.SAFacade;
+
+public class GUICesta extends MainGUIPanel {
+    public GUICesta(SAFacade saFachade) {
+    }
+
+    @Override
+    public void update() {
 
     }
 
     @Override
+    public void reset() {
+
+    }
     public void onArticuloUpdated(TOArticuloEnCesta articulo) {
         //ELIMINAMOS EL PANEL CON LA INFORMACION ANTIGUA
         JPanel eliminar = panelMap.get(articulo.getIdArticulo()+"");
