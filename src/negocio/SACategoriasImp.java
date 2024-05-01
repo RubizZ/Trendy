@@ -23,7 +23,7 @@ public class SACategoriasImp extends AbstractSA implements SACategorias{
 
     @Override
     public void actualizaExclusivos() {
-
+        businessDelegate.actualizaExclusivos();
     }
 
 }
