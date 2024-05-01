@@ -1,21 +1,24 @@
 package presentacion;
 
 import launcher.SAFactory;
-import negocio.*;
+import negocio.CestaObserver;
+import negocio.SAFacade;
+import negocio.TOArticuloEnCesta;
+import negocio.TOCesta;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class GUICesta extends MainGuiPanel implements CestaObserver{
+public class GUICesta extends MainGUIPanel implements CestaObserver {
 
     SAFacade facade;
     JPanel mainPanel;
     private HashMap<String, JPanel> panelMap;
 
     public GUICesta(SAFacade saFacade) {
-        facade = saFacade;
+        this.facade = saFacade;
         panelMap = new HashMap<>();
         initGui();
     }
@@ -62,24 +65,12 @@ public class GUICesta extends MainGuiPanel implements CestaObserver{
         _articulo.add(new JLabel(articulo.getTalla() + ""));
         _articulo.add(new JLabel(articulo.getCantidad() + ""));
         addButtons(_articulo, articulo);
-        panelMap.put(articulo.getIdArticulo()+"", _articulo);
+        panelMap.put(articulo.getIdArticulo() + "", _articulo);
         mainPanel.add(_articulo);
         mainPanel.repaint();
-import negocio.SAFacade;
-
-public class GUICesta extends MainGUIPanel {
-    public GUICesta(SAFacade saFachade) {
     }
 
-    @Override
-    public void update() {
 
-    }
-
-    @Override
-    public void reset() {
-
-    }
     public void onArticuloUpdated(TOArticuloEnCesta articulo) {
         //ELIMINAMOS EL PANEL CON LA INFORMACION ANTIGUA
         JPanel eliminar = panelMap.get(articulo.getIdArticulo()+"");
@@ -103,7 +94,7 @@ public class GUICesta extends MainGUIPanel {
     }
 
     private void addButtons(JPanel panel, TOArticuloEnCesta art){
-        int stock = facade.getStock(art.getIdArticulo(),art.getColor(),art.getTalla());
+        int stock = facade.getStock(art.getIdArticulo(),art.getColor().name(),art.getTalla().name());
         SpinnerNumberModel cantidad = new SpinnerNumberModel(0,0,stock, 1);
         JSpinner unidades = new JSpinner(cantidad);
         panel.add(unidades);
@@ -116,6 +107,17 @@ public class GUICesta extends MainGUIPanel {
             }
             art.setCantidad(uds);
         }));
+    }
+
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void reset() {
+
     }
 
 }
