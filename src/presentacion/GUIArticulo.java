@@ -3,7 +3,6 @@ package presentacion;
 import negocio.Articulo;
 import negocio.BOStock;
 import negocio.SAFacade;
-import negocio.TOArticuloEnCesta;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,7 +100,7 @@ public class GUIArticulo extends JPanel {
         tallas.add(M);
         tallas.add(L);
         tallas.add(XL);
-        tallas.addActionListener((e)->{
+        tallas.addActionListener((e) -> {
             String aux = e.getActionCommand();
             this.tallaselect = BOStock.stringtoTalla(e.getActionCommand());
         });
@@ -126,7 +125,7 @@ public class GUIArticulo extends JPanel {
         //Unidades:
         JPanel unidades = new JPanel();
         JLabel lunidades = new JLabel("Unidades a comprar");
-        int stock = this.sa.getStock(this.art.getID(), boxcolores.getSelectedItem() , this.tallaselect );
+        int stock = this.sa.getStock(this.art.getID(), (String) boxcolores.getSelectedItem(), String.valueOf(this.tallaselect));
         uds = new JSpinner(new SpinnerNumberModel(1, 1, stock, 1));
         unidades.add(lunidades);
         unidades.add(uds);
@@ -138,14 +137,13 @@ public class GUIArticulo extends JPanel {
         JPanel end = new JPanel();
         end.setLayout(new BoxLayout(end, BoxLayout.X_AXIS));
         end.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        if(this.categoria == "EXCLUSIVOS"){
+        if (this.categoria == "EXCLUSIVOS") {
             reservar = new JButton("Reservar");
             reservar.addActionListener((e) -> {
                 //se reserva
 
             });
-        }
-        else{
+        } else {
             cesta = new JButton("Añadir a cesta");
             cesta.addActionListener((e) -> {
                 //se añade a la cesta (sa)

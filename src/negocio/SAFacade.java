@@ -69,8 +69,8 @@ public class SAFacade {
         return saLista.buscaFiltro(lista, pred);
     }
 
-    public void altaArticuloStock(tStock s) {
-        saStock.altaArticuloStock(s);
+    public void altaArticuloStock(int id, int s) {
+        saStock.altaArticuloStock(id, s);
     }
 
     public void bajaArticuloStock(int id) {
@@ -83,6 +83,10 @@ public class SAFacade {
 
     public int getStock(int id, String color, String t) {
         return saStock.getStock(id, color, t);
+    }
+
+    public List<String> getCategorias() {
+        return saCategorias.getCategorias();
     }
 
     //FUNCIONES MODULO PEDIDOS

@@ -27,7 +27,7 @@ public class Articulo {
     }
 
 
-    public String subcategoriaToString(Subcategoria s) {
+    public static String subcategoriaToString(Subcategoria s) {
         String c = "";
         switch (s) {
             case BOLSOS -> c = "Bolsos";

@@ -2,9 +2,9 @@ package negocio;
 
 import java.util.List;
 
-public class SACategoriasImp extends AbstractSA implements SACategorias{
+public class SACategoriasImp extends AbstractSA implements SACategorias {
 
-    public SACategoriasImp(BusinessDelegate b){
+    public SACategoriasImp(BusinessDelegate b) {
         super(b);
     }
 
@@ -30,7 +30,7 @@ public class SACategoriasImp extends AbstractSA implements SACategorias{
 
     @Override
     public List<String> getCategorias() {
-        return ncat.getCategorias();
+        return businessDelegate.getCategorias();
     }
 
 }
