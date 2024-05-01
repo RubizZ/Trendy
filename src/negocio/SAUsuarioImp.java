@@ -2,7 +2,7 @@ package negocio;
 
 import java.util.Collection;
 
-public class SAUsuarioImp extends AbstractSA implements SAUsuario{
+public class SAUsuarioImp extends AbstractSA implements SAUsuario {
 
     public SAUsuarioImp(BusinessDelegate bdUsuario) {
         super(bdUsuario);

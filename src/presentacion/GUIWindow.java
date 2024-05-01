@@ -201,12 +201,10 @@ public class GUIWindow extends JFrame {
     }
 
     private Consumer<JScrollPane> changePanelAction() {
-        return (panel) -> {
-            Transitions.makeWhiteFadeTransition(lastPanel.getLeft(), panel, 1, (from, to) -> {
-                mainPanel.remove(from);
-                mainPanel.add(to, BorderLayout.CENTER);
-            });
-        };
+        return (panel) -> Transitions.makeWhiteFadeTransition(lastPanel.getLeft(), panel, 1, (from, to) -> {
+            mainPanel.remove(from);
+            mainPanel.add(to, BorderLayout.CENTER);
+        });
     }
 
     private void waitForAnimation() {
