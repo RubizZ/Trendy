@@ -147,6 +147,10 @@ public class BusinessDelegate {
         boUsuario.actualizarSuscr(id);
     }
 
+    public void actualizarSuscAdmin(int userID, int id) {
+        boUsuario.actualizarSuscrAdmin(userID, id);
+    }
+
     public void addArticuloAFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
         boCesta.addArticuloAFavoritos(toArticuloEnFavoritos);
     }
@@ -161,5 +165,9 @@ public class BusinessDelegate {
 
     public void logout() {
         boUsuario.logout();
+    }
+
+    public void actualizarSaldoAdmin(int cantidad, int id) {
+        boUsuario.actualizarSaldoAdmin(cantidad, id);
     }
 }

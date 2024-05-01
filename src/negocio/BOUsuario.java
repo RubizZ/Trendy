@@ -64,6 +64,10 @@ public class BOUsuario implements Observable<AuthObserver> {
         daoUsuario.actualizarSuscripcion(tUsuario.getId(), id);
     }
 
+    public void actualizarSuscrAdmin(int userID, int id) {
+        daoUsuario.actualizarSuscripcion(userID, id);
+    }
+
     @Override
     public void addObserver(AuthObserver observer) {
         observers.add(observer);
@@ -99,5 +103,10 @@ public class BOUsuario implements Observable<AuthObserver> {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void actualizarSaldoAdmin(int cantidad, int id) {
+        if(tUsuario.admin)
+            daoUsuario.actualizarSaldo(id, cantidad);
     }
 }
