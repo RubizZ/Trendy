@@ -141,7 +141,7 @@ public class BusinessDelegate {
     public void delete(int id) {boUsuario.delete(id);
     }
 
-    public void actualizarSaldo(int cantidad){boUsuario.actualizarCesta(cantidad);}
+    public void actualizarSaldo(double cantidad){boUsuario.actualizarSaldo(cantidad);}
 
     public void actualizarSusc(int id) {
         boUsuario.actualizarSuscr(id);

@@ -25,6 +25,8 @@ public class GUIPerfil extends MainGUIPanel {
     private JTextField _pais;
     private JTextField _anyoNac;
     private JTextField _direccion;
+    private JComboBox<Character> _sexo;
+    private DefaultComboBoxModel<Character> sexModel = new DefaultComboBoxModel<>();
 
     private JPanel cards;
     private static final String PANELINI = "Panel_ini";
@@ -38,6 +40,21 @@ public class GUIPerfil extends MainGUIPanel {
         initGUI();
     }
 
+
+    private void setComboBox(){
+        sexModel.addElement('M');
+        sexModel.addElement('F');
+    }
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
     class VentanaMensaje extends JFrame {
         public VentanaMensaje(String mensaje) {
             JLabel etiqueta = new JLabel(mensaje);
@@ -48,7 +65,7 @@ public class GUIPerfil extends MainGUIPanel {
     }
 
     private void initGUI() {
-
+        JPanel mainPanel = new JPanel(new BorderLayout());
         cards = new JPanel(new CardLayout());
 
         //CREAMOS LOS PANELES
@@ -79,8 +96,7 @@ public class GUIPerfil extends MainGUIPanel {
         //PANEL QUE SE VA A MOSTRAR AL PRINCIPIO
         JPanel panelIni = new JPanel();
         panelIni.setLayout(new BoxLayout(panelIni, BoxLayout.Y_AXIS));
-        JLabel nombre = new JLabel(saFacade.getUsuario().getNombre() + " " +
-                saFacade.getUsuario().getApellidos());
+        JLabel nombre = new JLabel(saFacade.getUsuario());
         panelIni.add(nombre);
 
 
@@ -126,8 +142,8 @@ public class GUIPerfil extends MainGUIPanel {
 
 
         // Agrega los paneles y el panel de botones al panel principal
-        getContentPane().add(cards, BorderLayout.CENTER);
-        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(cards, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.PAGE_START);
     }
 
 
@@ -180,6 +196,13 @@ public class GUIPerfil extends MainGUIPanel {
         _direccion.setAlignmentX(Component.CENTER_ALIGNMENT);
         _direccion.setToolTipText("Introduzca su direccion");
         modPanel.add(_direccion);
+
+        addJLabel("Sexo", modPanel);
+        setComboBox();
+        _sexo = new JComboBox<>(sexModel);
+        _sexo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        _sexo.setToolTipText("Elija su sexo");
+        modPanel.add(_sexo);
 
 
         CardLayout cl = (CardLayout)(cards.getLayout());
@@ -279,8 +302,8 @@ public class GUIPerfil extends MainGUIPanel {
         anyo = Integer.parseInt(_anyoNac.getText());
         pais = _pais.getText();
         dir = _direccion.getText();
-        sexo = saFacade.getUsuario().getSexo();
-        return new TUsuario(nombre, apellidos, correo, contrasenya, anyo, sexo, pais, dir);
+        sexo = (char) _sexo.getSelectedItem();
+        return new TUsuario(nombre, apellidos, correo, contrasenya, anyo, sexo, pais, dir, false);
     }
 
 
