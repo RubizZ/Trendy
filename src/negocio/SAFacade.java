@@ -108,6 +108,10 @@ public class SAFacade {
         saPedidos.cancelarPedido(ID);
     }
 
+    public TOPedido getLastPedido() {
+        return null; //TODO
+    }
+
     //FUNCIONES MÓDULO USUARIO
     public boolean create(TUsuario tUsuario){
         return saUsuario.create(tUsuario);
@@ -151,8 +155,11 @@ public class SAFacade {
         saCesta.removeArticuloDeCesta(toArticuloEnCesta);
     }
 
+    public void addArticuloAFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
+        saCesta.addArticuloAFavoritos(toArticuloEnFavoritos);
+    }
 
-    public TOPedido getLastPedido() {
-        return null; //TODO
+    public void removeArticuloDeFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
+        saCesta.removeArticuloDeFavoritos(toArticuloEnFavoritos);
     }
 }
