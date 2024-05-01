@@ -4,6 +4,7 @@ import negocio.SAUsuarioImp;
 import negocio.Suscripciones;
 import negocio.TUsuario;
 import utils.ViewUtils;
+import negocio.SAFacade;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 
 public class GUIPerfil extends MainGUIPanel {
 
-    private SAUsuarioImp saUsuario;
+    private SAFacade saFacade;
     private TUsuario tUsuario;
 
     private JTextField _nombre;
@@ -33,7 +34,7 @@ public class GUIPerfil extends MainGUIPanel {
     private static final String PANELSALDO = "Panel_saldo";
 
     public GUIPerfil(SAFacade facade){
-        saUsuario = facade;
+        saFacade = facade;
         initGUI();
     }
 
@@ -78,8 +79,8 @@ public class GUIPerfil extends MainGUIPanel {
         //PANEL QUE SE VA A MOSTRAR AL PRINCIPIO
         JPanel panelIni = new JPanel();
         panelIni.setLayout(new BoxLayout(panelIni, BoxLayout.Y_AXIS));
-        JLabel nombre = new JLabel(saUsuario.getUsuario().getNombre() + " " +
-                saUsuario.getUsuario().getApellidos());
+        JLabel nombre = new JLabel(saFacade.getUsuario().getNombre() + " " +
+                saFacade.getUsuario().getApellidos());
         panelIni.add(nombre);
 
 
@@ -193,7 +194,7 @@ public class GUIPerfil extends MainGUIPanel {
         _confirmar.addActionListener((e) -> {
             TUsuario usuario = crearUsuario();
             try{
-                saUsuario.update(usuario);
+                saFacade.update(usuario);
                 VentanaMensaje ventana = new VentanaMensaje("Los datos se han modificado correctamente");
             }catch(RuntimeException re){
                 throw new RuntimeException("No se han podido actualizar los datos: ");
@@ -231,7 +232,7 @@ public class GUIPerfil extends MainGUIPanel {
         panelSaldo.add(confirmar);
         confirmar.addActionListener((e -> {
             int cantidad = (int) sumarASaldo.getValue();
-            saUsuario.actualizarSaldo(cantidad);
+            saFacade.actualizarSaldo(cantidad);
             VentanaMensaje ventanaMensaje = new VentanaMensaje("Saldo añadido con éxito!");
             cl.show(cards, "Panel_ini");
         }));
@@ -259,13 +260,13 @@ public class GUIPerfil extends MainGUIPanel {
         JButton confirmar = new JButton("Confirmar");
         panelSuscr.add(confirmar);
         confirmar.addActionListener((e -> {
-            saUsuario.actualizarSuscr(comboBoxSusc.getSelectedIndex());
+            saFacade.actualizarSuscr(comboBoxSusc.getSelectedIndex());
             VentanaMensaje ventanaMensaje = new VentanaMensaje("Suscripcion actualizada con éxito!");
             cl.show(cards, "Panel_ini");
         }));
     }
 
-    
+
 
     private TUsuario crearUsuario(){
         String nombre, apellidos, correo, contrasenya, pais, dir;
@@ -278,7 +279,7 @@ public class GUIPerfil extends MainGUIPanel {
         anyo = Integer.parseInt(_anyoNac.getText());
         pais = _pais.getText();
         dir = _direccion.getText();
-        sexo = saUsuario.getUsuario().getSexo();
+        sexo = saFacade.getUsuario().getSexo();
         return new TUsuario(nombre, apellidos, correo, contrasenya, anyo, sexo, pais, dir);
     }
 
