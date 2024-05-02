@@ -125,9 +125,9 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
 
     private void initGUI() {
         mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setPreferredSize(window.getSize());
+        mainPanel.setPreferredSize(window.getContentPane().getPreferredSize());
         cards = new JPanel(new CardLayout());
-        setViewportView(mainPanel);
+
         //CREAMOS LOS PANELES
         //PANEL DE MODIFICAR DATOS
         JPanel panelMod = new JPanel();
@@ -184,6 +184,8 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
         //PANEL PARA AÑADIR LOS BOTONES
         buttonPanel = new JPanel();
 
+        buttonPanel.setLayout(new GridLayout(1, 0));
+
         //BOTON PARA VOLVER AL PANEL INICIAL
         JButton ini = new JButton("Inicio");
         buttonPanel.add(ini);
@@ -204,7 +206,7 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
         }));
 
         //BOTON PARA VER MIS PEDIDOS
-        JButton ver_pedidos = new JButton("Ver mis pedidos");
+        JButton ver_pedidos = new JButton("Mis pedidos");
         buttonPanel.add(ver_pedidos);
         ver_pedidos.addActionListener((e -> {
             cl.show(cards, "Panel_ped");
@@ -252,6 +254,8 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
         mainPanel.add(cards, BorderLayout.CENTER);
 
         mainPanel.add(buttonPanel, BorderLayout.PAGE_START);
+
+        setViewportView(mainPanel);
     }
 
 
@@ -346,10 +350,9 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
 
     private void configurarPanelPedidos(JPanel panelPedidos) {
 
-
         JPanel filtros = new JPanel(); //TODO Hacer PedidosObserver
 
-        filtros.setLayout(new GridLayout());
+        filtros.setLayout(new BoxLayout(filtros, BoxLayout.X_AXIS));
 
         JLabel filtro = new JLabel("Filtros: ");
         filtros.add(filtro);
@@ -423,7 +426,6 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
                 });
             }
         });
-
 
         JScrollPane scrollPane = new JScrollPane(tablaPedidos);
         panelPedidos.add(scrollPane, BorderLayout.CENTER);

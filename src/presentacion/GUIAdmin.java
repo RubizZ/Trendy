@@ -5,6 +5,7 @@ import negocio.TOStatusPedido;
 import negocio.tArticulo;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.Objects;
 
@@ -28,6 +29,8 @@ public class GUIAdmin extends JPanel {
 
         setLayout(new BorderLayout());
 
+        setBorder(new TitledBorder("Admin"));
+
         initCrearArticulo();
         initAñadirSaldo();
         initCambiarSuscripcion();
@@ -39,6 +42,8 @@ public class GUIAdmin extends JPanel {
         paneles.add(añadirSaldo);
         paneles.add(cambiarSuscripcion);
         paneles.add(cambiarEstadoPedido);
+
+        crearArticulo.setVisible(true);
 
         this.add(paneles, BorderLayout.CENTER);
 
@@ -85,6 +90,7 @@ public class GUIAdmin extends JPanel {
         botones.add(bCambiarEstadoPedido);
 
         add(botones, BorderLayout.NORTH);
+
     }
 
     private void initCrearArticulo() {
@@ -93,25 +99,31 @@ public class GUIAdmin extends JPanel {
 
         crearArticulo = new JPanel();
         crearArticulo.setLayout(new BoxLayout(crearArticulo, BoxLayout.Y_AXIS));
+        crearArticulo.setBorder(new TitledBorder("Crear Articulo"));
+        crearArticulo.setVisible(false);
 
         JLabel lId = new JLabel("ID: ");
         this.crearArticulo.add(lId);
         JTextField tId = new JTextField();
+        tId.setMaximumSize(new Dimension(200, 20));
         this.crearArticulo.add(tId);
 
         JLabel lNombre = new JLabel("Nombre: ");
         this.crearArticulo.add(lNombre);
         JTextField tNombre = new JTextField();
+        tNombre.setMaximumSize(new Dimension(200, 20));
         this.crearArticulo.add(tNombre);
 
         JLabel lSubcategoria = new JLabel("Subcategoria: ");
         this.crearArticulo.add(lSubcategoria);
         JTextField tSubcategoria = new JTextField();
+        tSubcategoria.setMaximumSize(new Dimension(200, 20));
         this.crearArticulo.add(tSubcategoria);
 
         JLabel lPrecio = new JLabel("Precio: ");
         this.crearArticulo.add(lPrecio);
         JTextField tPrecio = new JTextField();
+        tPrecio.setMaximumSize(new Dimension(200, 20));
         this.crearArticulo.add(tPrecio);
 
 
@@ -119,11 +131,13 @@ public class GUIAdmin extends JPanel {
         JLabel lFecha = new JLabel("Fecha: ");
         this.crearArticulo.add(lFecha);
         JTextField tFecha = new JTextField();
+        tFecha.setMaximumSize(new Dimension(200, 20));
         this.crearArticulo.add(tFecha);
 
         JLabel lDescuento = new JLabel("Descuento: ");
         this.crearArticulo.add(lDescuento);
         JTextField tDescuento = new JTextField();
+        tDescuento.setMaximumSize(new Dimension(200, 20));
         this.crearArticulo.add(tDescuento);
 
         JLabel lGenero = new JLabel("Genero: ");
@@ -133,11 +147,13 @@ public class GUIAdmin extends JPanel {
         model.addElement("Mujer");
         //TODO mirar de meter bien los generos
         JComboBox<String> cbGenero = new JComboBox<>(model);
+        cbGenero.setMaximumSize(new Dimension(200, 20));
         this.crearArticulo.add(cbGenero);
 
         JLabel lStock = new JLabel("Stock: ");
         this.crearArticulo.add(lStock);
         JTextField tStock = new JTextField();
+        tStock.setMaximumSize(new Dimension(200, 20));
         this.crearArticulo.add(tStock);
 
 
@@ -159,21 +175,25 @@ public class GUIAdmin extends JPanel {
             crearArticulo.setVisible(false);
             this.setVisible(true);
         });
-
     }
 
     private void initAñadirSaldo() {
 
         añadirSaldo = new JPanel();
+        añadirSaldo.setLayout(new BoxLayout(añadirSaldo, BoxLayout.Y_AXIS));
+        añadirSaldo.setBorder(new TitledBorder("Añadir Saldo"));
+        añadirSaldo.setVisible(false);
 
         JLabel lId = new JLabel("ID: ");
         this.añadirSaldo.add(lId);
         JTextField tId = new JTextField();
+        tId.setMaximumSize(new Dimension(200, 20));
         this.añadirSaldo.add(tId);
 
         JLabel lSaldo = new JLabel("Saldo: ");
         this.añadirSaldo.add(lSaldo);
         JTextField tSaldo = new JTextField();
+        tSaldo.setMaximumSize(new Dimension(200, 20));
         this.añadirSaldo.add(tSaldo);
 
         JButton bAñadir = new JButton("Añadir");
@@ -193,16 +213,21 @@ public class GUIAdmin extends JPanel {
     private void initCambiarSuscripcion() {
 
         cambiarSuscripcion = new JPanel();
+        cambiarSuscripcion.setLayout(new BoxLayout(cambiarSuscripcion, BoxLayout.Y_AXIS));
+        cambiarSuscripcion.setBorder(new TitledBorder("Cambiar Suscripcion"));
+        cambiarSuscripcion.setVisible(false);
 
         JLabel lId = new JLabel("ID: ");
         this.cambiarSuscripcion.add(lId);
         JTextField tId = new JTextField();
+        tId.setMaximumSize(new Dimension(200, 20));
         this.cambiarSuscripcion.add(tId);
 
         JLabel lSuscripcion = new JLabel("Suscripcion: ");
         this.cambiarSuscripcion.add(lSuscripcion);
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         JComboBox<String> cbSuscripcion = new JComboBox<>(model);
+        cbSuscripcion.setMaximumSize(new Dimension(200, 20));
         this.cambiarSuscripcion.add(cbSuscripcion);
 
         JButton bCambiar = new JButton("Cambiar");
@@ -221,15 +246,20 @@ public class GUIAdmin extends JPanel {
 
     private void initCambiarEstadoPedido() {
         cambiarEstadoPedido = new JPanel();
+        cambiarEstadoPedido.setVisible(false);
+        cambiarEstadoPedido.setLayout(new BoxLayout(cambiarEstadoPedido, BoxLayout.Y_AXIS));
+        cambiarEstadoPedido.setBorder(new TitledBorder("Cambiar Estado Pedido"));
 
         JLabel lId = new JLabel("ID: ");
         this.cambiarEstadoPedido.add(lId);
 
         JTextField tId = new JTextField();
+        tId.setMaximumSize(new Dimension(200, 20));
         this.cambiarEstadoPedido.add(tId);
 
         DefaultComboBoxModel<TOStatusPedido> model = new DefaultComboBoxModel<>(TOStatusPedido.values());
         JComboBox<TOStatusPedido> cbEstado = new JComboBox<>(model);
+        cbEstado.setMaximumSize(new Dimension(200, 20));
         this.cambiarEstadoPedido.add(cbEstado);
 
         JButton bCambiar = new JButton("Cambiar");

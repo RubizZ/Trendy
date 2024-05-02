@@ -1,16 +1,15 @@
 package presentacion;
 
-import negocio.SAFacade;
-import negocio.TOPedido;
-import negocio.TOStatusPedido;
+import negocio.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
-public class GUIHome extends MainGUIPanel {
+public class GUIHome extends MainGUIPanel implements AuthObserver {
 
     private final GUIWindow mainWindow;
     private JPanel contentPanel;
@@ -18,11 +17,13 @@ public class GUIHome extends MainGUIPanel {
     private TOPedido lastPedido;
     private JPanel jpArticulosExclusivos;
     private JPanel jpLastPedido;
+    private JLabel jlWelcome;
 
     public GUIHome(GUIWindow mainWindow, SAFacade saFachade) {
         super();
         this.mainWindow = mainWindow;
         this.saFachade = saFachade;
+        this.saFachade.registerObserver(this);
         initGUI();
     }
 
@@ -32,13 +33,8 @@ public class GUIHome extends MainGUIPanel {
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
         JPanel jpTitle = new JPanel();
-        JLabel jlWelcome = new JLabel();
+        jlWelcome = new JLabel();
         jlWelcome.setFont(new Font("Arial", Font.BOLD, 20));
-        if (saFachade.getUsuario() != null) {
-            jlWelcome.setText("Hola, " + saFachade.getUsuario().getNombre()); //TODO Añadir getUsername()
-        } else {
-            jlWelcome.setText("Bienvenido!");
-        }
         jpTitle.add(jlWelcome);
         jpTitle.setBorder(BorderFactory.createTitledBorder("Home"));
         contentPanel.add(jpTitle);
@@ -67,20 +63,25 @@ public class GUIHome extends MainGUIPanel {
     private void putArticulosExclusivos() {
         jpArticulosExclusivos.removeAll();
 
-        saFachade.buscaArticulosCategoria("Exclusivos").forEach(articulo -> {
-            JPanel jpArticulo = new JPanel(new BorderLayout());
-            jpArticulo.add(new JLabel(articulo.getName()), BorderLayout.NORTH);
-            jpArticulo.add(new JLabel(articulo.getPrecio() + "€"), BorderLayout.SOUTH);
-            jpArticulo.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    //mainWindow.showArticulo(articulo); //TODO
-                }
-            });
-            jpArticulosExclusivos.add(jpArticulo);
-        });
+        List<Articulo> exclusivos = saFachade.buscaArticulosCategoria("Exclusivos");
 
-        jpArticulosExclusivos.add(new JLabel("No hay articulos exclusivos")); //TODO Borrar
+        if (exclusivos.isEmpty()) {
+            jpArticulosExclusivos.add(new JLabel("No hay articulos exclusivos"));
+        } else {
+
+            exclusivos.forEach(articulo -> {
+                JPanel jpArticulo = new JPanel(new BorderLayout());
+                jpArticulo.add(new JLabel(articulo.getName()), BorderLayout.NORTH);
+                jpArticulo.add(new JLabel(articulo.getPrecio() + "€"), BorderLayout.SOUTH);
+                jpArticulo.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        //mainWindow.showArticulo(articulo); //TODO
+                    }
+                });
+                jpArticulosExclusivos.add(jpArticulo);
+            });
+        }
 
     }
 
@@ -154,6 +155,11 @@ public class GUIHome extends MainGUIPanel {
 
     @Override
     public void update() {
+        if (saFachade.getUsuario() != null) {
+            jlWelcome.setText("Hola, " + saFachade.getUsuario().getNombre());
+        } else {
+            jlWelcome.setText("Bienvenido!");
+        }
         putArticulosExclusivos();
         updatePedido(jpLastPedido);
     }
@@ -161,5 +167,16 @@ public class GUIHome extends MainGUIPanel {
     @Override
     public void reset() {
         getVerticalScrollBar().setValue(0);
+    }
+
+    @Override
+    public void onAuthChanged(boolean isAuth, int idUsuario) {
+        if (saFachade.getUsuario() != null) {
+            jlWelcome.setText("Hola, " + saFachade.getUsuario().getNombre());
+        } else {
+            jlWelcome.setText("Bienvenido!");
+        }
+        putArticulosExclusivos();
+        updatePedido(jpLastPedido);
     }
 }
