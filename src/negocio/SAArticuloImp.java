@@ -1,8 +1,8 @@
 package negocio;
 
-public class SAArticuloImp extends AbstractSA implements SAArticulo{
+public class SAArticuloImp extends AbstractSA implements SAArticulo {
 
-    public SAArticuloImp(BusinessDelegate nart){
+    public SAArticuloImp(BusinessDelegate nart) {
         super(nart);
     }
 
@@ -12,7 +12,7 @@ public class SAArticuloImp extends AbstractSA implements SAArticulo{
     }
 
     @Override
-    public void altaArticulo(tArticulo a, String fechal, String genero, int descuento, int s) {
+    public void altaArticulo(tArticulo a, String fechal, String genero, double descuento, int s) {
         businessDelegate.altaArticulo(a, fechal, genero, descuento, s);
     }
 

@@ -6,6 +6,7 @@ import negocio.tArticulo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 
 public class GUIAdmin extends JPanel {
@@ -144,7 +145,12 @@ public class GUIAdmin extends JPanel {
         this.crearArticulo.add(bCrear);
         bCrear.addActionListener(e -> {
             tArticulo art = new tArticulo(Integer.parseInt(tId.getText()), tNombre.getText(), tSubcategoria.getText(), Double.parseDouble(tPrecio.getText()));
-            saFacade.altaArticulo(art, tFecha.getText(), (String) cbGenero.getSelectedItem(), Integer.parseInt(tDescuento.getText()), Integer.parseInt(tStock.getText()));
+            String gen = String.valueOf(cbGenero.getSelectedItem());
+            String fecha = "";
+            if (!Objects.equals(tFecha.getText(), "")) fecha = tFecha.getText();
+            double descuento = 0.0;
+            if (!Objects.equals(tDescuento.getText(), "")) descuento = Double.parseDouble(tDescuento.getText());
+            saFacade.altaArticulo(art, fecha, gen, descuento, Integer.parseInt(tStock.getText()));
         });
 
         JButton bCancelar = new JButton("Cancelar");

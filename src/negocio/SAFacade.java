@@ -40,7 +40,7 @@ public class SAFacade {
         return saArticulo.buscarArticulo(id);
     }
 
-    public void altaArticulo(tArticulo a, String fechal, String genero, int descuento, int stock) {
+    public void altaArticulo(tArticulo a, String fechal, String genero, double descuento, int stock) {
         saArticulo.altaArticulo(a, fechal, genero, descuento, stock);
     }
 
@@ -101,8 +101,8 @@ public class SAFacade {
         return saPedidos.getAllPedidos();
     }
 
-    public Collection<TOPedido> getPedidosUsuario(int IDUsuario) {
-        return saPedidos.getPedidosUsuario(IDUsuario);
+    public Collection<TOPedido> getPedidosUsuario() {
+        return saPedidos.getPedidosUsuario();
     }
 
     public Collection<TOPedido> getPedidosStatus(TOStatusPedido TOStatusPedido) {
