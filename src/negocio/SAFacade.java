@@ -72,6 +72,10 @@ public class SAFacade {
         return saLista.buscaFiltro(lista, pred);
     }
 
+    public boolean esExclusivo(Articulo art) {
+        return saCategorias.esExclusivo(art);
+    }
+
     public void altaArticuloStock(int id, int s) {
         saStock.altaArticuloStock(id, s);
     }

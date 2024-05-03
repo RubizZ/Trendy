@@ -1,5 +1,7 @@
 package integracion;
 
+import negocio.Articulo;
+
 import java.util.List;
 
 public interface DAOCategorias {
@@ -12,4 +14,6 @@ public interface DAOCategorias {
     public List<String> getCategorias();
 
     public void actualizaExclusivos();
+
+    public boolean esExclusivo(Articulo art);
 }

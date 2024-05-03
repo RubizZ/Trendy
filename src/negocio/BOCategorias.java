@@ -50,4 +50,8 @@ public class BOCategorias {
     public void actualizaExclusivos() {
         dao.actualizaExclusivos();
     }
+
+    public boolean esExclusivo(Articulo art) {
+        return dao.esExclusivo(art);
+    }
 }

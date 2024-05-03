@@ -132,6 +132,10 @@ public class BusinessDelegate {
         return boListas.buscaFiltro(lista, pred);
     }
 
+    public boolean esExclusivo(Articulo art) {
+        return boCategorias.esExclusivo(art);
+    }
+
     public void cancelarPedido(int id) {
         boPedido.cancelarPedido(id);
     }

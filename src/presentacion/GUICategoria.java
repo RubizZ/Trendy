@@ -20,7 +20,6 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
     private SAFacade sa;
     private String cat;
     private JButton atras;
-    private JMenu filtro;
     private GUIPpalCategorias guippal;
     private JPanel art;
 
@@ -56,7 +55,8 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         arriba.add(atras);
 
         //BOTON FILTRAR
-        this.filtro = new JMenu("Filtrar");
+        JMenuBar fmenuBar = new JMenuBar();
+        JMenu filtro = new JMenu("Filtrar");
         filtro.setToolTipText("Filtra los productos con determinadas caracteristicas");
         filtro.setAlignmentX(RIGHT_ALIGNMENT);
 
@@ -91,17 +91,18 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         talla.setLayout(new BoxLayout(talla, BoxLayout.X_AXIS));
         JLabel ltalla = new JLabel("Talla");
         DefaultComboBoxModel<String> tallas = new DefaultComboBoxModel<>();
-        precios.addElement("XS");
-        precios.addElement("S");
-        precios.addElement("M");
-        precios.addElement("L");
-        precios.addElement("XL");
+        tallas.addElement("XS");
+        tallas.addElement("S");
+        tallas.addElement("M");
+        tallas.addElement("L");
+        tallas.addElement("XL");
         JComboBox boxtallas = new JComboBox(tallas);
         talla.add(ltalla);
         talla.add(boxtallas);
         filtro.add(talla);
 
-        arriba.add(filtro);
+        fmenuBar.add(filtro);
+        arriba.add(fmenuBar);
         pcat.add(arriba, BorderLayout.PAGE_START);
 
         this.setVisible(true);
@@ -147,11 +148,11 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         this.setVisible(false);
     }
 
-    public JPanel getPanelView(){
+    public JPanel getPanelView() {
         return this.pcat;
     }
 
-    public void setJPanelViewCat(){
+    public void setJPanelViewCat() {
         this.guippal.setJPanelViewCat(this.pcat);
     }
 }

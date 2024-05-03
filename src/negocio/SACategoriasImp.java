@@ -33,4 +33,9 @@ public class SACategoriasImp extends AbstractSA implements SACategorias {
         return businessDelegate.getCategorias();
     }
 
+    @Override
+    public boolean esExclusivo(Articulo art) {
+        return businessDelegate.esExclusivo(art);
+    }
+
 }

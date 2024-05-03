@@ -18,14 +18,16 @@ public class GUIArticulo extends MainGUIPanel {
     private JButton favoritos;
     private String categoria;
 
-    private JPanel t;
     private JMenu tallas;
-    private DefaultComboBoxModel<String> colores;
-    private JComboBox boxcolores;
     private JSpinner uds;
     private GUICategoria guicategoria;
     private SAFacade sa;
     private BOStock.Talla tallaselect;
+    private JLabel nombre;
+    private JLabel precio;
+    private JLabel cat;
+    private JLabel subcat;
+    private JPanel end;
 
     GUIArticulo(Articulo art, String cat, GUICategoria categoria, SAFacade sa) {
         this.sa = sa;
@@ -53,32 +55,42 @@ public class GUIArticulo extends MainGUIPanel {
         arriba.add(Box.createRigidArea(new Dimension(30, 0)));
 
         //NOMBRE Y PRECIO:
-        JLabel nombre = new JLabel(this.art.getName());
+        nombre = new JLabel(this.art.getName());
         arriba.add(nombre);
         arriba.add(Box.createRigidArea(new Dimension(10, 0)));
 
-        JLabel precio = new JLabel(String.valueOf(this.art.getPrecio()) + " €");
+        precio = new JLabel(String.valueOf(this.art.getPrecio()) + " €");
         arriba.add(precio);
         arriba.add(Box.createRigidArea(new Dimension(30, 0)));
-
 
         //CATEGORIA Y SUBCATEGORIA
         JPanel info = new JPanel();
         info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
-        JLabel cat = new JLabel("Categoria: " + this.categoria);
+        cat = new JLabel("Categoria: " + this.categoria);
         info.add(cat);
-        JLabel subcat = new JLabel("Subcategoria: " + art.subcategoriaToString(art.getSubcat()));
+        subcat = new JLabel("Subcategoria: " + art.subcategoriaToString(art.getSubcat()));
         info.add(subcat);
         arriba.add(info);
 
         partview.add(arriba, BorderLayout.PAGE_START);
-
 
         //EL CENTRO, LA INFO DEL ARTICULO
         JPanel centro = new JPanel();
         centro.setLayout(new BoxLayout(centro, BoxLayout.Y_AXIS));
         centro.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
+        JPanel talla = new JPanel();
+        talla.setLayout(new BoxLayout(talla, BoxLayout.X_AXIS));
+        JLabel ltalla = new JLabel("Color");
+        DefaultComboBoxModel<String> tallas = new DefaultComboBoxModel<>();
+        for (BOStock.Talla a : BOStock.Talla.values()) {
+            tallas.addElement(BOStock.tallatoString(a));
+        }
+        JComboBox boxtallas = new JComboBox(tallas);
+        talla.add(ltalla);
+        talla.add(boxtallas);
+        centro.add(talla);
+        /*
         this.t = new JPanel();
         t.setLayout(new BoxLayout(t, BoxLayout.X_AXIS));
 
@@ -109,16 +121,16 @@ public class GUIArticulo extends MainGUIPanel {
         t.add(talla);
         t.add(tallas);
         centro.add(t);
-
+        */
         //Colores:
         JPanel color = new JPanel();
         color.setLayout(new BoxLayout(color, BoxLayout.X_AXIS));
         JLabel c = new JLabel("Color");
-        colores = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<String> colores = new DefaultComboBoxModel<>();
         for (BOStock.Color a : BOStock.Color.values()) {
             colores.addElement(BOStock.colorToString(a));
         }
-        boxcolores = new JComboBox(colores);
+        JComboBox boxcolores = new JComboBox(colores);
         color.add(c);
         color.add(boxcolores);
         centro.add(color);
@@ -137,28 +149,11 @@ public class GUIArticulo extends MainGUIPanel {
         partview.add(centro, BorderLayout.CENTER);
 
         //END, BOTONES
-        JPanel end = new JPanel();
+        end = new JPanel();
         end.setLayout(new BoxLayout(end, BoxLayout.X_AXIS));
         end.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        if (this.categoria == "EXCLUSIVOS") {
-            reservar = new JButton("Reservar");
-            reservar.addActionListener((e) -> {
-                //se reserva
 
-            });
-        } else {
-            cesta = new JButton("Añadir a cesta");
-            cesta.addActionListener((e) -> {
-                //se añade a la cesta (sa)
-            });
-        }
-
-        favoritos = new JButton("Añadir a favoritos");
-        favoritos.addActionListener(e -> {
-            //se añade a favoritos (sa)
-        });
-        end.add(cesta);
-        end.add(favoritos);
+        añadirBotones();
 
         partview.add(end, BorderLayout.PAGE_END);
 
@@ -168,7 +163,11 @@ public class GUIArticulo extends MainGUIPanel {
 
     @Override
     public void update() {
-
+        nombre.setText(this.art.getName());
+        precio.setText(String.valueOf(this.art.getPrecio()) + " €");
+        cat.setText("Categoria: " + this.categoria);
+        subcat.setText("Subcategoria: " + art.subcategoriaToString(art.getSubcat()));
+        añadirBotones();
     }
 
     @Override
@@ -176,5 +175,33 @@ public class GUIArticulo extends MainGUIPanel {
         //this.setViewportView(); la principal supongo
         this.setVisible(false);
         this.guicategoria.setVisible(false);
+    }
+
+    private void añadirBotones() {
+        for (Component a : end.getComponents()) {
+            end.remove(a);
+        }
+
+        if (sa.esExclusivo(art)) {
+            //sa.getUsuario()
+            if()
+            reservar = new JButton("Reservar");
+            reservar.addActionListener((e) -> {
+                //se reserva
+
+            });
+            end.add(reservar);
+        } else {
+            cesta = new JButton("Añadir a cesta");
+            cesta.addActionListener((e) -> {
+                //se añade a la cesta (sa)
+            });
+            end.add(cesta);
+        }
+        favoritos = new JButton("Añadir a favoritos");
+        favoritos.addActionListener(e -> {
+            //se añade a favoritos (sa)
+        });
+        end.add(favoritos);
     }
 }

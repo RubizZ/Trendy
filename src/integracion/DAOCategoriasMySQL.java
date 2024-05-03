@@ -1,5 +1,7 @@
 package integracion;
 
+import negocio.Articulo;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -89,6 +91,20 @@ public class DAOCategoriasMySQL implements DAOCategorias {
                     st.executeUpdate("delete from ClasificacionArticulos where FechaLanzamiento = '" + fechal + "' ");
                 }
             }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error SQL" + e.getErrorCode(), e);
+        }
+    }
+
+    @Override
+    public boolean esExclusivo(Articulo art) {
+        try (Connection c = DBConnection.connect();
+             Statement st = c.createStatement();
+        ) {
+            ResultSet rs = st.executeQuery("select ID from ClasificacionArticulos where ID = '" + art.getID() + "' and Categoria = 'EXCLUSIVOS'");
+            if (rs.next()) return true;
+            return false;
 
         } catch (SQLException e) {
             throw new RuntimeException("Error SQL" + e.getErrorCode(), e);
