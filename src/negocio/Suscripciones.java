@@ -22,4 +22,13 @@ public enum Suscripciones {
         }
         throw new IllegalArgumentException("Ordinal no válido: " + ordinal);
     }
+
+    public static String obtenerSuscPorOrdinal(int ordinal) {
+        for (Suscripciones suscripcion : Suscripciones.values()) {
+            if (suscripcion.ordinal() == ordinal) {
+                return suscripcion.name();
+            }
+        }
+        throw new IllegalArgumentException("Ordinal no válido: " + ordinal);
+    }
 }

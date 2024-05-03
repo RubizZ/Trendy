@@ -110,7 +110,7 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         buttonPanel.add(pedir);
 
         //BOTON REALIZAR RESERVA
-        if(facade.getUsuario() != null){
+        if(facade.getUsuario() != null){//TODO ver por qué es null el getUsuario
             if(facade.getUsuario().getSuscripcion().equals(Suscripciones.PREMIUM.name())){
                 JButton reserva = new JButton("Reservar");
                 reserva.setAlignmentX(Component.CENTER_ALIGNMENT);

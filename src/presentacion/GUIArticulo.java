@@ -3,6 +3,7 @@ package presentacion;
 import negocio.Articulo;
 import negocio.BOStock;
 import negocio.SAFacade;
+import negocio.TOArticuloEnCesta;
 
 import javax.swing.*;
 import java.awt.*;
@@ -196,6 +197,8 @@ public class GUIArticulo extends MainGUIPanel {
                 cesta = new JButton("Añadir a cesta");
                 cesta.addActionListener((e) -> {
                     //se añade a la cesta (sa)
+                    //sa.addArticuloACesta(art);
+                    //TODO creo q a la cesta deberian añadirse Articulo en vez de TOArticuloEnCesta
                 });
                 end.add(cesta);
             }

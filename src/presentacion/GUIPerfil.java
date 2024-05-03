@@ -467,8 +467,9 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
             try {
                 saFacade.actualizarSaldo(cantidad);
                 this.tUsuario = saFacade.getUsuario();
+                tUsuario.setSaldo(tUsuario.getSaldo()+cantidad);
                 if (this.tUsuario != null) {
-                    double nuevoSaldo = this.tUsuario.getSaldo() + cantidad;
+                    double nuevoSaldo = this.tUsuario.getSaldo();
                     saldo.setText(nuevoSaldo + "");
                 }
                 new VentanaMensaje("Saldo añadido con éxito!");
@@ -508,11 +509,13 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
         confirmar.addActionListener((e -> {
             suscripcion.setText(comboBoxSusc.getSelectedItem() + "");
             try{
-                if (this.tUsuario != null) {
-                    double nuevoSaldo = this.tUsuario.getSaldo() - Suscripciones.obtenerValorPorOrdinal(comboBoxSusc.getSelectedIndex());
+                if (this.saFacade.getUsuario() != null) {
+                    double nuevoSaldo = this.saFacade.getUsuario().getSaldo() - Suscripciones.obtenerValorPorOrdinal(comboBoxSusc.getSelectedIndex());
+                    saFacade.getUsuario().setSaldo(nuevoSaldo);
                     saldo.setText(nuevoSaldo + "");
                 }
                 int susc = comboBoxSusc.getSelectedIndex();
+                saFacade.getUsuario().setSuscripcion(Suscripciones.obtenerSuscPorOrdinal(susc));
                 saFacade.actualizarSuscr(susc);
                 new VentanaMensaje("Suscripcion actualizada con éxito!");
             }catch(RuntimeException ex){
