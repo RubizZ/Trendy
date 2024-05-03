@@ -12,8 +12,8 @@ public class BOCategorias {
         this.dao = dao;
     }
 
-    public void altaArticuloCat(int id, String fechal, int descuento, String genero) {
-        if (descuento != 0) {
+    public void altaArticuloCat(int id, String fechal, double descuento, String genero) {
+        if (descuento != 0.0) {
             dao.altaArticuloCat(id, fechal, descuento, "Promociones");
         }
         if (fechal != null && fechal != "") {

@@ -1,7 +1,6 @@
 package negocio;
 
 import integracion.DAOArticulo;
-import integracion.DAOArticuloImp;
 import integracion.DAOCategorias;
 import integracion.DAOStock;
 
@@ -13,7 +12,7 @@ public class BOArticulo {
     private BOCategorias cats;
     private BOStock stock;
 
-    public BOArticulo(DAOArticulo dao, DAOCategorias daocat , DAOStock daostock){
+    public BOArticulo(DAOArticulo dao, DAOCategorias daocat, DAOStock daostock) {
         this.daocat = daocat;
         this.dao = dao;
         this.daostock = daostock;
@@ -23,14 +22,13 @@ public class BOArticulo {
     }
 
     public tArticulo buscarArticulo(int id) {
-        if(dao.existeArticulo(id)){
+        if (dao.existeArticulo(id)) {
             return dao.buscarArticulo(id);
-        }
-        else return null;
+        } else return null;
     }
 
-    public void altaArticulo(tArticulo a, String fechal, String genero, int descuento, int s) {
-        if(!dao.existeArticulo(a.getID())){
+    public void altaArticulo(tArticulo a, String fechal, String genero, double descuento, int s) {
+        if (!dao.existeArticulo(a.getID())) {
             dao.altaArticulo(a);
             cats.altaArticuloCat(a.getID(), fechal, descuento, genero);
 
@@ -39,7 +37,7 @@ public class BOArticulo {
     }
 
     public void bajaArticulo(tArticulo a) {
-        if(dao.existeArticulo(a.getID())){
+        if (dao.existeArticulo(a.getID())) {
             cats.bajaArticuloCat(a.getID());
             dao.bajaArticulo(a);
         }
@@ -47,7 +45,7 @@ public class BOArticulo {
 
 
     public void modificarArticulo(tArticulo a) {
-        if(dao.existeArticulo(a.getID())){
+        if (dao.existeArticulo(a.getID())) {
             dao.modificarArticulo(a);
         }
     }
