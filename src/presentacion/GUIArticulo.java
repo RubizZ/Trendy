@@ -11,6 +11,7 @@ public class GUIArticulo extends MainGUIPanel {
     //Al haberle dado a un artículo de una categoría
 
     private Articulo art;
+    private JPanel partview;
     private JButton atras;
     private JButton cesta;
     private JButton reservar;
@@ -35,7 +36,8 @@ public class GUIArticulo extends MainGUIPanel {
     }
 
     private void initGUI() {
-        this.setLayout(new BorderLayout());
+        partview = new JPanel();
+        this.partview.setLayout(new BorderLayout());
 
         JPanel arriba = new JPanel();
         arriba.setLayout(new BoxLayout(arriba, BoxLayout.X_AXIS));
@@ -44,8 +46,7 @@ public class GUIArticulo extends MainGUIPanel {
         atras = new JButton("Atras");
         atras.setToolTipText("Vuelve a los articulos de la categoria seleccionada previamente");
         atras.addActionListener((e) -> {
-            this.guicategoria.setVisible(true);
-            this.setVisible(false);
+            this.guicategoria.setJPanelViewCat();
         });
 
         arriba.add(atras);
@@ -70,7 +71,7 @@ public class GUIArticulo extends MainGUIPanel {
         info.add(subcat);
         arriba.add(info);
 
-        this.add(arriba, BorderLayout.PAGE_START);
+        partview.add(arriba, BorderLayout.PAGE_START);
 
 
         //EL CENTRO, LA INFO DEL ARTICULO
@@ -111,7 +112,7 @@ public class GUIArticulo extends MainGUIPanel {
 
         //Colores:
         JPanel color = new JPanel();
-        color.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        color.setLayout(new BoxLayout(color, BoxLayout.X_AXIS));
         JLabel c = new JLabel("Color");
         colores = new DefaultComboBoxModel<>();
         for (BOStock.Color a : BOStock.Color.values()) {
@@ -125,13 +126,15 @@ public class GUIArticulo extends MainGUIPanel {
         //Unidades:
         JPanel unidades = new JPanel();
         JLabel lunidades = new JLabel("Unidades a comprar");
+        //Inicializamos las tallas para que salga la M al principio:
+        this.tallaselect = BOStock.Talla.M;
         int stock = this.sa.getStock(this.art.getID(), (String) boxcolores.getSelectedItem(), String.valueOf(this.tallaselect));
         uds = new JSpinner(new SpinnerNumberModel(1, 1, stock, 1));
         unidades.add(lunidades);
         unidades.add(uds);
         centro.add(unidades);
 
-        this.add(centro, BorderLayout.CENTER);
+        partview.add(centro, BorderLayout.CENTER);
 
         //END, BOTONES
         JPanel end = new JPanel();
@@ -157,7 +160,10 @@ public class GUIArticulo extends MainGUIPanel {
         end.add(cesta);
         end.add(favoritos);
 
-        this.add(end, BorderLayout.PAGE_END);
+        partview.add(end, BorderLayout.PAGE_END);
+
+        this.setVisible(true);
+        this.setViewportView(partview);
     }
 
     @Override
@@ -167,6 +173,7 @@ public class GUIArticulo extends MainGUIPanel {
 
     @Override
     public void reset() {
+        //this.setViewportView(); la principal supongo
         this.setVisible(false);
         this.guicategoria.setVisible(false);
     }

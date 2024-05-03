@@ -41,7 +41,7 @@ public class GUIPpalCategorias extends MainGUIPanel implements ActionListener {
         while (i < this.categorias.size() && e.getSource() != this.categorias.get(i)) i++;
         if (i < this.categorias.size()) {
             GUICategoria guicat = new GUICategoria(sa, this.categorias.get(i).getText(), this);
-            this.setVisible(false);
+            this.setViewportView(guicat);
         }
     }
 
@@ -66,5 +66,13 @@ public class GUIPpalCategorias extends MainGUIPanel implements ActionListener {
             pcategorias.add(cat);
             categorias.add(cat);
         }
+    }
+
+    public JPanel getPanelView(){
+        return this.pcategorias;
+    }
+
+    public void setJPanelViewCat(JPanel view){
+        this.setViewportView(view);
     }
 }

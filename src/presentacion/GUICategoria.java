@@ -8,14 +8,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GUICategoria extends MainGUIPanel implements ActionListener {
     //Después de haberle dado a una categoría en si
-    //Map<JButton, String> articulos;
-    //Boton ccon el nombre del artículo, precio del artículo
+
     Map<JButton, Articulo> articulos;
+    private JPanel pcat;
     private SAFacade sa;
     private String cat;
     private JButton atras;
@@ -26,31 +27,30 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
     GUICategoria(SAFacade sa, String cat, GUIPpalCategorias ppal) {
         this.sa = sa;
         this.cat = cat;
-        this.guippal = guippal;
+        this.guippal = ppal;
         initGUI();
     }
 
     private void initGUI() {
-        this.setLayout(new BorderLayout());
+
+        pcat = new JPanel();
+        pcat.setLayout(new BorderLayout());
 
         //PANEL QUE TENDRÁ LA LISTA DE ARTICULOS DE LA CATEGORÍA
         art = new JPanel();
         art.setLayout(new BoxLayout(art, BoxLayout.Y_AXIS));
         art.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 
+        this.articulos = new HashMap<>();
         añadeBotones();
 
-        this.add(art, BorderLayout.CENTER);
-
-        //Ahora hay que crear lo de arriba (el boton de atrás y el de filtrar)
+        //Parte de arriba de la interfaz
         JPanel arriba = new JPanel();
         //BOTÓN ATRÁS
         this.atras = new JButton("Atras");
         atras.setToolTipText("Vuelve a las categorías");
         atras.addActionListener((e) -> {
-            //llamar a la gui de categorias supongo
-            this.guippal.setVisible(true);
-            this.setVisible(false); //?? no estoy segura
+            this.guippal.setViewportView(this.guippal.getPanelView());
         });
         atras.setAlignmentX(LEFT_ALIGNMENT);
         arriba.add(atras);
@@ -102,14 +102,19 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         filtro.add(talla);
 
         arriba.add(filtro);
-        this.add(arriba, BorderLayout.PAGE_START);
+        pcat.add(arriba, BorderLayout.PAGE_START);
+
+        this.setVisible(true);
+        this.setViewportView(pcat);
     }
 
     public void actionPerformed(ActionEvent e) {
         Articulo a = this.articulos.get(e.getSource());
         if (a != null) {
-            GUIArticulo art = new GUIArticulo(a, cat, this, this.sa);
             this.setVisible(false);
+            GUIArticulo art = new GUIArticulo(a, cat, this, this.sa);
+            this.guippal.setViewportView(art);
+
         }
     }
 
@@ -124,6 +129,7 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         for (JButton b : this.articulos.keySet()) {
             art.add(b);
         }
+        pcat.add(art, BorderLayout.CENTER);
     }
 
     @Override
@@ -137,6 +143,15 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
 
     @Override
     public void reset() {
+        this.guippal.setViewportView(this.guippal.getPanelView());
         this.setVisible(false);
+    }
+
+    public JPanel getPanelView(){
+        return this.pcat;
+    }
+
+    public void setJPanelViewCat(){
+        this.guippal.setJPanelViewCat(this.pcat);
     }
 }
