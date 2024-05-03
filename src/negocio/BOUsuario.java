@@ -76,7 +76,7 @@ public class BOUsuario implements Observable<AuthObserver>, CestaObserver {
     }
 
     public void login(String correo, String contraseña) {
-        tUsuario = daoUsuario.getUsuario(correo, contraseña);
+        this.tUsuario = daoUsuario.getUsuario(correo, contraseña);
         if (tUsuario != null) {
             EventQueue.invokeLater(() -> observers.forEach(observer -> observer.onAuthChanged(true, tUsuario.getId())));
             saveLogin();
@@ -111,6 +111,10 @@ public class BOUsuario implements Observable<AuthObserver>, CestaObserver {
         if (tUsuario.admin)
             daoUsuario.actualizarSaldo(id, cantidad);
         else throw new IllegalStateException("Tienes que ser admin para poder hacer esto");
+    }
+
+    public boolean esPremium(){
+        return tUsuario.getSuscripcion().equals(Suscripciones.PREMIUM.name());
     }
 
     @Override

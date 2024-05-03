@@ -200,4 +200,8 @@ public class SAFacade {
     public void unregisterObserver(Observer observer) {
         businessDelegate.unregisterObserver(observer);
     }
+
+    public boolean esPremium() {
+        return saUsuario.esPremium();
+    }
 }

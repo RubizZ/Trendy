@@ -24,4 +24,6 @@ public interface SAUsuario {
     void logout();
 
     void actualizarSaldoAdmin(double cantidad, int id);
+
+    boolean esPremium();
 }

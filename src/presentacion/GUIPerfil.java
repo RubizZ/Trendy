@@ -512,7 +512,8 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver {
                     double nuevoSaldo = this.tUsuario.getSaldo() - Suscripciones.obtenerValorPorOrdinal(comboBoxSusc.getSelectedIndex());
                     saldo.setText(nuevoSaldo + "");
                 }
-                saFacade.actualizarSuscr((comboBoxSusc.getSelectedIndex()));
+                int susc = comboBoxSusc.getSelectedIndex();
+                saFacade.actualizarSuscr(susc);
                 new VentanaMensaje("Suscripcion actualizada con éxito!");
             }catch(RuntimeException ex){
                 new VentanaMensaje("Algo ha fallado...");

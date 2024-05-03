@@ -215,4 +215,8 @@ public class BusinessDelegate {
         else
             throw new IllegalArgumentException("Observer no soportado");
     }
+
+    public boolean esPremium() {
+        return boUsuario.esPremium();
+    }
 }

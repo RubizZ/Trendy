@@ -9,20 +9,25 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserver {
+public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserver, ReservasObserver {
 
     SAFacade facade;
     JPanel mainPanel;
     private HashMap<String, JPanel> panelMap;
     private HashMap<Integer, JPanel> favsMap;
+    private HashMap<String, JPanel> reserMap;
     private JPanel panelCesta;
     private JPanel panelFavs;
+    private JPanel panelReservas;
 
     private static final String PANELCESTA = "Panel_cesta";
     private static final String PANELFAVORITOS = "Panel_favoritos";
 
+    private static final String PANELRESERVAS = "Panel_reservas";
+
     private JLabel mensajeCesta = new JLabel("La cesta se encuentra vacia...");
     private JLabel mensajeFavs = new JLabel("La lista de favoritos se encuentra vacia...");
+    private JLabel mensajesReservas = new JLabel("No hay reservas...");
 
     private JPanel cards;
 
@@ -31,6 +36,7 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         facade.registerObserver(this);
         panelMap = new HashMap<>();
         favsMap = new HashMap<>();
+        reserMap =new HashMap<>();
         initGui();
     }
 
@@ -59,9 +65,17 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         panelFavs.setLayout(new BoxLayout(panelFavs, BoxLayout.Y_AXIS));
         panelFavs.setVisible(false);
 
+        //PANEL RESERVAS
+        panelReservas = new JPanel();
+        panelReservas.setBorder(BorderFactory.createTitledBorder("Reservas"));
+        panelReservas.setLayout(new BoxLayout(panelReservas, BoxLayout.Y_AXIS));
+        panelReservas.setVisible(false);
+
+
         // Añadir paneles al panel de cartas
         cards.add(panelCesta, PANELCESTA);
         cards.add(panelFavs, PANELFAVORITOS);
+        cards.add(panelReservas, PANELRESERVAS);
 
         //PARA CAMBIAR LOS PANELES CON LOS ACTION LISTENERS
         CardLayout cl = (CardLayout) (cards.getLayout());
@@ -95,6 +109,17 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         }));
         buttonPanel.add(pedir);
 
+        //BOTON REALIZAR RESERVA
+        if(facade.getUsuario() != null){
+            if(facade.getUsuario().getSuscripcion().equals(Suscripciones.PREMIUM.name())){
+                JButton reserva = new JButton("Reservar");
+                reserva.setAlignmentX(Component.CENTER_ALIGNMENT);
+                reserva.addActionListener((e -> {
+                    this.facade.crearPedido();
+                }));
+                buttonPanel.add(reserva);
+           }
+        }
 
         mainPanel.setOpaque(true);
 
@@ -257,5 +282,20 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
             panelFavs.revalidate();
             panelFavs.repaint();
         }
+    }
+
+    @Override
+    public void onArticuloAdded(TOArticuloEnReservas toArticuloEnReservas) {
+
+    }
+
+    @Override
+    public void onArticuloRemoved(TOArticuloEnReservas toArticuloEnReservas) {
+
+    }
+
+    @Override
+    public void onReservasChanged(Set<TOArticuloEnReservas> reservas) {
+
     }
 }

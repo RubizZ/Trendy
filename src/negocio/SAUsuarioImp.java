@@ -64,4 +64,9 @@ public class SAUsuarioImp extends AbstractSA implements SAUsuario {
     public void actualizarSaldoAdmin(double cantidad, int id) {
         businessDelegate.actualizarSaldoAdmin(cantidad, id);
     }
+
+    @Override
+    public boolean esPremium(){
+       return businessDelegate.esPremium();
+    }
 }

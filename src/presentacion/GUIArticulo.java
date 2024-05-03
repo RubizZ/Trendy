@@ -182,22 +182,25 @@ public class GUIArticulo extends MainGUIPanel {
             end.remove(a);
         }
 
-        if (sa.esExclusivo(art)) {
-            //sa.getUsuario()
-            if()
-            reservar = new JButton("Reservar");
-            reservar.addActionListener((e) -> {
-                //se reserva
+        //CREAR FUNCION PARA COMPROBAR SI ES PREMIUM PORQUE TENEMOS QUE VER QUE EN CASO DE QUE SEA
+        //SE PUEDA RESERVAR EL ARTICULO
+        if(sa.esPremium()){
+            if (sa.esExclusivo(art)) {
+                reservar = new JButton("Reservar");
+                reservar.addActionListener((e) -> {
+                    //se reserva
 
-            });
-            end.add(reservar);
-        } else {
-            cesta = new JButton("Añadir a cesta");
-            cesta.addActionListener((e) -> {
-                //se añade a la cesta (sa)
-            });
-            end.add(cesta);
+                });
+                end.add(reservar);
+            } else {
+                cesta = new JButton("Añadir a cesta");
+                cesta.addActionListener((e) -> {
+                    //se añade a la cesta (sa)
+                });
+                end.add(cesta);
+            }
         }
+
         favoritos = new JButton("Añadir a favoritos");
         favoritos.addActionListener(e -> {
             //se añade a favoritos (sa)
