@@ -164,15 +164,16 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
 
     @Override
     public void update() {
-        for (JButton b : articulos.keySet()) {
-            art.remove(b);
-        }
+        art.removeAll();
         articulos.clear();
+
         añadeBotones();
         this.subcatfiltro = "";
         this.colorfiltro = "";
         this.preciofiltro = "";
         this.tallafiltro = "";
+
+        this.guippal.setViewportView(pcat);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class GUIWindow extends JFrame {
 
         setIconAndPlayIntroAnimation();
         initPanels();
-        autoLogin();
+        //autoLogin();
         waitForAnimation();
     }
 

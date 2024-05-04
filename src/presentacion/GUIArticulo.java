@@ -86,7 +86,7 @@ public class GUIArticulo extends MainGUIPanel implements Observable<CestaObserve
 
         JPanel talla = new JPanel();
         talla.setLayout(new BoxLayout(talla, BoxLayout.X_AXIS));
-        JLabel ltalla = new JLabel("Color");
+        JLabel ltalla = new JLabel("Talla");
         DefaultComboBoxModel<String> tallas = new DefaultComboBoxModel<>();
         for (BOStock.Talla a : BOStock.Talla.values()) {
             tallas.addElement(BOStock.tallatoString(a));
