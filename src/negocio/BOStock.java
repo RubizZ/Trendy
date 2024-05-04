@@ -49,7 +49,7 @@ public class BOStock {
     }
 
     public enum Talla {
-        XS, S, M, L, XL;
+        XS, S, M, L, XL
     }
 
     public static String tallatoString(Talla talla) {

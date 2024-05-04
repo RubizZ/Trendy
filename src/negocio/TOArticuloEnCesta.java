@@ -5,13 +5,9 @@ import java.util.Objects;
 
 public class TOArticuloEnCesta implements Comparable<TOArticuloEnCesta>, java.io.Serializable {
 
-    public enum Talla {
-        XS, S, M, L, XL
-    }
-
     private int idArticulo;
     private int cantidad;
-    private Talla talla;
+    private BOStock.Talla talla;
     private BOStock.Color color;
     private LocalDateTime fechaAñadido;
 
@@ -23,7 +19,7 @@ public class TOArticuloEnCesta implements Comparable<TOArticuloEnCesta>, java.io
         return cantidad;
     }
 
-    public Talla getTalla() {
+    public BOStock.Talla getTalla() {
         return talla;
     }
 
@@ -45,7 +41,7 @@ public class TOArticuloEnCesta implements Comparable<TOArticuloEnCesta>, java.io
         return this;
     }
 
-    public TOArticuloEnCesta setTalla(Talla talla) {
+    public TOArticuloEnCesta setTalla(BOStock.Talla talla) {
         this.talla = talla;
         return this;
     }

@@ -29,7 +29,7 @@ public class DAOUsuarioMySQL implements DAOUsuario {
                             .setPais(rS.getString("pais"))
                             .setAnyoNacimiento(rS.getInt("anyo_nacimiento"))
                             .setSexo((char) rS.getByte("sexo"))//TODO revisar si funciona
-                            .setSuscripcion(rS.getString("suscripcion_id"))
+                            .setSuscripcion(Suscripciones.valueOf(rS.getString("suscripcion_id")))
                             .setDireccion(rS.getString("Dirección"))
                             .setSaldo(rS.getDouble("saldo"))
                             .setAdmin(rS.getBoolean("admin")));
@@ -59,7 +59,7 @@ public class DAOUsuarioMySQL implements DAOUsuario {
                             .setPais(rS.getString("pais"))
                             .setAnyoNacimiento(rS.getInt("anyo_nacimiento"))
                             .setSexo((char) rS.getByte("sexo"))//TODO revisar q funcione esa funcion
-                            .setSuscripcion(rS.getString("suscripcion_id"))
+                            .setSuscripcion(Suscripciones.valueOf(rS.getString("suscripcion_id")))
                             .setDireccion(rS.getString("Dirección"))
                             .setSaldo(rS.getDouble("saldo"))
                             .setAdmin(rS.getBoolean("admin"));
@@ -194,11 +194,11 @@ public class DAOUsuarioMySQL implements DAOUsuario {
     }
 
     @Override
-    public void actualizarSuscripcion(int idUsuario, int susc) {
-        double quitarDeSaldo = Suscripciones.obtenerValorPorOrdinal(susc);
+    public void actualizarSuscripcion(int idUsuario, Suscripciones susc) {
+        double quitarDeSaldo = susc.getPrecio();
         try (Connection connection = DBConnection.connect()) {
             String sql = "UPDATE Usuarios SET " +
-                    "suscripcion_id =  " + susc + ", saldo = saldo -" + quitarDeSaldo + " WHERE ID = " + idUsuario + ";";
+                    "suscripcion_id =  '" + susc + "', saldo = saldo -" + quitarDeSaldo + " WHERE ID = " + idUsuario + ";";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {

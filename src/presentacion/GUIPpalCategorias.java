@@ -1,6 +1,7 @@
 package presentacion;
 
 
+import negocio.Articulo;
 import negocio.SAFacade;
 
 import javax.swing.*;
@@ -68,11 +69,23 @@ public class GUIPpalCategorias extends MainGUIPanel implements ActionListener {
         }
     }
 
-    public JPanel getPanelView(){
+    public JPanel getPanelView() {
         return this.pcategorias;
     }
 
-    public void setJPanelViewCat(JPanel view){
+    public void setJPanelViewCat(JPanel view) {
         this.setViewportView(view);
+    }
+
+    public void goToArticulo(int idArticulo) {
+        for (String categoria : sa.getCategorias()) {
+            for (Articulo articulo : sa.buscaArticulosCategoria(categoria)) {
+                if (articulo.getID() == idArticulo) {
+                    GUICategoria guicat = new GUICategoria(sa, categoria, this);
+                    guicat.goToArticulo(articulo);
+                    return;
+                }
+            }
+        }
     }
 }

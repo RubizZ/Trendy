@@ -162,8 +162,8 @@ public class SAFacade {
         saUsuario.actualizarSaldo(cantidad);
     }
 
-    public void actualizarSuscr(int id) {
-        saUsuario.actualizarSuscr(id);
+    public void actualizarSuscr(Suscripciones susc) {
+        saUsuario.actualizarSuscr(susc);
     }
 
     public void actualizarSuscrAdmin(int userID, int id) {
@@ -211,5 +211,17 @@ public class SAFacade {
 
     public boolean esPremium() {
         return saUsuario.esPremium();
+    }
+
+    public void addArticuloAReservas(TOArticuloEnReservas artEnReservas) {
+        saCesta.addArticuloAReservas(artEnReservas);
+    }
+
+    public void removeArticuloDeReservas(TOArticuloEnReservas artEnReservas) {
+        saCesta.removeArticuloDeReservas(artEnReservas);
+    }
+
+    public void updateCesta() {
+        saCesta.updateCesta();
     }
 }

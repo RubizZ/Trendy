@@ -189,4 +189,10 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
     public void setJPanelViewCat() {
         this.guippal.setJPanelViewCat(this.pcat);
     }
+
+    public void goToArticulo(Articulo articulo) {
+        this.setVisible(false);
+        GUIArticulo art = new GUIArticulo(articulo, cat, this, this.sa);
+        this.guippal.setViewportView(art);
+    }
 }

@@ -41,6 +41,7 @@ public class BOUsuario implements Observable<AuthObserver>, CestaObserver {
 
     public void update(TUsuario tUsuario) {
         daoUsuario.actualizarUsuario(tUsuario, tUsuario.getId());
+        observers.forEach(e -> e.onAuthChanged(true, tUsuario.getId()));
     }
 
     public void delete(int id) {
@@ -55,13 +56,15 @@ public class BOUsuario implements Observable<AuthObserver>, CestaObserver {
         daoUsuario.actualizarCesta(tUsuario.getId(), idCesta); //TODO Hacer con observer
     }
 
-    public void actualizarSuscr(int id) {
-        daoUsuario.actualizarSuscripcion(tUsuario.getId(), id);
+    public void actualizarSuscr(Suscripciones susc) {
+        daoUsuario.actualizarSuscripcion(tUsuario.getId(), susc);
+        tUsuario.setSuscripcion(susc);
+        observers.forEach(observer -> observer.onAuthChanged(true, tUsuario.getId()));
     }
 
     public void actualizarSuscrAdmin(int userID, int id) {
         if (tUsuario.admin)
-            daoUsuario.actualizarSuscripcion(userID, id);
+            daoUsuario.actualizarSuscripcion(userID, null); //TODO Cambiar
         else throw new IllegalStateException("Tienes que ser admin para poder hacer esto");
     }
 
@@ -114,7 +117,7 @@ public class BOUsuario implements Observable<AuthObserver>, CestaObserver {
     }
 
     public boolean esPremium() {
-        return tUsuario != null && tUsuario.getSuscripcion().equals(Suscripciones.PREMIUM.name());
+        return tUsuario != null && tUsuario.getSuscripcion().equals(Suscripciones.PREMIUM);
     }
 
     @Override

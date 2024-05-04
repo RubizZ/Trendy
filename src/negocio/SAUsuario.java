@@ -15,7 +15,7 @@ public interface SAUsuario {
 
     public void actualizarSaldo(int cantidad);
 
-    public void actualizarSuscr(int id);
+    public void actualizarSuscr(Suscripciones susc);
 
     void actualizarSuscrAdmin(int userID, int id);
 

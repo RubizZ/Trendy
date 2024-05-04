@@ -32,4 +32,19 @@ public class SACestaimp extends AbstractSA implements SACesta {
     public void removeArticuloDeFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos) {
         businessDelegate.removeArticuloDeFavoritos(toArticuloEnFavoritos);
     }
+
+    @Override
+    public void addArticuloAReservas(TOArticuloEnReservas artEnReservas) {
+        businessDelegate.addArticuloAReservas(artEnReservas);
+    }
+
+    @Override
+    public void removeArticuloDeReservas(TOArticuloEnReservas artEnReservas) {
+        businessDelegate.removeArticuloDeReservas(artEnReservas);
+    }
+
+    @Override
+    public void updateCesta() {
+        businessDelegate.updateCesta();
+    }
 }

@@ -40,8 +40,8 @@ public class SAUsuarioImp extends AbstractSA implements SAUsuario {
     }
 
     @Override
-    public void actualizarSuscr(int id) {
-        businessDelegate.actualizarSusc(id);
+    public void actualizarSuscr(Suscripciones susc) {
+        businessDelegate.actualizarSusc(susc);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SAUsuarioImp extends AbstractSA implements SAUsuario {
     }
 
     @Override
-    public boolean esPremium(){
-       return businessDelegate.esPremium();
+    public boolean esPremium() {
+        return businessDelegate.esPremium();
     }
 }

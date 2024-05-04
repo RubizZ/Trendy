@@ -1,9 +1,6 @@
 package integracion;
 
-import negocio.BOStock;
-import negocio.TOArticuloEnCesta;
-import negocio.TOArticuloEnFavoritos;
-import negocio.TOCesta;
+import negocio.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -65,7 +62,7 @@ public class DAOCestaMySQL implements DAOCesta {
             while (resultSet.next()) {
                 listaArticulos.add(new TOArticuloEnCesta()
                         .setIdArticulo(resultSet.getInt("ID_Artículo"))
-                        .setTalla(TOArticuloEnCesta.Talla.valueOf(resultSet.getString("Talla")))
+                        .setTalla(BOStock.Talla.valueOf(resultSet.getString("Talla")))
                         .setCantidad(resultSet.getInt("Cantidad"))
                         .setColor(BOStock.Color.valueOf(resultSet.getString("Color")))
                         .setFechaAñadido(resultSet.getTimestamp("Fecha_añadido").toLocalDateTime()));
@@ -83,7 +80,7 @@ public class DAOCestaMySQL implements DAOCesta {
             var resultSet = connection.createStatement().executeQuery(sql);
             Set<TOArticuloEnFavoritos> favoritos = new HashSet<>();
             while (resultSet.next()) {
-                favoritos.add(new TOArticuloEnFavoritos(resultSet.getInt("ID_Artículo"), idUsuario));
+                favoritos.add(new TOArticuloEnFavoritos(resultSet.getInt("ID_articulo"), idUsuario));
             }
             return favoritos;
         } catch (SQLException e) {
@@ -110,6 +107,52 @@ public class DAOCestaMySQL implements DAOCesta {
             String sql = "DELETE FROM ArtículosEnFavoritos WHERE ID_usuario = " + toArticuloEnFavoritos.getIdUsuario() + " AND ID_Articulo = " +
                     toArticuloEnFavoritos.getIdArticulo();
             connection.createStatement().executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void añadirArticuloAReservas(TOArticuloEnReservas artEnReservas) {
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "INSERT INTO ArtículosEnReserva (ID_articulo, ID_usuario, Talla, Color) VALUES (" +
+                    artEnReservas.getIdArticulo() + ", " +
+                    artEnReservas.getIdUsuario() + ", " +
+                    "'" + artEnReservas.getTalla() + "', " +
+                    "'" + artEnReservas.getColor() + "')";
+            connection.createStatement().executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void eliminarArticuloDeReservas(TOArticuloEnReservas artEnReservas) {
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "DELETE FROM ArtículosEnReserva WHERE ID_usuario = " + artEnReservas.getIdUsuario() + " AND ID_articulo = " +
+                    artEnReservas.getIdArticulo() + " AND Talla = '" + artEnReservas.getTalla() + "'" +
+                    " AND Color = '" + artEnReservas.getColor() + "'";
+            connection.createStatement().executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Set<TOArticuloEnReservas> getReservas(int idUsuario) {
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "SELECT * FROM ArtículosEnReserva WHERE ID_usuario = " + idUsuario;
+            var resultSet = connection.createStatement().executeQuery(sql);
+            Set<TOArticuloEnReservas> reservas = new HashSet<>();
+            while (resultSet.next()) {
+                reservas.add(new TOArticuloEnReservas(
+                        resultSet.getInt("ID_articulo"),
+                        idUsuario,
+                        BOStock.Talla.valueOf(resultSet.getString("Talla")),
+                        BOStock.Color.valueOf(resultSet.getString("Color"))
+                ));
+            }
+            return reservas;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

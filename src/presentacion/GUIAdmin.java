@@ -233,7 +233,7 @@ public class GUIAdmin extends JPanel {
         JButton bCambiar = new JButton("Cambiar");
         this.cambiarSuscripcion.add(bCambiar);
         bCambiar.addActionListener(e -> {
-            saFacade.actualizarSuscrAdmin(Integer.parseInt(tId.getText()), cbSuscripcion.getSelectedIndex());
+            saFacade.actualizarSuscrAdmin(Integer.parseInt(tId.getText()), cbSuscripcion.getSelectedIndex()); //TODO Cambiar
         });
 
         JButton bCancelar = new JButton("Cancelar");

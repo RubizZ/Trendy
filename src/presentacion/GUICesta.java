@@ -9,13 +9,14 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserver, ReservasObserver {
+public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserver, ReservasObserver, AuthObserver {
 
+    private final GUIWindow mainWindow;
     SAFacade facade;
     JPanel mainPanel;
-    private HashMap<String, JPanel> panelMap;
-    private HashMap<Integer, JPanel> favsMap;
-    private HashMap<String, JPanel> reserMap;
+    private HashMap<TOArticuloEnCesta, JPanel> panelMap;
+    private HashMap<TOArticuloEnFavoritos, JPanel> favsMap;
+    private HashMap<TOArticuloEnReservas, JPanel> reserMap;
     private JPanel panelCesta;
     private JPanel panelFavs;
     private JPanel panelReservas;
@@ -30,9 +31,12 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
     private JLabel mensajesReservas = new JLabel("No hay reservas...");
 
     private JPanel cards;
+    private CardLayout cl;
+    private JPanel buttonPanel;
 
-    public GUICesta(SAFacade saFacade) {
+    public GUICesta(SAFacade saFacade, GUIWindow mainWindow) {
         this.facade = saFacade;
+        this.mainWindow = mainWindow;
         facade.registerObserver(this);
         panelMap = new HashMap<>();
         favsMap = new HashMap<>();
@@ -46,11 +50,6 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         mainPanel.setLayout(new BorderLayout());
         setViewportView(mainPanel);
         cards = new JPanel(new CardLayout());
-        //PANEL DE LOS BOTONES
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 2));
-        mainPanel.add(buttonPanel, BorderLayout.PAGE_START);
-        mainPanel.add(cards, BorderLayout.CENTER);
 
         //CREAMOS PANELES
 
@@ -82,28 +81,7 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         cards.add(panelReservas, PANELRESERVAS);
 
         //PARA CAMBIAR LOS PANELES CON LOS ACTION LISTENERS
-        CardLayout cl = (CardLayout) (cards.getLayout());
-
-        //CREAMOS BOTONES
-        //BOTON CESTA
-        JButton cesta = new JButton("Cesta");
-        cesta.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cesta.addActionListener((e -> {
-            cl.show(cards, "Panel_cesta");
-            revalidate();
-            repaint();
-        }));
-        buttonPanel.add(cesta);
-
-        //BOTON FAVORITOS
-        JButton favs = new JButton("Favoritos");
-        favs.setAlignmentX(Component.CENTER_ALIGNMENT);
-        favs.addActionListener((e -> {
-            cl.show(cards, "Panel_favoritos");
-            revalidate();
-            repaint();
-        }));
-        buttonPanel.add(favs);
+        cl = (CardLayout) (cards.getLayout());
 
         //BOTON REALIZAR PEDIDO
         JButton pedir = new JButton("Realizar pedido");
@@ -113,26 +91,11 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         }));
         panelCestaComprar.add(pedir, BorderLayout.PAGE_END);
 
-        //BOTON REALIZAR RESERVA
-        if (facade.getUsuario() != null) {//TODO ver por qué es null el getUsuario
-            if (facade.getUsuario().getSuscripcion().equals(Suscripciones.PREMIUM.name())) {
-                JButton reserva = new JButton("Reservar");
-                reserva.setAlignmentX(Component.CENTER_ALIGNMENT);
-                reserva.addActionListener((e -> {
-                    this.facade.crearPedido();
-                }));
-                buttonPanel.add(reserva);
-            }
-        }
-
         mainPanel.setOpaque(true);
+        mainPanel.add(cards, BorderLayout.CENTER);
 
         this.setViewportView(mainPanel);
 
-        //TODO mirar porque creo que cuando herede de JScrollPane no va a funcionar
-        /*this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.pack();
-        this.setVisible(true);*/
     }
 
 
@@ -151,9 +114,10 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
                 articulo.setLayout(new BoxLayout(articulo, BoxLayout.X_AXIS));
                 articulo.add(new JLabel(facade.buscarArticulo(art.getIdArticulo()).getNombre()));
                 articulo.add(new JLabel("/" + art.getTalla()));
+                articulo.add(new JLabel("/" + art.getColor()));
                 articulo.add(new JLabel("/" + art.getCantidad() + "Uds."));
                 addButtons(articulo, art);
-                panelMap.put(art.getIdArticulo() + "", articulo);
+                panelMap.put(art, articulo);
                 panelCesta.add(articulo);
             }
         }
@@ -170,7 +134,7 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
 
     public void onArticuloUpdated(TOArticuloEnCesta articulo) {
         //ELIMINAMOS EL PANEL CON LA INFORMACION ANTIGUA
-        JPanel eliminar = panelMap.get(articulo.getIdArticulo() + ""); //TODO Cambiar el mapa para que las keys sean TOArticuloEnCesta (porque no solo se diferencian por idArticulo (el equals es de id, color y talla))
+        JPanel eliminar = panelMap.get(articulo);
         panelCesta.remove(eliminar);
         //CREO UN PANEL CON LOS DATOS DEL ARTICULO CAMBIADOS
         addArticuloCesta(articulo);
@@ -181,9 +145,10 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         _articulo.setLayout(new BoxLayout(_articulo, BoxLayout.X_AXIS));
         _articulo.add(new JLabel(facade.buscarArticulo(articulo.getIdArticulo()).getNombre()));
         _articulo.add(new JLabel("/" + articulo.getTalla()));
+        _articulo.add(new JLabel("/" + articulo.getColor()));
         _articulo.add(new JLabel("/" + articulo.getCantidad() + "Uds.")); //TODO Añadir color (y a lo mejor hacer en un JTable)
         addButtons(_articulo, articulo);
-        panelMap.put(articulo.getIdArticulo() + "", _articulo);
+        panelMap.put(articulo, _articulo);
         panelCesta.add(_articulo);
         panelCesta.revalidate();
         panelCesta.repaint();
@@ -191,9 +156,9 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
 
     @Override
     public void onArticuloRemoved(TOArticuloEnCesta articulo) {
-        JPanel eliminar = panelMap.get(articulo.getIdArticulo() + "");
+        JPanel eliminar = panelMap.get(articulo);
         panelCesta.remove(eliminar);
-        panelMap.remove(articulo.getIdArticulo() + "");
+        panelMap.remove(articulo);
         if (panelMap.isEmpty()) {
             panelCesta.add(mensajeCesta);
         }
@@ -223,7 +188,7 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
 
     @Override
     public void update() {
-        initGui();
+        facade.updateCesta();
     }
 
     @Override
@@ -234,30 +199,39 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
 
     @Override
     public void onArticuloAdded(TOArticuloEnFavoritos toArticuloEnFavoritos) {
+        panelFavs.remove(mensajeFavs);
         JPanel _articulo = new JPanel();
         _articulo.setLayout(new BoxLayout(_articulo, BoxLayout.X_AXIS));
-        _articulo.add(new JLabel(toArticuloEnFavoritos.getIdArticulo() + ""));
-        favsMap.put(toArticuloEnFavoritos.getIdArticulo(), _articulo);
+        _articulo.add(new JLabel(facade.buscarArticulo(toArticuloEnFavoritos.getIdArticulo()).getNombre()));
+        favsMap.put(toArticuloEnFavoritos, _articulo);
         panelFavs.add(_articulo);
+
+        JButton anyadirACesta = new JButton("Añadir a cesta");
+        anyadirACesta.setAlignmentX(Component.CENTER_ALIGNMENT);
+        _articulo.add(anyadirACesta);
+        anyadirACesta.addActionListener(e -> {
+            mainWindow.goToArticulo(toArticuloEnFavoritos.getIdArticulo());
+        });
+
         JButton delete = new JButton("Eliminar");
         delete.setAlignmentX(Component.RIGHT_ALIGNMENT);
         _articulo.add(delete);
         delete.addActionListener((e -> {
-            favsMap.remove(toArticuloEnFavoritos.getIdArticulo());
+            favsMap.remove(toArticuloEnFavoritos);
             panelFavs.remove(_articulo);
         }));
+
         panelFavs.revalidate();
         panelFavs.repaint();
     }
 
     @Override
     public void onArticuloRemoved(TOArticuloEnFavoritos toArticuloEnFavoritos) {
-        JPanel eliminar = favsMap.get(toArticuloEnFavoritos.getIdArticulo());
-        favsMap.remove(toArticuloEnFavoritos.getIdArticulo());
-        /*if (favsMap.isEmpty()) {
+        JPanel eliminar = favsMap.get(toArticuloEnFavoritos);
+        favsMap.remove(toArticuloEnFavoritos);
+        if (favsMap.isEmpty()) {
             panelFavs.add(mensajeFavs);
-        }*/
-        //TODO mirar si hace falta
+        }
         panelFavs.remove(eliminar);
         panelFavs.revalidate();
         panelFavs.repaint();
@@ -275,15 +249,25 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
                 Iterator<TOArticuloEnFavoritos> art_it = lista.iterator();
                 while (art_it.hasNext()) {
                     TOArticuloEnFavoritos art = art_it.next();
-                    JPanel articulo = new JPanel(new BoxLayout(panelFavs, BoxLayout.X_AXIS));
-                    articulo.add(new JLabel(art.getIdArticulo() + ""));
-                    favsMap.put(art.getIdArticulo(), articulo);
+                    JPanel articulo = new JPanel();
+                    articulo.setLayout(new BoxLayout(articulo, BoxLayout.X_AXIS));
+                    articulo.add(new JLabel(facade.buscarArticulo(art.getIdArticulo()).getNombre()));
+                    favsMap.put(art, articulo);
                     panelFavs.add(articulo);
+
+                    JButton anyadirACesta = new JButton("Añadir a cesta");
+                    anyadirACesta.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    articulo.add(anyadirACesta);
+                    anyadirACesta.addActionListener(e -> {
+                        mainWindow.goToArticulo(art.getIdArticulo());
+                    });
+
                     JButton delete = new JButton("Eliminar");
                     delete.setAlignmentX(Component.RIGHT_ALIGNMENT);
                     articulo.add(delete);
                     delete.addActionListener((e -> {
-                        favsMap.remove(art.getIdArticulo());
+                        facade.removeArticuloDeFavoritos(art);
+                        favsMap.remove(art);
                         panelFavs.remove(articulo);
                     }));
                 }
@@ -295,16 +279,113 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
 
     @Override
     public void onArticuloAdded(TOArticuloEnReservas toArticuloEnReservas) {
-
+        JPanel _articulo = new JPanel();
+        _articulo.setLayout(new BoxLayout(_articulo, BoxLayout.X_AXIS));
+        _articulo.add(new JLabel(toArticuloEnReservas.getIdArticulo() + ""));
+        reserMap.put(toArticuloEnReservas, _articulo);
+        panelReservas.add(_articulo);
+        JButton delete = new JButton("Eliminar reserva");
+        delete.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        _articulo.add(delete);
+        delete.addActionListener(e -> {
+            facade.removeArticuloDeReservas(toArticuloEnReservas);
+            reserMap.remove(toArticuloEnReservas);
+            panelReservas.remove(_articulo);
+        });
+        panelReservas.revalidate();
+        panelReservas.repaint();
     }
 
     @Override
     public void onArticuloRemoved(TOArticuloEnReservas toArticuloEnReservas) {
-
+        JPanel eliminar = reserMap.get(toArticuloEnReservas);
+        reserMap.remove(toArticuloEnReservas);
+        panelReservas.remove(eliminar);
+        panelReservas.revalidate();
+        panelReservas.repaint();
     }
 
     @Override
     public void onReservasChanged(Set<TOArticuloEnReservas> reservas) {
+        if (reservas != null) {
+            panelReservas.removeAll();//elimino lo antiguo
+            reserMap.clear();
+            Set<TOArticuloEnReservas> lista = reservas;
+            if (lista.isEmpty()) {
+                panelReservas.add(mensajesReservas);
+            } else {
+                Iterator<TOArticuloEnReservas> art_it = lista.iterator();
+                while (art_it.hasNext()) {
+                    TOArticuloEnReservas art = art_it.next();
+                    JPanel articulo = new JPanel();
+                    articulo.setLayout(new BoxLayout(articulo, BoxLayout.X_AXIS));
+                    articulo.add(new JLabel(art.getIdArticulo() + ""));
+                    reserMap.put(art, articulo);
+                    panelReservas.add(articulo);
+                    JButton delete = new JButton("Eliminar reserva");
+                    delete.setAlignmentX(Component.RIGHT_ALIGNMENT);
+                    articulo.add(delete);
+                    delete.addActionListener((e -> {
+                        facade.removeArticuloDeReservas(art);
+                        reserMap.remove(art);
+                        panelReservas.remove(articulo);
+                    }));
+                }
+            }
+            panelReservas.revalidate();
+            panelReservas.repaint();
+        }
+    }
 
+    @Override
+    public void onAuthChanged(boolean isAuth, int idUsuario) {
+        if (buttonPanel != null) mainPanel.remove(buttonPanel);
+        //PANEL DE LOS BOTONES
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(1, 2));
+
+        //CREAMOS BOTONES
+        //BOTON CESTA
+        JButton cesta = new JButton("Cesta");
+        cesta.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cesta.addActionListener((e -> {
+            cl.show(cards, "Panel_cesta");
+            revalidate();
+            repaint();
+        }));
+        buttonPanel.add(cesta);
+        if (isAuth) {
+
+            //BOTON FAVORITOS
+            JButton favs = new JButton("Favoritos");
+            favs.setAlignmentX(Component.CENTER_ALIGNMENT);
+            favs.addActionListener((e -> {
+                cl.show(cards, "Panel_favoritos");
+                revalidate();
+                repaint();
+            }));
+            buttonPanel.add(favs);
+
+            //BOTON RESERVAS
+            if (facade.getUsuario().getSuscripcion().equals(Suscripciones.PREMIUM)) {
+                JButton reserva = new JButton("Reservas");
+                reserva.setAlignmentX(Component.CENTER_ALIGNMENT);
+                reserva.addActionListener((e -> {
+                    cl.show(cards, "Panel_reservas");
+                    revalidate();
+                    repaint();
+                }));
+                buttonPanel.add(reserva);
+            }
+        }
+        mainPanel.add(buttonPanel, BorderLayout.PAGE_START);
+        revalidate();
+        repaint();
+    }
+
+    public void showCesta() {
+        cl.show(cards, "Panel_cesta");
+        revalidate();
+        repaint();
     }
 }

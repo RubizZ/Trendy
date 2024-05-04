@@ -10,4 +10,10 @@ public interface SACesta {
     void addArticuloAFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos);
 
     void removeArticuloDeFavoritos(TOArticuloEnFavoritos toArticuloEnFavoritos);
+
+    void addArticuloAReservas(TOArticuloEnReservas artEnReservas);
+
+    void removeArticuloDeReservas(TOArticuloEnReservas artEnReservas);
+
+    void updateCesta();
 }

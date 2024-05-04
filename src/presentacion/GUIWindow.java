@@ -30,10 +30,10 @@ public class GUIWindow extends JFrame {
     private JPanel controlPanel;
 
     private Pair<MainGUIPanel, Integer> lastPanel;
-    private MainGUIPanel homePanel;
-    private MainGUIPanel userPanel;
-    private MainGUIPanel cestaPanel;
-    private MainGUIPanel searchPanel;
+    private GUIHome homePanel;
+    private GUIPerfil userPanel;
+    private GUICesta cestaPanel;
+    private GUIPpalCategorias searchPanel;
     private GUILogin authDialog;
 
     public GUIWindow(SAFacade saFacade) {
@@ -148,7 +148,7 @@ public class GUIWindow extends JFrame {
 
         homePanel = new GUIHome(this, saFacade);
         userPanel = new GUIPerfil(saFacade, this);
-        cestaPanel = new GUICesta(saFacade);
+        cestaPanel = new GUICesta(saFacade, this);
         searchPanel = new GUIPpalCategorias(saFacade);
         authDialog = new GUILogin(saFacade);
 
@@ -271,7 +271,7 @@ public class GUIWindow extends JFrame {
 
     public void showCesta() {
         buttonAction(changePanelAction()).accept(cestaPanel);
-        //TODO cestaPanel.goToPedidos();
+        cestaPanel.showCesta();
     }
 
     public void goHome() {
@@ -282,5 +282,10 @@ public class GUIWindow extends JFrame {
             repaint();
         });
         lastPanel = Pair.of(homePanel, 0);
+    }
+
+    public void goToArticulo(int idArticulo) {
+        buttonAction(changePanelAction()).accept(searchPanel);
+        searchPanel.goToArticulo(idArticulo);
     }
 }

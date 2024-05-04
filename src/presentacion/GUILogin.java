@@ -143,7 +143,7 @@ public class GUILogin extends JDialog implements AuthObserver {
 
     @Override
     public void onAuthChanged(boolean isAuth, int idUsuario) {
-        if (!isAuth) //TODO No mostrar si ha sido por logout al hacer autoLogin
+        if (!isAuth)
             JOptionPane.showMessageDialog(this, "Usuario o contraseña no existente");
         else {
             setVisible(false);

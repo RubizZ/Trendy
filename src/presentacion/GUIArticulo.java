@@ -4,10 +4,8 @@ import negocio.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
-public class GUIArticulo extends MainGUIPanel implements Observable<CestaObserver> {
+public class GUIArticulo extends MainGUIPanel {
     //Al haberle dado a un artículo de una categoría
 
     private Articulo art;
@@ -31,14 +29,11 @@ public class GUIArticulo extends MainGUIPanel implements Observable<CestaObserve
     private JComboBox boxcolores;
     private JComboBox boxtallas;
 
-    private Set<CestaObserver> observers;
-
     GUIArticulo(Articulo art, String cat, GUICategoria categoria, SAFacade sa) {
         this.sa = sa;
         this.art = art;
         this.categoria = cat;
         this.guicategoria = categoria;
-        observers = new HashSet<>();
         initGUI();
     }
 
@@ -183,55 +178,46 @@ public class GUIArticulo extends MainGUIPanel implements Observable<CestaObserve
     }
 
     private void añadirBotones() {
-        for (Component a : end.getComponents()) {
-            end.remove(a);
-        }
+        end.removeAll();
 
         //CREAR FUNCION PARA COMPROBAR SI ES PREMIUM PORQUE TENEMOS QUE VER QUE EN CASO DE QUE SEA
         //SE PUEDA RESERVAR EL ARTICULO
-        //if(sa.esPremium()){
+
         if (sa.esExclusivo(art)) {
             reservar = new JButton("Reservar");
             reservar.addActionListener((e) -> {
-                //se reserva
+                if (sa.esPremium()) {
+                    TOArticuloEnReservas artEnReservas = new TOArticuloEnReservas(
+                            art.getID(),
+                            sa.getUsuario().getId(),
+                            BOStock.Talla.valueOf(((String) boxtallas.getSelectedItem()).toUpperCase()),
+                            BOStock.Color.valueOf(((String) boxcolores.getSelectedItem()).toUpperCase())
+                    );
+                    sa.addArticuloAReservas(artEnReservas);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Solo para usuarios con suscripcion premium");
+                }
 
             });
             end.add(reservar);
         } else {
             cesta = new JButton("Añadir a cesta");
             cesta.addActionListener((e) -> {
-                //se añade a la cesta (sa)
                 TOArticuloEnCesta artEnCesta = new TOArticuloEnCesta();
                 artEnCesta.setCantidad((int) uds.getValue());
                 artEnCesta.setColor(BOStock.Color.valueOf(((String) boxcolores.getSelectedItem()).toUpperCase()));
-                artEnCesta.setTalla(TOArticuloEnCesta.Talla.valueOf(((String) boxtallas.getSelectedItem()).toUpperCase()));
+                artEnCesta.setTalla(BOStock.Talla.valueOf(((String) boxtallas.getSelectedItem()).toUpperCase()));
                 artEnCesta.setIdArticulo(art.getID());
-                //artEnCesta.setFechaAñadido(); //TODO no se como coger la fecha
                 sa.addArticuloACesta(artEnCesta);
-                /*
-                for (CestaObserver o : observers) {
-                    o.onArticuloAdded(artEnCesta);
-                }
-
-                 */
             });
             end.add(cesta);
         }
 
         favoritos = new JButton("Añadir a favoritos");
         favoritos.addActionListener(e -> {
-            //se añade a favoritos (sa)
+            TOArticuloEnFavoritos artEnFavs = new TOArticuloEnFavoritos(art.getID(), sa.getUsuario().getId());
+            sa.addArticuloAFavoritos(artEnFavs);
         });
         end.add(favoritos);
-    }
-
-    @Override
-    public void addObserver(CestaObserver observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(CestaObserver observer) {
-        observers.remove(observer);
     }
 }

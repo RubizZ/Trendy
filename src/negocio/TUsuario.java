@@ -13,7 +13,7 @@ public class TUsuario implements Serializable {
     protected int anyoNacimiento;
     protected char sexo;
     protected String pais;
-    protected String suscripcion;
+    protected Suscripciones suscripcion;
     protected List<Integer> favoritos;
     protected int id;
     protected String direccion;
@@ -25,7 +25,7 @@ public class TUsuario implements Serializable {
         this.id = Id;
     }
 
-    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, String Suscripcion, String Direccion, double Saldo, boolean Admin) {
+    protected TUsuario(int ID, String Nombre, String Apellidos, String Correo, String Contrasenya, int anyoNac, char Sexo, String Pais, Suscripciones Suscripcion, String Direccion, double Saldo, boolean Admin) {
         id = ID;
         nombre = Nombre;
         apellidos = Apellidos;
@@ -53,7 +53,7 @@ public class TUsuario implements Serializable {
         saldo = 0;
         favoritos = new LinkedList<>();
         admin = Admin;
-        suscripcion = Suscripciones.NORMAL.name();
+        suscripcion = Suscripciones.NORMAL;
     }
 
     public TUsuario() {
@@ -124,11 +124,11 @@ public class TUsuario implements Serializable {
         return this;
     }
 
-    public String getSuscripcion() {
+    public Suscripciones getSuscripcion() {
         return suscripcion;
     }
 
-    public TUsuario setSuscripcion(String suscripcion) {
+    public TUsuario setSuscripcion(Suscripciones suscripcion) {
         this.suscripcion = suscripcion;
         return this;
     }
@@ -182,7 +182,7 @@ public class TUsuario implements Serializable {
         return id_Cesta;
     }
 
-    public TUsuario setIDCesta(int idCesta){
+    public TUsuario setIDCesta(int idCesta) {
         id_Cesta = idCesta;
         return this;
     }

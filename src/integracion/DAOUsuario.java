@@ -1,5 +1,6 @@
 package integracion;
 
+import negocio.Suscripciones;
 import negocio.TUsuario;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface DAOUsuario {
     void actualizarCesta(int idUsuario, int idCesta);
     void actualizarSaldo(int idUsuario, double cantidad);
 
-    void actualizarSuscripcion(int idUsuario, int susc);
+    void actualizarSuscripcion(int idUsuario, Suscripciones susc);
 }

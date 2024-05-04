@@ -190,8 +190,8 @@ public class BusinessDelegate {
     }
 
 
-    public void actualizarSusc(int id) {
-        boUsuario.actualizarSuscr(id);
+    public void actualizarSusc(Suscripciones susc) {
+        boUsuario.actualizarSuscr(susc);
     }
 
     public void actualizarSuscAdmin(int userID, int id) {
@@ -231,5 +231,19 @@ public class BusinessDelegate {
 
     public boolean esPremium() {
         return boUsuario.esPremium();
+    }
+
+    public void addArticuloAReservas(TOArticuloEnReservas artEnReservas) {
+        if (boUsuario.esPremium())
+            boCesta.addArticuloAReservas(artEnReservas);
+    }
+
+    public void removeArticuloDeReservas(TOArticuloEnReservas artEnReservas) {
+        if (boUsuario.esPremium())
+            boCesta.removeArticuloDeReservas(artEnReservas);
+    }
+
+    public void updateCesta() {
+        boCesta.updateCesta(boUsuario.read().getId());
     }
 }
