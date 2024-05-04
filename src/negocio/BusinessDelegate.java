@@ -127,6 +127,11 @@ public class BusinessDelegate {
         boCategorias.actualizaExclusivos();
     }
 
+    public String getFechaLanz(int id) {
+        return boCategorias.getFechaLanz(id);
+    }
+
+
     public Collection<TOPedido> getPedidosFecha(Date fecha) {
         return boPedido.getPedidosFecha(fecha);
     }

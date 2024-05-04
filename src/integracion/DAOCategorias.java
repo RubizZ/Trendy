@@ -16,4 +16,6 @@ public interface DAOCategorias {
     public void actualizaExclusivos();
 
     public boolean esExclusivo(Articulo art);
+
+    public String getFechaLanz(int id);
 }

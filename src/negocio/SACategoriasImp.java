@@ -38,4 +38,8 @@ public class SACategoriasImp extends AbstractSA implements SACategorias {
         return businessDelegate.esExclusivo(art);
     }
 
+    @Override
+    public String getFechaLanz(int id) {
+        return businessDelegate.getFechaLanz(id);
+    }
 }

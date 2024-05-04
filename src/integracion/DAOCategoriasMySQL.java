@@ -76,6 +76,7 @@ public class DAOCategoriasMySQL implements DAOCategorias {
         }
     }
 
+    @Override
     public void actualizaExclusivos() {
         try (Connection c = DBConnection.connect();
              Statement st = c.createStatement();
@@ -128,5 +129,20 @@ public class DAOCategoriasMySQL implements DAOCategorias {
         return Integer.parseInt(year1) > Integer.parseInt(year2) || (Integer.valueOf(year1).equals(Integer.valueOf(year2))
                 && Integer.parseInt(month1) > Integer.parseInt(month2)) || (Integer.valueOf(year1).equals(Integer.valueOf(year2))
                 && Integer.valueOf(month1).equals(Integer.valueOf(month2)) && Integer.parseInt(day1) >= Integer.parseInt(day2));
+    }
+
+    @Override
+    public String getFechaLanz(int id) {
+        try (Connection c = DBConnection.connect();
+             Statement st = c.createStatement();
+        ) {
+            ResultSet rs = st.executeQuery("select FechaLanzamiento from ClasificacionArticulos where ID = '" + id + "' and Categoria = 'EXCLUSIVOS'");
+            if (rs.next()) {
+                return rs.getString("FechaLanzamiento");
+            }
+            return "";
+        } catch (SQLException e) {
+            throw new RuntimeException("Error SQL" + e.getErrorCode(), e);
+        }
     }
 }

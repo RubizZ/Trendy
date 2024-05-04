@@ -54,4 +54,8 @@ public class BOCategorias {
     public boolean esExclusivo(Articulo art) {
         return dao.esExclusivo(art);
     }
+
+    public String getFechaLanz(int id) {
+        return dao.getFechaLanz(id);
+    }
 }
