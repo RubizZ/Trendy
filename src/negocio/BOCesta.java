@@ -50,6 +50,10 @@ public class BOCesta implements Observable<Observer>, AuthObserver {
             throw new IllegalArgumentException("Observer no soportado");
     }
 
+    public TOCesta getCesta() {
+        return daoCesta.getCesta(toCesta.getIdUsuario());
+    }
+
     public void addArticuloACesta(TOArticuloEnCesta toArticuloEnCesta) {
 
         for (TOArticuloEnCesta articulo : toCesta.getListaArticulos()) {
@@ -61,7 +65,11 @@ public class BOCesta implements Observable<Observer>, AuthObserver {
         toCesta.getListaArticulos().add(toArticuloEnCesta);
         cestaObservers.forEach(cestaObserver -> cestaObserver.onArticuloAdded(toArticuloEnCesta));
         if (isAuth) {
-            daoCesta.añadirArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
+
+            if (daoCesta.añadirArticulo(toCesta, toArticuloEnCesta)) {
+                toCesta.setIdCesta(daoCesta.abrirCesta(toCesta.getIdUsuario()));
+                cestaObservers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
+            }
         }
     }
 
@@ -72,8 +80,8 @@ public class BOCesta implements Observable<Observer>, AuthObserver {
         toCesta.getListaArticulos().add(toArticuloEnCesta);
         cestaObservers.forEach(cestaObserver -> cestaObserver.onArticuloUpdated(toArticuloEnCesta));
         if (isAuth) {
-            daoCesta.eliminarArticulo(toCesta.getIdCesta(), old);
-            daoCesta.añadirArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
+            daoCesta.eliminarArticulo(toCesta, old);
+            daoCesta.añadirArticulo(toCesta, toArticuloEnCesta);
         }
     }
 
@@ -81,7 +89,10 @@ public class BOCesta implements Observable<Observer>, AuthObserver {
         if (toCesta.getListaArticulos().remove(toArticuloEnCesta)) {
             cestaObservers.forEach(cestaObserver -> cestaObserver.onArticuloRemoved(toArticuloEnCesta));
             if (isAuth) {
-                daoCesta.eliminarArticulo(toCesta.getIdCesta(), toArticuloEnCesta);
+                if (daoCesta.eliminarArticulo(toCesta, toArticuloEnCesta)) {
+                    toCesta.setIdCesta(0);
+                    cestaObservers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
+                }
             }
         } else {
             throw new IllegalArgumentException("El articulo no está en la cesta");
@@ -122,5 +133,10 @@ public class BOCesta implements Observable<Observer>, AuthObserver {
 
     public int guardarCesta() {
         return daoCesta.guardaCesta(toCesta);
+    }
+
+    public void abrirCesta(int id) {
+        toCesta = new TOCesta().setIdUsuario(id).setListaArticulos(new TreeSet<>());
+        cestaObservers.forEach(cestaObserver -> cestaObserver.onCestaChanged(toCesta));
     }
 }

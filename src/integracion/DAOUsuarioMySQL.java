@@ -167,7 +167,7 @@ public class DAOUsuarioMySQL implements DAOUsuario {
     public void actualizarCesta(int idUsuario, int idCesta) {
         try (Connection connection = DBConnection.connect()) {
             String sql = "UPDATE Usuarios SET " +
-                    "cesta_activa_id = " + idCesta + "WHERE ID = " + idUsuario + ";";
+                    "cesta_activa_id = " + idCesta + " WHERE ID = " + idUsuario + ";";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {

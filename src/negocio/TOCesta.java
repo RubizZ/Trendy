@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 public class TOCesta implements Serializable {
 
-    private int idCesta;
+    private int idCesta; //TODO Pensar si quitar la idCesta de aqui y que se calcule en BD
     private TreeSet<TOArticuloEnCesta> listaArticulosAñadidos;
     private int idUsuario;
 

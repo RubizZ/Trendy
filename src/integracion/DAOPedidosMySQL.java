@@ -21,12 +21,7 @@ public class DAOPedidosMySQL implements DAOPedidos {
                     "'" + toaCestaUsuario.getToUsuario().getDireccion() + "', "
                     + toaCestaUsuario.getToCesta().getIdCesta() + ", "
                     + toaCestaUsuario.getToUsuario().getId() + ")";
-            try {
-                connection.createStatement().executeUpdate(sql);
-            } catch (SQLException e) {
-                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
-            }
-
+            connection.createStatement().executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
         }

@@ -49,7 +49,10 @@ public class BusinessDelegate {
     }
 
     public void crearPedido() {
-        //TODO Hacer cuando este el usuario y la cesta
+        TUsuario toUsuario = boUsuario.read();
+        TOACestaUsuario toaCestaUsuario = new TOACestaUsuario(boCesta.getCesta(), toUsuario);
+        boPedido.crearPedido(toaCestaUsuario); //TODO Quitar stock? Comprobar saldo? Comprobar exlusivos?
+        boCesta.abrirCesta(toUsuario.getId());
     }
 
     public void altaArticuloStock(int id, int s) {

@@ -14,27 +14,36 @@ import java.util.TreeSet;
 public class DAOCestaMySQL implements DAOCesta {
 
     @Override
-    public void añadirArticulo(int idCesta, TOArticuloEnCesta toArticuloEnCesta) {
+    public boolean añadirArticulo(TOCesta toCesta, TOArticuloEnCesta toArticuloEnCesta) {
         try (Connection connection = DBConnection.connect()) {
+            boolean cestaAbierta = false;
+            if (toCesta.getIdCesta() == 0) {
+                toCesta.setIdCesta(abrirCesta(toCesta.getIdUsuario()));
+                cestaAbierta = true;
+            }
+
             String sql = "INSERT INTO ArtículosEnCesta (ID_Cesta, ID_Artículo, Talla, Cantidad, Color) VALUES (" +
-                    idCesta + ", " +
+                    toCesta.getIdCesta() + ", " +
                     toArticuloEnCesta.getIdArticulo() + ", " +
                     "'" + toArticuloEnCesta.getTalla() + "', " +
                     toArticuloEnCesta.getCantidad() + ", " +
                     "'" + toArticuloEnCesta.getColor() + "')";
             connection.createStatement().executeUpdate(sql);
+            return cestaAbierta;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void eliminarArticulo(int idCesta, TOArticuloEnCesta toArticuloEnCesta) {
+    public boolean eliminarArticulo(TOCesta toCesta, TOArticuloEnCesta toArticuloEnCesta) {
         try (Connection connection = DBConnection.connect()) {
-            String sql = "DELETE FROM ArtículosEnCesta WHERE ID_Cesta = " + idCesta + " AND ID_Artículo = " +
+            String sql = "DELETE FROM ArtículosEnCesta WHERE ID_Cesta = " + toCesta.getIdCesta() + " AND ID_Artículo = " +
                     toArticuloEnCesta.getIdArticulo() + " AND Talla = '" + toArticuloEnCesta.getTalla() + "'" +
                     " AND Color = '" + toArticuloEnCesta.getColor() + "'";
             connection.createStatement().executeUpdate(sql);
+            var resultSet = connection.createStatement().executeQuery("SELECT COUNT(*) AS Cantidad FROM ArtículosEnCesta WHERE ID_Cesta = " + toCesta.getIdCesta());
+            return resultSet.next() && resultSet.getInt("Cantidad") == 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -111,7 +120,21 @@ public class DAOCestaMySQL implements DAOCesta {
         try (Connection connection = DBConnection.connect()) {
             var resultSet = connection.createStatement().executeQuery("SELECT ID_Cesta AS ID FROM ArtículosEnCesta ORDER BY ID_Cesta DESC LIMIT 1");
             int idCesta = resultSet.next() ? resultSet.getInt("ID") + 1 : 1;
-            toCesta.getListaArticulos().forEach(toArticuloEnCesta -> añadirArticulo(idCesta, toArticuloEnCesta));
+            toCesta.getListaArticulos().forEach(toArticuloEnCesta -> añadirArticulo(toCesta, toArticuloEnCesta));
+            return idCesta;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int abrirCesta(int idUsuario) {
+        try (Connection connection = DBConnection.connect()) {
+            var resultSet = connection.createStatement().executeQuery("SELECT cesta_activa_id AS ID FROM Usuarios WHERE ID = " + idUsuario);
+            if (!resultSet.next()) return 0;
+            if (resultSet.getInt("ID") != 0) return resultSet.getInt("ID");
+            resultSet = connection.createStatement().executeQuery("SELECT ID_Cesta AS ID FROM ArtículosEnCesta ORDER BY ID_Cesta DESC LIMIT 1");
+            int idCesta = resultSet.next() ? resultSet.getInt("ID") + 1 : 1;
             return idCesta;
         } catch (SQLException e) {
             throw new RuntimeException(e);

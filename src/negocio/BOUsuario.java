@@ -101,7 +101,7 @@ public class BOUsuario implements Observable<AuthObserver>, CestaObserver {
     public void logout() {
         tUsuario = null;
         observers.forEach(observer -> observer.onAuthChanged(false, 0));
-        
+
         File file = new File("login.txt");
         file.delete();
 
@@ -121,6 +121,7 @@ public class BOUsuario implements Observable<AuthObserver>, CestaObserver {
     public void onCestaChanged(TOCesta cesta) {
         if (tUsuario != null) {
             tUsuario.setIDCesta(cesta.getIdCesta());
+            daoUsuario.actualizarCesta(tUsuario.getId(), cesta.getIdCesta());
         }
     }
 
