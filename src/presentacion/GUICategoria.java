@@ -8,10 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class GUICategoria extends MainGUIPanel implements ActionListener {
     //Después de haberle dado a una categoría en si
@@ -74,7 +72,8 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         for (BOStock.Color a : BOStock.Color.values()) {
             JCheckBoxMenuItem colores = new JCheckBoxMenuItem(BOStock.colorToString(a));
             colores.addActionListener((e) -> {
-                colorfiltro = colores.getText();
+                if (colores.isSelected()) colorfiltro = colores.getText();
+                else colorfiltro = "";
             });
             mcolor.add(colores);
         }
@@ -84,8 +83,11 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         for (String a : valoresprecio) {
             JCheckBoxMenuItem vprecios = new JCheckBoxMenuItem(a);
             vprecios.addActionListener((e) -> {
-                StringTokenizer tokens = new StringTokenizer(vprecios.getText());
-                preciofiltro = tokens.nextToken();
+                if (vprecios.isSelected()) {
+                    StringTokenizer tokens = new StringTokenizer(vprecios.getText());
+                    preciofiltro = tokens.nextToken();
+                } else preciofiltro = "";
+
             });
             mprecio.add(vprecios);
         }
@@ -94,9 +96,13 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         JMenu msubcat = new JMenu("Subcategoria");
         for (Articulo.Subcategoria a : Articulo.Subcategoria.values()) {
             JCheckBoxMenuItem subcat = new JCheckBoxMenuItem(Articulo.subcategoriaToString(a));
+
             subcat.addActionListener((e) -> {
-                subcatfiltro = subcat.getText();
+                if (subcat.isSelected()) subcatfiltro = subcat.getText();
+                else subcatfiltro = "";
+
             });
+
             msubcat.add(subcat);
         }
         filtro.add(msubcat);
@@ -105,7 +111,9 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         for (BOStock.Talla a : BOStock.Talla.values()) {
             JCheckBoxMenuItem talla = new JCheckBoxMenuItem(BOStock.tallatoString(a));
             talla.addActionListener((e) -> {
-                tallafiltro = talla.getText();
+                if (talla.isSelected()) tallafiltro = talla.getText();
+                else tallafiltro = "";
+
             });
             mtalla.add(talla);
         }
@@ -139,18 +147,69 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
 
     private void añadeBotones() {
         List<Articulo> lista = this.sa.buscaArticulosCategoria(this.cat);
-        if (!preciofiltro.equals("")) {
-            double p = Double.parseDouble(preciofiltro);
-            lista = this.sa.buscaFiltro(lista, Articulo -> Articulo.getPrecio() <= p);
-        }
-        if (!subcatfiltro.equals(""))
-            lista = this.sa.buscaFiltro(lista, Articulo -> Articulo.subcategoriaToString(Articulo.getSubcat()).equals(subcatfiltro));
-        if (!colorfiltro.equals(""))
-            lista = this.sa.buscaFiltro(lista, Articulo -> sa.getStockColor(Articulo.getID(), colorfiltro) > 0);
-        if (!tallafiltro.equals(""))
-            lista = this.sa.buscaFiltro(lista, Articulo -> sa.getStockTalla(Articulo.getID(), tallafiltro) > 0);
+        List<Articulo> filtro = new ArrayList<>();
+        boolean hayfiltro = false;
 
-        for (Articulo a : lista) {
+        if (!preciofiltro.equals("")) {
+            hayfiltro = true;
+            double p = Double.parseDouble(preciofiltro);
+            List<Articulo> listap = this.sa.buscaFiltro(lista, Articulo -> Articulo.getPrecio() <= p);
+            filtro.addAll(listap);
+        }
+        if (!subcatfiltro.equals("")) {
+            List<Articulo> listasub = this.sa.buscaFiltro(lista, Articulo -> Articulo.subcategoriaToString(Articulo.getSubcat()).equals(subcatfiltro));
+
+            if (!hayfiltro) filtro.addAll(listasub);
+            else {
+                Iterator<Articulo> it = filtro.iterator();
+                while (it.hasNext()) {
+                    it.next();
+                    if (!listasub.contains(it)) {
+                        it.remove();
+                    }
+                }
+            }
+
+            hayfiltro = true;
+        }
+
+        if (!colorfiltro.equals("")) {
+
+            List<Articulo> listac = this.sa.buscaFiltro(lista, Articulo -> sa.getStockColor(Articulo.getID(), colorfiltro) > 0);
+
+            if (!hayfiltro) filtro.addAll(listac);
+            else {
+                Iterator<Articulo> it = filtro.iterator();
+                while (it.hasNext()) {
+                    it.next();
+                    if (!listac.contains(it)) {
+                        it.remove();
+                    }
+                }
+            }
+
+            hayfiltro = true;
+        }
+        if (!tallafiltro.equals("")) {
+            List<Articulo> listat = this.sa.buscaFiltro(lista, Articulo -> sa.getStockTalla(Articulo.getID(), tallafiltro) > 0);
+
+            if (!hayfiltro) filtro.addAll(listat);
+            else {
+                Iterator<Articulo> it = filtro.iterator();
+                while (it.hasNext()) {
+                    it.next();
+                    if (!listat.contains(it)) {
+                        it.remove();
+                    }
+                }
+            }
+
+            hayfiltro = true;
+        }
+
+        if (!hayfiltro) filtro = lista;
+
+        for (Articulo a : filtro) {
             JButton botonart = new JButton(a.getName());
             botonart.setToolTipText("Muestra este articulo");
             botonart.addActionListener(this);
@@ -166,12 +225,9 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
     public void update() {
         art.removeAll();
         articulos.clear();
+        boolean selected = false;
 
         añadeBotones();
-        this.subcatfiltro = "";
-        this.colorfiltro = "";
-        this.preciofiltro = "";
-        this.tallafiltro = "";
 
         this.guippal.setViewportView(pcat);
     }
