@@ -87,41 +87,14 @@ public class GUIArticulo extends MainGUIPanel {
             tallas.addElement(BOStock.tallatoString(a));
         }
         boxtallas = new JComboBox(tallas);
+        boxtallas.addActionListener((e) -> {
+            String aux = (String) boxtallas.getSelectedItem();
+            this.tallaselect = BOStock.stringtoTalla(aux);
+        });
         talla.add(ltalla);
         talla.add(boxtallas);
         centro.add(talla);
-        /*
-        this.t = new JPanel();
-        t.setLayout(new BoxLayout(t, BoxLayout.X_AXIS));
 
-        JLabel talla = new JLabel("Tallas:");
-        //Botones de las tallas -> mejor hacemos el tipico menu
-        this.tallas = new JMenu("Selecciona talla");
-        JCheckBoxMenuItem XS = new JCheckBoxMenuItem("XS");
-        XS.setActionCommand("XS");
-        JCheckBoxMenuItem S = new JCheckBoxMenuItem("S");
-        S.setActionCommand("S");
-        JCheckBoxMenuItem M = new JCheckBoxMenuItem("M");
-        M.setActionCommand("M");
-        JCheckBoxMenuItem L = new JCheckBoxMenuItem("L");
-        L.setActionCommand("L");
-        JCheckBoxMenuItem XL = new JCheckBoxMenuItem("XL");
-        XL.setActionCommand("XL");
-
-        tallas.add(XS);
-        tallas.add(S);
-        tallas.add(M);
-        tallas.add(L);
-        tallas.add(XL);
-        tallas.addActionListener((e) -> {
-            String aux = e.getActionCommand();
-            this.tallaselect = BOStock.stringtoTalla(e.getActionCommand());
-        });
-
-        t.add(talla);
-        t.add(tallas);
-        centro.add(t);
-        */
         //Colores:
         JPanel color = new JPanel();
         color.setLayout(new BoxLayout(color, BoxLayout.X_AXIS));
@@ -138,8 +111,6 @@ public class GUIArticulo extends MainGUIPanel {
         //Unidades:
         JPanel unidades = new JPanel();
         JLabel lunidades = new JLabel("Unidades a comprar");
-        //Inicializamos las tallas para que salga la M al principio:
-        this.tallaselect = BOStock.Talla.M;
         int stock = this.sa.getStock(this.art.getID(), (String) boxcolores.getSelectedItem(), String.valueOf(this.tallaselect));
         uds = new JSpinner(new SpinnerNumberModel(1, 1, stock, 1));
         unidades.add(lunidades);
@@ -172,7 +143,7 @@ public class GUIArticulo extends MainGUIPanel {
 
     @Override
     public void reset() {
-        //this.setViewportView(); la principal supongo
+        this.guicategoria.setJPanelViewCat();
         this.setVisible(false);
         this.guicategoria.setVisible(false);
     }

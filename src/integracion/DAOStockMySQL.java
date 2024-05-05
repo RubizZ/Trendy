@@ -42,7 +42,6 @@ public class DAOStockMySQL implements DAOStock {
         } catch (SQLException e) {
             throw new RuntimeException("Error SQL" + e.getErrorCode(), e);
         }
-
     }
 
     @Override
