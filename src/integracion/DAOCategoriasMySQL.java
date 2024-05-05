@@ -105,8 +105,8 @@ public class DAOCategoriasMySQL implements DAOCategorias {
     private void actualizaCatExclusivosPasados(String fecha, String cat){
         try (Connection connection = database.DBConnection.connect()) {
             String sql = "UPDATE ClasificacionArticulos SET " +
-                    "'FechaLanzamiento = '" + fecha +
-                    " WHERE Categoria = " + cat ;
+                    "FechaLanzamiento = '" + fecha +
+                    "' WHERE Categoria = '" + cat + "'";
             try {
                 connection.createStatement().executeUpdate(sql);
             } catch (SQLException e) {

@@ -547,18 +547,17 @@ public class GUIPerfil extends MainGUIPanel implements AuthObserver, PedidoObser
         confirmar.addActionListener((e -> {
             suscripcion.setText(comboBoxSusc.getSelectedItem() + "");
             try {
+                Suscripciones susc = (Suscripciones) comboBoxSusc.getSelectedItem();
+                saFacade.actualizarSuscr(susc);
                 if (this.saFacade.getUsuario() != null) {
                     double nuevoSaldo = this.saFacade.getUsuario().getSaldo() - Suscripciones.obtenerValorPorOrdinal(comboBoxSusc.getSelectedIndex());
                     saFacade.getUsuario().setSaldo(nuevoSaldo);
                     saldo.setText(nuevoSaldo + "");
                 }
-                Suscripciones susc = (Suscripciones) comboBoxSusc.getSelectedItem();
-                saFacade.actualizarSuscr(susc);
-                //new VentanaMensaje("Suscripcion actualizada con éxito!");
+
                 JOptionPane.showMessageDialog(this, "Suscripcion actualizada con éxito!");
             } catch (RuntimeException ex) {
-                JOptionPane.showMessageDialog(this, "Algo ha fallado...");
-                //new VentanaMensaje(ex.getMessage() + ex.getCause().getMessage());
+                JOptionPane.showMessageDialog(this, ex.getMessage());
             } finally {
                 cl.show(cards, "Panel_ini");
             }

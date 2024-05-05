@@ -1,7 +1,9 @@
 package negocio;
 
 import integracion.DAOUsuario;
+import presentacion.GUIPerfil;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Path;
@@ -53,6 +55,10 @@ public class BOUsuario implements Observable<AuthObserver>, CestaObserver {
     }
 
     public void actualizarSuscr(Suscripciones susc) {
+        if(susc.equals(tUsuario.getSuscripcion())){
+            throw new RuntimeException("La suscripcion a la que desea cambiar es su suscripcion actual");
+        }
+        if(tUsuario.getSaldo() - susc.getPrecio() < 0)throw new RuntimeException("No tiene saldo suficiente");
         daoUsuario.actualizarSuscripcion(tUsuario.getId(), susc);
         tUsuario.setSuscripcion(susc);
         observers.forEach(observer -> observer.onAuthChanged(true, tUsuario.getId()));

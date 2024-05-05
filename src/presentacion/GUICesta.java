@@ -360,18 +360,17 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         reserMap.clear();
         panelReservas.add(new JLabel("Podrás añadir a la cesta los artículos 1 dia antes de su lanzamiento"));
         if (reservas != null) {
-            Set<TOArticuloEnReservas> lista = reservas;
-            if (lista.isEmpty()) {
+            //Set<TOArticuloEnReservas> lista = reservas;
+            if (reservas.isEmpty()) {
                 panelReservas.add(mensajesReservas);
             } else {
-                Iterator<TOArticuloEnReservas> art_it = lista.iterator();
+                Iterator<TOArticuloEnReservas> art_it = reservas.iterator();
                 while (art_it.hasNext()) {
                     TOArticuloEnReservas art = art_it.next();
                     JPanel articulo = new JPanel();
                     articulo.setLayout(new BoxLayout(articulo, BoxLayout.X_AXIS));
                     articulo.add(new JLabel(facade.buscarArticulo(art.getIdArticulo()).getNombre()));
                     reserMap.put(art, articulo);
-                    panelReservas.add(articulo);
                     JButton delete = new JButton("Eliminar reserva");
                     delete.setAlignmentX(Component.RIGHT_ALIGNMENT);
                     articulo.add(delete);
@@ -380,30 +379,37 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
                         reserMap.remove(art);
                         panelReservas.remove(articulo);
                     }));
+                    panelReservas.add(articulo);
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                     try {
-                        Date fechaLanzamiento = sdf.parse(facade.getFechaLanz(art.getIdArticulo()));
-                        Date fechaActual = new Date();
-                        if (fechaLanzamiento.getTime() - fechaActual.getTime() <= 1000 * 60 * 60 * 24) {
-                            JButton añadirACesta = new JButton("Añadir a cesta");
-                            añadirACesta.setAlignmentX(Component.RIGHT_ALIGNMENT);
-                            articulo.add(añadirACesta);
-                            añadirACesta.addActionListener(e -> {
-                                TOArticuloEnCesta toArticuloEnCesta = new TOArticuloEnCesta();
-                                toArticuloEnCesta.setIdArticulo(art.getIdArticulo());
-                                toArticuloEnCesta.setCantidad(1);
-                                toArticuloEnCesta.setColor(art.getColor());
-                                toArticuloEnCesta.setTalla(art.getTalla());
-                                facade.addArticuloACesta(toArticuloEnCesta);
-                                //TODO Cambiar esto por addReservaACesta para hacer checks de fechas y tal
-                            });
-                        } else {
-                            Duration tiempoEspera = Duration.of(fechaLanzamiento.getTime() - fechaActual.getTime(), ChronoUnit.MILLIS);
-                            JLabel espera = new JLabel(tiempoEspera.toString().substring(2, tiempoEspera.toString().length() - 5) + "S");
-                            fechasEspera.add(MutablePair.of(espera, tiempoEspera));
-                            articulo.add(espera);
+                        if(facade.getFechaLanz(art.getIdArticulo()) == ""){//se ha pasado el tiempo de prioridad de compra y ahora es un articulo NO exclusivo
+                            facade.removeArticuloDeReservas(art);
+                            reserMap.remove(art);
+                            panelReservas.remove(articulo);
                         }
-
+                        else{
+                            Date fechaLanzamiento = sdf.parse(facade.getFechaLanz(art.getIdArticulo()));
+                            Date fechaActual = new Date();
+                            if (fechaLanzamiento.getTime() - fechaActual.getTime() <= 1000 * 60 * 60 * 24) {
+                                JButton añadirACesta = new JButton("Añadir a cesta");
+                                añadirACesta.setAlignmentX(Component.RIGHT_ALIGNMENT);
+                                articulo.add(añadirACesta);
+                                añadirACesta.addActionListener(e -> {
+                                    TOArticuloEnCesta toArticuloEnCesta = new TOArticuloEnCesta();
+                                    toArticuloEnCesta.setIdArticulo(art.getIdArticulo());
+                                    toArticuloEnCesta.setCantidad(1);
+                                    toArticuloEnCesta.setColor(art.getColor());
+                                    toArticuloEnCesta.setTalla(art.getTalla());
+                                    facade.addArticuloACesta(toArticuloEnCesta);
+                                    //TODO Cambiar esto por addReservaACesta para hacer checks de fechas y tal
+                                });
+                            } else {
+                                Duration tiempoEspera = Duration.of(fechaLanzamiento.getTime() - fechaActual.getTime(), ChronoUnit.MILLIS);
+                                JLabel espera = new JLabel(tiempoEspera.toString().substring(2, tiempoEspera.toString().length() - 5) + "S");
+                                fechasEspera.add(MutablePair.of(espera, tiempoEspera));
+                                articulo.add(espera);
+                            }
+                        }
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }

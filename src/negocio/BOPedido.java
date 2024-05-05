@@ -16,6 +16,10 @@ public class BOPedido implements Observable<PedidoObserver> {
     }
 
     public void crearPedido(TOACestaUsuario toaCestaUsuario) {
+        int precio = 0;
+        for(TOArticuloEnCesta art: toaCestaUsuario.getToCesta().getListaArticulos()){
+            //TODO los articulos no tienen el precio al que se añadieron
+        }
         var pedido = daoPedidos.añadirPedido(toaCestaUsuario);
         observers.forEach(observer -> observer.onPedidoCreated(pedido));
     }

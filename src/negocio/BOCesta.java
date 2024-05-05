@@ -148,8 +148,10 @@ public class BOCesta implements Observable<Observer>, AuthObserver {
 
     public void addArticuloAReservas(TOArticuloEnReservas artEnReservas) {
         if (isAuth) { //TODO Comprobar que no esta ya en reservas
-            daoCesta.añadirArticuloAReservas(artEnReservas);
-            reservasObservers.forEach(reservasObserver -> reservasObserver.onArticuloAdded(artEnReservas));
+            if(!this.reservas.contains(artEnReservas)){
+                daoCesta.añadirArticuloAReservas(artEnReservas);
+                reservasObservers.forEach(reservasObserver -> reservasObserver.onArticuloAdded(artEnReservas));
+            }
         } else {
             throw new IllegalStateException("Para añadir a reservas hay que estar autenticado");
         }
