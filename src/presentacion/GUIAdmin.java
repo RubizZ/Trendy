@@ -163,10 +163,11 @@ public class GUIAdmin extends JPanel {
 
         bCambiar.addActionListener(e -> {
             tArticulo art = new tArticulo(Integer.parseInt(tId.getText()), tNombre.getText(), tSubcategoria.getText(), Double.parseDouble(tPrecio.getText()));
-            try{
+            try {
                 saFacade.modificarArticulo(art);
-            }catch(Exception exception){
-
+                JOptionPane.showMessageDialog(this, "Artículo modificado exitosamente");
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, "No se ha podido modificar el artículo correctamente.");
             }
             this.cambiarArticulo.setVisible(false);
             this.setVisible(true);
@@ -285,13 +286,19 @@ public class GUIAdmin extends JPanel {
         JButton bCrear = new JButton("Crear");
         this.crearArticulo.add(bCrear);
         bCrear.addActionListener(e -> {
-            tArticulo art = new tArticulo(Integer.parseInt(tId.getText()), tNombre.getText(), tSubcategoria.getText(), Double.parseDouble(tPrecio.getText()));
-            String gen = String.valueOf(cbGenero.getSelectedItem());
-            String fecha = "";
-            if (!Objects.equals(tFecha.getText(), "")) fecha = tFecha.getText();
-            double descuento = 0.0;
-            if (!Objects.equals(tDescuento.getText(), "")) descuento = Double.parseDouble(tDescuento.getText());
-            saFacade.altaArticulo(art, fecha, gen, descuento, Integer.parseInt(tStock.getText()));
+            try {
+                tArticulo art = new tArticulo(Integer.parseInt(tId.getText()), tNombre.getText(), tSubcategoria.getText(), Double.parseDouble(tPrecio.getText()));
+                String gen = String.valueOf(cbGenero.getSelectedItem());
+                String fecha = "";
+                if (!Objects.equals(tFecha.getText(), "")) fecha = tFecha.getText();
+                double descuento = 0.0;
+                if (!Objects.equals(tDescuento.getText(), "")) descuento = Double.parseDouble(tDescuento.getText());
+                saFacade.altaArticulo(art, fecha, gen, descuento, Integer.parseInt(tStock.getText()));
+                JOptionPane.showMessageDialog(this, "Artículo creado correctamente");
+            } catch (RuntimeException ex) {
+                JOptionPane.showMessageDialog(this, "Error al crear el artículo");
+            }
+
         });
 
 
@@ -300,7 +307,7 @@ public class GUIAdmin extends JPanel {
     private void initAñadirSaldo() {
 
         añadirSaldo.removeAll();
-        
+
         añadirSaldo.setBorder(new TitledBorder("Añadir Saldo"));
         añadirSaldo.setVisible(false);
 
@@ -340,7 +347,13 @@ public class GUIAdmin extends JPanel {
         JButton bAñadir = new JButton("Añadir");
         grid.add(bAñadir);
         bAñadir.addActionListener(e -> {
-            saFacade.actualizarSaldoAdmin((Double) tSaldo.getModel().getValue(), (Integer) tId.getSelectedItem());
+            try {
+                saFacade.actualizarSaldoAdmin((Double) tSaldo.getModel().getValue(), (Integer) tId.getSelectedItem());
+                JOptionPane.showMessageDialog(this, "Saldo actualizado correctamente");
+            } catch (RuntimeException ex) {
+                JOptionPane.showMessageDialog(this, "Error al actualizar el saldo");
+            }
+
         });
 
         JPanel wrapper = new JPanel();
@@ -372,7 +385,11 @@ public class GUIAdmin extends JPanel {
         JButton bCambiar = new JButton("Cambiar");
         this.cambiarSuscripcion.add(bCambiar);
         bCambiar.addActionListener(e -> {
-            saFacade.actualizarSuscrAdmin(Integer.parseInt(tId.getText()), cbSuscripcion.getSelectedIndex()); //TODO Cambiar
+            try {
+                saFacade.actualizarSuscrAdmin(Integer.parseInt(tId.getText()), cbSuscripcion.getSelectedIndex()); //TODO Cambiar
+            } catch (RuntimeException ex) {
+                JOptionPane.showMessageDialog(this, "No se ha podido actualizar el saldo");
+            }
         });
 
         JButton bCancelar = new JButton("Cancelar");
@@ -408,7 +425,11 @@ public class GUIAdmin extends JPanel {
         JButton bCambiar = new JButton("Cambiar");
         this.cambiarEstadoPedido.add(bCambiar);
         bCambiar.addActionListener(e -> {
-            saFacade.cambiarStatus(Integer.parseInt(tId.getText()), (TOStatusPedido) cbEstado.getSelectedItem());
+            try {
+                saFacade.cambiarStatus(Integer.parseInt(tId.getText()), (TOStatusPedido) cbEstado.getSelectedItem());
+            } catch (RuntimeException ex) {
+                JOptionPane.showMessageDialog(this, "No se ha podido cambiar el estado del pedido");
+            }
         });
 
         JButton bCancelar = new JButton("Cancelar");

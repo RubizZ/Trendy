@@ -13,12 +13,14 @@ public class BOListas {
         this.dao = dao;
     }
 
-    public List<Articulo> buscaArticulosCategoria(String cat) {
-        return dao.buscaArticulosCategoria(cat);
+    public List<Articulo> buscaArticulosCategoria(String cat) throws Exception {
+        List<Articulo> lista = dao.buscaArticulosCategoria(cat);
+        if (lista.isEmpty()) throw new Exception("No hay ningun articulo que pertenezca a esta categoria");
+        return lista;
     }
 
 
-    public List<Articulo> buscaFiltro(List<Articulo> lista, Predicate<Articulo> pred) {
+    public List<Articulo> buscaFiltro(List<Articulo> lista, Predicate<Articulo> pred) throws Exception {
         //Color, precio 3 rangos, subcat
         List<Articulo> filtro = new LinkedList<>();
 
@@ -27,7 +29,7 @@ public class BOListas {
                 filtro.add(a);
             }
         }
-
+        if (filtro.isEmpty()) throw new Exception("No hay articulos con esas caracteristicas");
         return filtro;
     }
 }

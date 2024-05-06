@@ -70,20 +70,20 @@ public class BusinessDelegate {
             Articulo arti = new Articulo(artt);
             if (boCategorias.esExclusivo(arti)) {
 
-                if(reservas.stream().mapToInt(TOArticuloEnReservas::getIdArticulo).anyMatch(i->i == artCesta.getIdArticulo()))
+                if (reservas.stream().mapToInt(TOArticuloEnReservas::getIdArticulo).anyMatch(i -> i == artCesta.getIdArticulo()))
                     throw new RuntimeException("No tienes reserva de ese articulo");
 
                 if (!toUsuario.getSuscripcion().equals(Suscripciones.PREMIUM)) {
                     throw new RuntimeException("No se puede comprar el articulo exclusivo " + artCesta.getIdArticulo() + " talla " + artCesta.getTalla() + " color " + artCesta.getColor());
                 }
 
-                if(artCesta.getCantidad() > 1)
+                if (artCesta.getCantidad() > 1)
                     throw new RuntimeException("No se puede comprar mas de una unidad de un articulo exclusivo");
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/aaaa");
                 try {
                     Date date = sdf.parse(boCategorias.getFechaLanz(artCesta.getIdArticulo()));
-                    if (date.getTime() - new Date().getTime() > 1000 * 60 * 60 * 24){
+                    if (date.getTime() - new Date().getTime() > 1000 * 60 * 60 * 24) {
                         throw new RuntimeException("No se puede comprar el articulo exclusivo " + artCesta.getIdArticulo() + " talla " + artCesta.getTalla() + " color " + artCesta.getColor() + " porque no ha salido a la venta");
                     }
                 } catch (ParseException e) {
@@ -128,7 +128,7 @@ public class BusinessDelegate {
             bostock.modificarArticuloStock(s);
         }
 
-        for(TOArticuloEnReservas res : reservas){
+        for (TOArticuloEnReservas res : reservas) {
             boCesta.removeArticuloDeReservas(res);
         }
 
@@ -159,7 +159,7 @@ public class BusinessDelegate {
         return bostock.getStockTalla(id, t);
     }
 
-    public List<String> getCategorias() {
+    public List<String> getCategorias() throws Exception {
         return this.boCategorias.getCategorias();
     }
 
@@ -216,7 +216,7 @@ public class BusinessDelegate {
         return boPedido.getPedidosFecha(fecha);
     }
 
-    public List<Articulo> buscaArticulosCategoria(String cat) {
+    public List<Articulo> buscaArticulosCategoria(String cat) throws Exception {
         return boListas.buscaArticulosCategoria(cat);
     }
 
@@ -224,7 +224,7 @@ public class BusinessDelegate {
         boPedido.cambiarStatus(id, toStatusPedido);
     }
 
-    public List<Articulo> buscaFiltro(List<Articulo> lista, Predicate<Articulo> pred) {
+    public List<Articulo> buscaFiltro(List<Articulo> lista, Predicate<Articulo> pred) throws Exception {
         return boListas.buscaFiltro(lista, pred);
     }
 

@@ -146,77 +146,82 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
     }
 
     private void añadeBotones() {
-        List<Articulo> lista = this.sa.buscaArticulosCategoria(this.cat);
-        List<Articulo> filtro = new ArrayList<>();
-        boolean hayfiltro = false;
+        try {
+            List<Articulo> lista = this.sa.buscaArticulosCategoria(this.cat);
 
-        if (!preciofiltro.equals("")) {
-            hayfiltro = true;
-            double p = Double.parseDouble(preciofiltro);
-            List<Articulo> listap = this.sa.buscaFiltro(lista, Articulo -> Articulo.getPrecio() <= p);
-            filtro.addAll(listap);
-        }
-        if (!subcatfiltro.equals("")) {
-            List<Articulo> listasub = this.sa.buscaFiltro(lista, Articulo -> Articulo.subcategoriaToString(Articulo.getSubcat()).equals(subcatfiltro));
+            List<Articulo> filtro = new ArrayList<>();
+            boolean hayfiltro = false;
 
-            if (!hayfiltro) filtro.addAll(listasub);
-            else {
-                Iterator<Articulo> it = filtro.iterator();
-                while (it.hasNext()) {
-                    it.next();
-                    if (!listasub.contains(it)) {
-                        it.remove();
+            if (!preciofiltro.equals("")) {
+                hayfiltro = true;
+                double p = Double.parseDouble(preciofiltro);
+                List<Articulo> listap = this.sa.buscaFiltro(lista, Articulo -> Articulo.getPrecio() <= p);
+                filtro.addAll(listap);
+            }
+            if (!subcatfiltro.equals("")) {
+                List<Articulo> listasub = this.sa.buscaFiltro(lista, Articulo -> Articulo.subcategoriaToString(Articulo.getSubcat()).equals(subcatfiltro));
+
+                if (!hayfiltro) filtro.addAll(listasub);
+                else {
+                    Iterator<Articulo> it = filtro.iterator();
+                    while (it.hasNext()) {
+                        it.next();
+                        if (!listasub.contains(it)) {
+                            it.remove();
+                        }
                     }
                 }
+
+                hayfiltro = true;
             }
 
-            hayfiltro = true;
-        }
+            if (!colorfiltro.equals("")) {
+                List<Articulo> listac = this.sa.buscaFiltro(lista, Articulo -> sa.getStockColor(Articulo.getID(), colorfiltro) > 0);
 
-        if (!colorfiltro.equals("")) {
-
-            List<Articulo> listac = this.sa.buscaFiltro(lista, Articulo -> sa.getStockColor(Articulo.getID(), colorfiltro) > 0);
-
-            if (!hayfiltro) filtro.addAll(listac);
-            else {
-                Iterator<Articulo> it = filtro.iterator();
-                while (it.hasNext()) {
-                    it.next();
-                    if (!listac.contains(it)) {
-                        it.remove();
+                if (!hayfiltro) filtro.addAll(listac);
+                else {
+                    Iterator<Articulo> it = filtro.iterator();
+                    while (it.hasNext()) {
+                        it.next();
+                        if (!listac.contains(it)) {
+                            it.remove();
+                        }
                     }
                 }
+
+                hayfiltro = true;
             }
+            if (!tallafiltro.equals("")) {
+                List<Articulo> listat = this.sa.buscaFiltro(lista, Articulo -> sa.getStockTalla(Articulo.getID(), tallafiltro) > 0);
 
-            hayfiltro = true;
-        }
-        if (!tallafiltro.equals("")) {
-            List<Articulo> listat = this.sa.buscaFiltro(lista, Articulo -> sa.getStockTalla(Articulo.getID(), tallafiltro) > 0);
-
-            if (!hayfiltro) filtro.addAll(listat);
-            else {
-                Iterator<Articulo> it = filtro.iterator();
-                while (it.hasNext()) {
-                    it.next();
-                    if (!listat.contains(it)) {
-                        it.remove();
+                if (!hayfiltro) filtro.addAll(listat);
+                else {
+                    Iterator<Articulo> it = filtro.iterator();
+                    while (it.hasNext()) {
+                        it.next();
+                        if (!listat.contains(it)) {
+                            it.remove();
+                        }
                     }
                 }
+
+                hayfiltro = true;
             }
 
-            hayfiltro = true;
-        }
+            if (!hayfiltro) filtro = lista;
 
-        if (!hayfiltro) filtro = lista;
-
-        for (Articulo a : filtro) {
-            JButton botonart = new JButton(a.getName());
-            botonart.setToolTipText("Muestra este articulo");
-            botonart.addActionListener(this);
-            articulos.put(botonart, a);
-        }
-        for (JButton b : this.articulos.keySet()) {
-            art.add(b);
+            for (Articulo a : filtro) {
+                JButton botonart = new JButton(a.getName());
+                botonart.setToolTipText("Muestra este articulo");
+                botonart.addActionListener(this);
+                articulos.put(botonart, a);
+            }
+            for (JButton b : this.articulos.keySet()) {
+                art.add(b);
+            }
+        } catch (Exception e) {
+            JLabel mensaje = new JLabel(e.getMessage());
+            art.add(mensaje);
         }
         pcat.add(art, BorderLayout.CENTER);
     }

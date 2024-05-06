@@ -30,7 +30,6 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
     private JTextField _nombre;
     private JTextField _apellidos;
     private JTextField _contrasenya;
-    private JTextField _repContrasenya;
     private JTextField _correo;
     private JTextField _pais;
     private JTextField _anyoNac;
@@ -84,11 +83,11 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
 
     @Override
     public void reset() {
-        cl.
+        cl.show(cards, "Panel_ini");
     }
 
     @Override
-    public void onUserDataChanged(boolean isAuth, int idUsuario) { //TODO Actualizar panel Inicio con el nuevo saldo
+    public void onUserDataChanged(boolean isAuth, int idUsuario) {
         if (isAuth && saFacade.getUsuario().getAdmin()) {
             if (!botonAdmin) {
                 buttonPanel.add(goToAdmin);
@@ -112,7 +111,7 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
             suscripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
             saldo = new JLabel("Saldo: " + tUsu.getSaldo());
             saldo.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panelIni.add(nombre); //TODO Añadir toda la informacion (y si hay tiempo hacerlo bonito)
+            panelIni.add(nombre);
             panelIni.add(suscripcion);
             panelIni.add(saldo);
             panelIni.revalidate();
@@ -130,16 +129,6 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
         updateTable();
     }
 
-    class VentanaMensaje extends JFrame {
-        public VentanaMensaje(String mensaje) {
-            JLabel etiqueta = new JLabel(mensaje);
-            etiqueta.setAlignmentX(Component.CENTER_ALIGNMENT);
-            getContentPane().add(etiqueta);
-            setSize(250, 100);
-            setLocationRelativeTo(GUIPerfil.this);
-            setVisible(true);
-        }
-    }
 
     private void initGUI() {
         mainPanel = new JPanel(new BorderLayout());
@@ -532,7 +521,7 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
                 }
                 JOptionPane.showMessageDialog(this, "Saldo añadido con éxito!");
             } catch (RuntimeException exception) {
-                new VentanaMensaje("Algo ha fallado...");
+                JOptionPane.showMessageDialog(this, "Algo ha pasado...");
             } finally {
                 cl.show(cards, "Panel_ini");
             }
@@ -558,10 +547,13 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
         comboBoxSusc.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelSuscr.add(comboBoxSusc);
 
-        JTextArea info = new JTextArea("INFORMACIÓN:\n\n" +
-                "NORMAL: Funcionalidades por defecto. Precio: " + Suscripciones.NORMAL.getPrecio() + "€\n" +
-                "PRIME: No se pagará el envío, con valor de 5€. Precio: " + Suscripciones.PRIME.getPrecio() + "€\n" +
-                "PREMIUM: Podrá reservar artículos exclusivos y comprarlos las 24h antes de su lanzamiento. Precio: " + Suscripciones.PREMIUM.getPrecio() + "€");
+        StringBuilder sb = new StringBuilder();
+        for (Suscripciones s : Suscripciones.values()) {
+            sb.append(s.name()).append(": ").append(s.getInfo(s)).append(". Precio: ").append(s.getPrecio()).append("\n");
+        }
+        String texto = sb.toString();
+
+        JTextArea info = new JTextArea("INFORMACIÓN:\n" + texto);
         info.setBackground(null);
         info.setEditable(false);
         info.setLineWrap(true);

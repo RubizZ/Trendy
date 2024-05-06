@@ -99,12 +99,20 @@ public class GUIHome extends MainGUIPanel implements UserObserver {
 
         AtomicInteger stock = new AtomicInteger();
         Set<Integer> ids = new HashSet<>();
-        saFachade.getCategorias().forEach(cat -> saFachade.buscaArticulosCategoria(cat).forEach(art -> {
-            if (!ids.contains(art.getID())) {
-                ids.add(art.getID());
-                stock.addAndGet(1);
-            }
-        }));
+        try {
+            saFachade.getCategorias().forEach(cat -> {
+                try {
+                    saFachade.buscaArticulosCategoria(cat).forEach(art -> {
+                        if (!ids.contains(art.getID())) {
+                            ids.add(art.getID());
+                            stock.addAndGet(1);
+                        }
+                    });
+                } catch (Exception e) {
+                }
+            });
+        } catch (Exception e) {
+        }
         JLabel jlArticulos = new JLabel("Numero de articulos: " + stock);
         jlArticulos.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         jpStatsTotal.add(jlArticulos);
@@ -137,15 +145,8 @@ public class GUIHome extends MainGUIPanel implements UserObserver {
 
     private void putArticulosExclusivos() {
         jpArticulosExclusivos.removeAll();
-
-        List<Articulo> exclusivos = saFachade.buscaArticulosCategoria("Exclusivos");
-
-        if (exclusivos.isEmpty()) {
-            JPanel noHay = new JPanel();
-            JLabel noHayArticulosExclusivos = new JLabel("No hay articulos exclusivos");
-            noHay.add(noHayArticulosExclusivos);
-            jpArticulosExclusivos.add(noHay);
-        } else {
+        try {
+            List<Articulo> exclusivos = saFachade.buscaArticulosCategoria("Exclusivos");
             exclusivos.forEach(articulo -> {
                 JPanel jpArticulo = new JPanel(new BorderLayout());
                 jpArticulo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -189,6 +190,11 @@ public class GUIHome extends MainGUIPanel implements UserObserver {
                 jtaNombre.addMouseListener(jpArticulo.getMouseListeners()[0]);
                 jpArticulosExclusivos.add(jpArticulo);
             });
+        } catch (Exception e) {
+            JPanel noHay = new JPanel();
+            JLabel noHayArticulosExclusivos = new JLabel("No hay articulos exclusivos");
+            noHay.add(noHayArticulosExclusivos);
+            jpArticulosExclusivos.add(noHay);
         }
 
     }

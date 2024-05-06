@@ -61,11 +61,11 @@ public class SAFacade {
         saCategorias.modificarArticulo(id, fechal, descuento, genero);
     }
 
-    public List<Articulo> buscaArticulosCategoria(String cat) {
+    public List<Articulo> buscaArticulosCategoria(String cat) throws Exception {
         return saLista.buscaArticulosCategoria(cat);
     }
 
-    public List<Articulo> buscaFiltro(List<Articulo> lista, Predicate<Articulo> pred) {
+    public List<Articulo> buscaFiltro(List<Articulo> lista, Predicate<Articulo> pred) throws Exception {
         return saLista.buscaFiltro(lista, pred);
     }
 
@@ -89,7 +89,7 @@ public class SAFacade {
         return saStock.getStockTalla(id, t);
     }
 
-    public List<String> getCategorias() {
+    public List<String> getCategorias() throws Exception {
         return saCategorias.getCategorias();
     }
 

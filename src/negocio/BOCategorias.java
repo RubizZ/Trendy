@@ -43,8 +43,10 @@ public class BOCategorias {
         }
     }
 
-    public List<String> getCategorias() {
-        return dao.getCategorias();
+    public List<String> getCategorias() throws Exception {
+        List<String> categorias = dao.getCategorias();
+        if (categorias.isEmpty()) throw new Exception("No se han encontrado categorias");
+        return categorias;
     }
 
     public void actualizaExclusivos() {

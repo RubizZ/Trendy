@@ -10,7 +10,7 @@ public interface SACategorias {
 
     public void modificarArticulo(int id, String fechal, int descuento, String genero);
 
-    public List<String> getCategorias();
+    public List<String> getCategorias() throws Exception;
 
     public void actualizaExclusivos();
 

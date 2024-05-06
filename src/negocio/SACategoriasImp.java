@@ -29,7 +29,7 @@ public class SACategoriasImp extends AbstractSA implements SACategorias {
     }
 
     @Override
-    public List<String> getCategorias() {
+    public List<String> getCategorias() throws Exception {
         return businessDelegate.getCategorias();
     }
 

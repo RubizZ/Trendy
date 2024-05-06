@@ -1,13 +1,17 @@
 package negocio;
 
 public enum Suscripciones {
-    NORMAL(0.0), PRIME(5.0), PREMIUM(6.5);
+    NORMAL(0.0, "Suscripción por defecto."),
+    PRIME(5.0, "Los usuarios con este tipo de suscripción no pagarán el envío."),
+    PREMIUM(6.5, "Los usuarios con esta suscripción podrán reservar artículos exclusivos y comprarlos las 24h anteriores a su lanzamiento.");
 
     private double precio;
+    private String info;
 
     // Constructor
-    Suscripciones(double precio) {
+    Suscripciones(double precio, String s) {
         this.precio = precio;
+        this.info = s;
     }
 
     public double getPrecio() {
@@ -30,5 +34,9 @@ public enum Suscripciones {
             }
         }
         throw new IllegalArgumentException("Ordinal no válido: " + ordinal);
+    }
+
+    public String getInfo(Suscripciones susc) {
+        return susc.info;
     }
 }

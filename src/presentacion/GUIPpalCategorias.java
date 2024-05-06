@@ -22,7 +22,7 @@ public class GUIPpalCategorias extends MainGUIPanel implements ActionListener {
         super();
         this.sa = sa;
         this.categorias = new LinkedList<>();
-        lcat = this.sa.getCategorias();
+        this.lcat = new LinkedList<>();
         initGUI();
     }
 
@@ -48,7 +48,6 @@ public class GUIPpalCategorias extends MainGUIPanel implements ActionListener {
 
     @Override
     public void update() {
-        lcat = this.sa.getCategorias();
         for (JButton b : categorias) {
             pcategorias.remove(b);
         }
@@ -61,11 +60,17 @@ public class GUIPpalCategorias extends MainGUIPanel implements ActionListener {
     }
 
     private void añadeBotones() {
-        for (String s : this.lcat) {
-            JButton cat = new JButton(s);
-            cat.addActionListener(this);
-            pcategorias.add(cat);
-            categorias.add(cat);
+        try {
+            lcat = this.sa.getCategorias();
+            for (String s : this.lcat) {
+                JButton cat = new JButton(s);
+                cat.addActionListener(this);
+                pcategorias.add(cat);
+                categorias.add(cat);
+            }
+        } catch (Exception e) {
+            JLabel mensaje = new JLabel(e.getMessage());
+            pcategorias.add(mensaje);
         }
     }
 
@@ -78,13 +83,16 @@ public class GUIPpalCategorias extends MainGUIPanel implements ActionListener {
     }
 
     public void goToArticulo(int idArticulo) {
-        for (String categoria : sa.getCategorias()) {
-            for (Articulo articulo : sa.buscaArticulosCategoria(categoria)) {
-                if (articulo.getID() == idArticulo) {
-                    GUICategoria guicat = new GUICategoria(sa, categoria, this);
-                    guicat.goToArticulo(articulo);
-                    return;
+        for (String categoria : lcat) {
+            try {
+                for (Articulo articulo : sa.buscaArticulosCategoria(categoria)) {
+                    if (articulo.getID() == idArticulo) {
+                        GUICategoria guicat = new GUICategoria(sa, categoria, this);
+                        guicat.goToArticulo(articulo);
+                        return;
+                    }
                 }
+            } catch (Exception e) {
             }
         }
     }
