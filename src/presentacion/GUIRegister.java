@@ -135,7 +135,7 @@ public class GUIRegister extends JPanel {
                 tUsuario = crearUsuario();
                 saFacade.create(tUsuario);
             } else {
-                System.out.println("La contraseña no coincide");
+                JOptionPane.showMessageDialog(mainPanel, "La contraseña no coincide");
             }
         });
         _createAccount.setAlignmentX(Component.CENTER_ALIGNMENT);

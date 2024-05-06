@@ -117,7 +117,11 @@ public class GUILogin extends JDialog implements UserObserver {
         mainPanel.add(this._cancel, gbc);
 
         this._enter.addActionListener(e -> {
-            saFacade.login(_user.getText(), _contrasenya.getText());
+            try {
+                saFacade.login(_user.getText(), _contrasenya.getText());
+            } catch (IllegalArgumentException e1) {
+                JOptionPane.showMessageDialog(mainPanel, e1.getMessage());
+            }
         });
 
         this._cancel.addActionListener(e -> {
