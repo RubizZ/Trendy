@@ -172,7 +172,7 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
 
 
         //PANEL DE ADMIN
-        JPanel panelAdmin = new GUIAdmin(saFacade);
+        JPanel panelAdmin = new GUIAdmin(saFacade, window);
         panelAdmin.setVisible(false);
 
         // Añadir paneles al panel de cartas

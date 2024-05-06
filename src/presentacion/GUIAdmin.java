@@ -21,10 +21,11 @@ public class GUIAdmin extends JPanel {
     private JPanel cambiarArticulo;
     private JButton bCrearArticulo, bAñadirSaldo, bCambiarSuscripcion, bCambiarEstadoPedido, bcambiarArticulo;
     private SAFacade saFacade;
+    private GUIWindow guiwindow;
 
-
-    public GUIAdmin(SAFacade SaFacade) {
+    public GUIAdmin(SAFacade SaFacade, GUIWindow guiwindow) {
         this.saFacade = SaFacade;
+        this.guiwindow = guiwindow;
         initGUI();
     }
 
@@ -287,12 +288,14 @@ public class GUIAdmin extends JPanel {
         this.crearArticulo.add(bCrear);
         bCrear.addActionListener(e -> {
             try {
-                tArticulo art = new tArticulo(Integer.parseInt(tId.getText()), tNombre.getText(), tSubcategoria.getText(), Double.parseDouble(tPrecio.getText()));
                 String gen = String.valueOf(cbGenero.getSelectedItem());
                 String fecha = "";
                 if (!Objects.equals(tFecha.getText(), "")) fecha = tFecha.getText();
                 double descuento = 0.0;
                 if (!Objects.equals(tDescuento.getText(), "")) descuento = Double.parseDouble(tDescuento.getText());
+                double precio = Double.parseDouble(tPrecio.getText());
+                double precioDescuento = precio - precio*descuento;
+                tArticulo art = new tArticulo(Integer.parseInt(tId.getText()), tNombre.getText(), tSubcategoria.getText(), precioDescuento);
                 saFacade.altaArticulo(art, fecha, gen, descuento, Integer.parseInt(tStock.getText()));
                 JOptionPane.showMessageDialog(this, "Artículo creado correctamente");
             } catch (RuntimeException ex) {
@@ -301,7 +304,7 @@ public class GUIAdmin extends JPanel {
 
         });
 
-
+        this.guiwindow.updateArticulos();
     }
 
     private void initAñadirSaldo() {

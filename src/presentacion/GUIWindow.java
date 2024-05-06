@@ -154,9 +154,9 @@ public class GUIWindow extends JFrame {
         controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         homePanel = new GUIHome(saFacade, this);
+        searchPanel = new GUIPpalCategorias(saFacade);
         userPanel = new GUIPerfil(saFacade, this);
         cestaPanel = new GUICesta(saFacade, this);
-        searchPanel = new GUIPpalCategorias(saFacade);
         authDialog = new GUILogin(saFacade);
 
         mainPanel.add(homePanel, BorderLayout.CENTER);
@@ -305,5 +305,9 @@ public class GUIWindow extends JFrame {
         searchPanel.goToArticulo(idArticulo);
         buttonAction(changePanelAction()).accept(searchPanel);
 
+    }
+
+    public void updateArticulos(){
+        this.searchPanel.update();
     }
 }
