@@ -113,8 +113,8 @@ public class DAOUsuarioMySQL implements DAOUsuario {
                     "', anyo_nacimiento = " + usuario.getAnyoNacimiento() +
                     ", sexo = '" + usuario.getSexo() +
                     "', pais = '" + usuario.getPais() +
-                    "', suscripcion_id = " + usuario.getSuscripcion() +
-                    ", Dirección = '" + usuario.getDireccion() +
+                    "', suscripcion_id = '" + usuario.getSuscripcion() +
+                    "', Dirección = '" + usuario.getDireccion() +
                     "', saldo = " + usuario.getSaldo() + " WHERE ID = " + ID;
             try {
                 connection.createStatement().executeUpdate(sql);
@@ -184,6 +184,26 @@ public class DAOUsuarioMySQL implements DAOUsuario {
                     "suscripcion_id =  '" + susc + "', saldo = saldo -" + quitarDeSaldo + " WHERE ID = " + idUsuario + ";";
             try {
                 connection.createStatement().executeUpdate(sql);
+            } catch (SQLException e) {
+                throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
+        }
+    }
+
+    @Override
+    public int getId(String correoE) {
+        try (Connection connection = DBConnection.connect()) {
+            String sql = "SELECT ID FROM Usuarios WHERE correo = '" + correoE + "'";
+            try (Statement statement = connection.createStatement();
+                 ResultSet rS = statement.executeQuery(sql)
+            ) {
+                if (rS.next()) {
+                    return rS.getInt("ID");
+                } else {
+                    return -1;
+                }
             } catch (SQLException e) {
                 throw new RuntimeException("Error SQL " + e.getErrorCode(), e);
             }

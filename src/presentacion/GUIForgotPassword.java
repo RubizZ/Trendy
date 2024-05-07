@@ -36,11 +36,16 @@ public class GUIForgotPassword extends JPanel {
 
             if (_contrasenya.getText().equals(_repContrasenya.getText())) {
                 TUsuario loginUser = crearUsuario();
-                try{
+
+                if (loginUser == null) {
+                    return;
+                }
+
+                try {
                     saFacade.update(loginUser);
                     JOptionPane.showMessageDialog(null, "Contraseña cambiada con éxito");
                     parent.reset();
-                }catch(RuntimeException ex){
+                } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "No se ha podido actualizar la contraseña");
                 }
             } else {
@@ -82,6 +87,12 @@ public class GUIForgotPassword extends JPanel {
         TUsuario tUsuario = new TUsuario();
         tUsuario.setCorreo_e(_user.getText());
         tUsuario.setContrasenya(_contrasenya.getText());
+
+        if (tUsuario.getCorreo_e().isEmpty() || tUsuario.getContrasenya().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Rellene todos los campos");
+            return null;
+        }
+
         return tUsuario;
     }
 

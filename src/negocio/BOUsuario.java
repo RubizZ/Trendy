@@ -2,7 +2,6 @@ package negocio;
 
 import integracion.DAOUsuario;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,8 +42,18 @@ public class BOUsuario implements Observable<UserObserver> {
 
 
     public void update(TUsuario tUsuario) {
-        daoUsuario.actualizarUsuario(tUsuario, tUsuario.getId());
-        observers.forEach(e -> e.onUserDataChanged(true, tUsuario.getId()));
+        if (this.tUsuario != null) { // Modificar datos del usuario logueado
+            daoUsuario.actualizarUsuario(tUsuario, this.tUsuario.getId());
+            this.tUsuario = daoUsuario.getUsuario(tUsuario.getCorreo_e(), tUsuario.getContrasenya());
+            saveLogin();
+            observers.forEach(e -> e.onUserDataChanged(true, this.tUsuario.getId()));
+        } else { // Cambiar contraseña de un usuario
+            int id = daoUsuario.getId(tUsuario.getCorreo_e());
+            TUsuario old = daoUsuario.buscarUsuarios().stream().filter(e -> e.getId() == id).findFirst().orElse(null);
+            old.setContrasenya(tUsuario.getContrasenya());
+            daoUsuario.actualizarUsuario(old, id);
+        }
+
     }
 
     public void delete(int id) {
@@ -87,7 +96,7 @@ public class BOUsuario implements Observable<UserObserver> {
     public void login(String correo, String contraseña) {
         this.tUsuario = daoUsuario.getUsuario(correo, contraseña);
         if (tUsuario != null) {
-            EventQueue.invokeLater(() -> observers.forEach(observer -> observer.onUserDataChanged(true, tUsuario.getId())));
+            observers.forEach(observer -> observer.onUserDataChanged(true, tUsuario.getId()));
             saveLogin();
         } else
             throw new IllegalArgumentException("Usuario no encontrado con esas credenciales");
@@ -100,10 +109,8 @@ public class BOUsuario implements Observable<UserObserver> {
         try (OutputStream outStream = new FileOutputStream(outFile.toFile()); PrintStream out = new PrintStream(outStream)) {
             out.println(tUsuario.getCorreo_e());
             out.println(tUsuario.getContrasenya());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException ignored) {
+
         }
     }
 

@@ -60,6 +60,9 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
     private CardLayout cl;
     private JPanel panelMod;
     private Collection<TOPedido> pedidos;
+    private JPanel panelFiltrosTabla;
+    private JPanel panelPedidos;
+    private GUIPedido guiPedido;
 
     public GUIPerfil(SAFacade facade, GUIWindow guiWindow) {
         saFacade = facade;
@@ -112,7 +115,7 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
             nombre.setAlignmentX(Component.CENTER_ALIGNMENT);
             suscripcion = new JLabel("Suscripcion actual: " + tUsu.getSuscripcion());
             suscripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
-            saldo = new JLabel("Saldo: " + tUsu.getSaldo());
+            saldo = new JLabel("Saldo: " + tUsu.getSaldo() + "€");
             saldo.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelIni.add(nombre);
             panelIni.add(suscripcion);
@@ -147,7 +150,7 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
         configurarPanelMod(cards, panelMod);
 
         //PANEL DE VER MIS PEDIDOS
-        JPanel panelPedidos = new JPanel();
+        panelPedidos = new JPanel();
         panelPedidos.setLayout(new BoxLayout(panelPedidos, BoxLayout.Y_AXIS));
         panelPedidos.setBorder(new TitledBorder("Pedidos"));
         panelPedidos.setVisible(false);
@@ -365,11 +368,14 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
         JButton _confirmar = new JButton("Confirmar");
         _confirmar.addActionListener((e) -> {
             TUsuario usuario = crearUsuario();
+            if (usuario == null) {
+                return;
+            }
             try {
                 saFacade.update(usuario);
                 JOptionPane.showMessageDialog(this, "Los datos se han modificado correctamente");
-            } catch (RuntimeException re) {
-                throw new RuntimeException("No se han podido actualizar los datos: ");
+            } catch (Exception re) {
+                JOptionPane.showMessageDialog(mainPanel, "Ha habido un problema al crear la cuenta: " + re.getMessage() + " " + re.getCause().getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
             } finally {
                 cl.show(cards, "Panel_ini");
             }
@@ -382,7 +388,7 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
 
     private void configurarPanelPedidos(JPanel panelPedidos) {
 
-        JPanel panelFiltrosTabla = new JPanel();
+        panelFiltrosTabla = new JPanel();
         panelFiltrosTabla.setLayout(new BorderLayout());
 
         JPanel filtros = new JPanel();
@@ -457,11 +463,13 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
             int row = tablaPedidos.getSelectedRow();
             int idPedido = (Integer) pedidosModel.getValueAt(row, 0);
             try {
-                TOPedido toPedido = saFacade.getAllPedidos().stream().filter(toPedido1 -> toPedido1.getID() == idPedido).findFirst().orElse(null);
+                if (guiPedido != null) panelPedidos.remove(guiPedido);
+
+                TOPedido pedido = saFacade.getAllPedidos().stream().filter(toPedido1 -> toPedido1.getID() == idPedido).findFirst().orElse(null);
 
                 JButton backButton = new JButton("Atras");
 
-                GUIPedido guiPedido = new GUIPedido(saFacade, window, toPedido, backButton);
+                guiPedido = new GUIPedido(saFacade, window, pedido, backButton);
 
                 backButton.addActionListener(e1 -> Transitions.makeWhiteFadeTransition(guiPedido, panelFiltrosTabla, 1, (from, to) -> {
                     panelPedidos.remove(from);
@@ -495,10 +503,10 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
         Date fechaFinDate = (Date) fechaFin.getModel().getValue();
         var pedidosToShow = pedidos.stream().filter(toPedido -> fechaInicioDate == null || toPedido.getFecha().after(Date.from(fechaInicioDate.toInstant().minus(1, java.time.temporal.ChronoUnit.DAYS))))
                 .filter(toPedido -> fechaFinDate == null || toPedido.getFecha().before(fechaFinDate))
-                .filter(toPedido -> toStatusPedido == null || toPedido.getStatus().equals(toStatusPedido.toString().toLowerCase()))
+                .filter(toPedido -> toStatusPedido == null || toPedido.getStatus().equalsIgnoreCase(toStatusPedido.toString()))
                 .toList();
         pedidosModel.setRowCount(0);
-        pedidosToShow.forEach(toPedido -> pedidosModel.addRow(new Object[]{toPedido.getID(), toPedido.getFecha(), toPedido.getStatus().toUpperCase(), toPedido.getTOAArticulosEnPedido().getArticulosSet().stream().mapToDouble(TOAArticuloEnPedido::getPrecio).sum()}));
+        pedidosToShow.forEach(toPedido -> pedidosModel.addRow(new Object[]{toPedido.getID(), toPedido.getFecha(), toPedido.getStatus(), toPedido.getTOAArticulosEnPedido().getArticulosSet().stream().mapToDouble(TOAArticuloEnPedido::getPrecio).sum()}));
     }
 
     private void updateTable() {
@@ -507,7 +515,7 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
     }
 
     private void configurarPanelSaldo(JPanel cards, JPanel panelSaldo) {
-        JLabel cant = new JLabel("Introduzca la cantidad que desea añadir");
+        JLabel cant = new JLabel("Introduzca la cantidad que desea añadir (máximo 200€ por ingreso)");
         cant.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelSaldo.add(cant);
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 200, 5);
@@ -523,13 +531,17 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
         panelSaldo.add(confirmar);
         confirmar.addActionListener((e -> {
             int cantidad = (int) sumarASaldo.getValue();
+            if (cantidad == 0) {
+                JOptionPane.showMessageDialog(this, "La cantidad a añadir no puede ser 0", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             try {
                 saFacade.actualizarSaldo(cantidad);
                 this.tUsuario = saFacade.getUsuario();
                 //tUsuario.setSaldo(tUsuario.getSaldo());
                 if (this.tUsuario != null) {
                     double nuevoSaldo = this.tUsuario.getSaldo();
-                    saldo.setText(nuevoSaldo + "");
+                    saldo.setText("Saldo: " + nuevoSaldo + "€");
                 }
                 JOptionPane.showMessageDialog(this, "Saldo añadido con éxito!");
             } catch (RuntimeException exception) {
@@ -587,7 +599,7 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
                 if (this.saFacade.getUsuario() != null) {
                     double nuevoSaldo = this.saFacade.getUsuario().getSaldo();
                     saFacade.getUsuario().setSaldo(nuevoSaldo);
-                    saldo.setText(nuevoSaldo + "");
+                    saldo.setText("Saldo: " + nuevoSaldo + "€");
                 }
 
                 JOptionPane.showMessageDialog(this, "Suscripcion actualizada con éxito!");
@@ -606,14 +618,54 @@ public class GUIPerfil extends MainGUIPanel implements UserObserver, PedidoObser
         int anyo;
         nombre = _nombre.getText();
         apellidos = _apellidos.getText();
-        this.nombre.setText(nombre + " " + apellidos);
         correo = _correo.getText();
         contrasenya = _contrasenya.getText();
-        anyo = Integer.parseInt(_anyoNac.getText());
+        try {
+            anyo = Integer.parseInt(_anyoNac.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El año de nacimiento debe ser un número", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
         pais = _pais.getText();
         dir = _direccion.getText();
-        sexo = (char) _sexo.getSelectedItem();
+        sexo = (Character) _sexo.getSelectedItem();
+
+        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasenya.isEmpty() || pais.isEmpty() || dir.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No puede haber campos vacios, por favor, rellenelos todos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            JOptionPane.showMessageDialog(this, "El correo no tiene un formato valido", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
         return new TUsuario(nombre, apellidos, correo, contrasenya, anyo, sexo, pais, dir, false);
+    }
+
+    public void goToPedido(TOPedido lastPedido) {
+
+        cl.show(cards, "Panel_ped");
+
+        if (guiPedido != null) panelPedidos.remove(guiPedido);
+
+        JButton backButton = new JButton("Atras");
+
+        guiPedido = new GUIPedido(saFacade, window, lastPedido, backButton);
+
+        backButton.addActionListener(e1 -> Transitions.makeWhiteFadeTransition(guiPedido, panelFiltrosTabla, 1, (from, to) -> {
+            panelPedidos.remove(from);
+            panelPedidos.add(to);
+            revalidate();
+            repaint();
+        }));
+
+        Transitions.makeWhiteFadeTransition(panelFiltrosTabla, guiPedido, 1, (from, to) -> {
+            panelPedidos.remove(from);
+            panelPedidos.add(to);
+            revalidate();
+            repaint();
+        });
     }
 
 

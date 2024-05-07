@@ -53,6 +53,9 @@ public class GUIPpalCategorias extends MainGUIPanel implements ActionListener {
         }
         this.categorias.clear();
         añadeBotones();
+
+        revalidate();
+        repaint();
     }
 
     @Override

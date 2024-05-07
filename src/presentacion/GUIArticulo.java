@@ -163,10 +163,10 @@ public class GUIArticulo extends MainGUIPanel {
                             BOStock.Talla.valueOf(((String) boxtallas.getSelectedItem()).toUpperCase()),
                             BOStock.Color.valueOf(((String) boxcolores.getSelectedItem()).toUpperCase())
                     );
-                    try{
+                    try {
                         sa.addArticuloAReservas(artEnReservas);
                         JOptionPane.showMessageDialog(this, "Añadido a reservas con éxito");
-                    }catch(Exception ex){
+                    } catch (Exception ex) {
                         JOptionPane.showMessageDialog(this, "No se ha podido añadir a reservas");
                     }
                 } else {
@@ -178,7 +178,7 @@ public class GUIArticulo extends MainGUIPanel {
         } else {
             cesta = new JButton("Añadir a cesta");
             cesta.addActionListener((e) -> {
-                try{
+                try {
                     TOArticuloEnCesta artEnCesta = new TOArticuloEnCesta();
                     artEnCesta.setCantidad((int) uds.getValue());
                     artEnCesta.setColor(BOStock.Color.valueOf(((String) boxcolores.getSelectedItem()).toUpperCase()));
@@ -186,7 +186,7 @@ public class GUIArticulo extends MainGUIPanel {
                     artEnCesta.setIdArticulo(art.getID());
                     sa.addArticuloACesta(artEnCesta);
                     JOptionPane.showMessageDialog(this, "Añadido a la cesta correctamente");
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "No se ha podido añadir a la cesta");
                 }
             });
@@ -195,12 +195,17 @@ public class GUIArticulo extends MainGUIPanel {
 
         favoritos = new JButton("Añadir a favoritos");
         favoritos.addActionListener(e -> {
-            try{
-                TOArticuloEnFavoritos artEnFavs = new TOArticuloEnFavoritos(art.getID(), sa.getUsuario().getId());
+            try {
+                TUsuario usuario = sa.getUsuario();
+                if (usuario == null) {
+                    JOptionPane.showMessageDialog(this, "Debes estar logueado para añadir a favoritos");
+                    return;
+                }
+                TOArticuloEnFavoritos artEnFavs = new TOArticuloEnFavoritos(art.getID(), usuario.getId());
                 sa.addArticuloAFavoritos(artEnFavs);
                 JOptionPane.showMessageDialog(this, "Añadido a favoritos con éxito");
-            }catch(Exception ex){
-                JOptionPane.showMessageDialog(this, "No se ha podido añadir a favoritos");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "No se ha podido añadir a favoritos: " + ex.getMessage());
             }
 
         });

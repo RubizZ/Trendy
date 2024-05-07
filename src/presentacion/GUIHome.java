@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class GUIHome extends MainGUIPanel implements UserObserver {
+public class GUIHome extends MainGUIPanel implements UserObserver, PedidoObserver {
 
     private final GUIWindow mainWindow;
     private JPanel contentPanel;
@@ -238,30 +238,9 @@ public class GUIHome extends MainGUIPanel implements UserObserver {
         jlFecha.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         jpLastPedidoPanel.add(jlFecha);
 
-        JLabel jlEstado = new JLabel("Estado: " + lastPedido.getStatus().toUpperCase());
+        JLabel jlEstado = new JLabel("Estado: " + lastPedido.getStatus());
         jlEstado.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         jpLastPedidoPanel.add(jlEstado);
-        if (lastPedido.getStatus().toUpperCase().equals(TOStatusPedido.REPARTO.toString())) {
-            JButton cancelarPedidoButton = new JButton("Cancelar pedido");
-            cancelarPedidoButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-            cancelarPedidoButton.addActionListener(e -> {
-                int sel = JOptionPane.showConfirmDialog(this, "Estas seguro de que quieres cancelar el pedido?", "Cancelar pedido", JOptionPane.YES_NO_OPTION);
-                if (sel == JOptionPane.YES_OPTION) {
-                    saFachade.cancelarPedido(lastPedido.getID());
-                    jpLastPedidoPanel.remove(cancelarPedidoButton);
-                    lastPedido = saFachade.getLastPedido();
-                    if (lastPedido != null) {
-                        notEmptyLastPedido(jpLastPedido);
-                    } else {
-                        emptyLastPedido(jpLastPedido);
-                    }
-                    jpLastPedidoPanel.revalidate();
-                    jpLastPedidoPanel.repaint();
-                }
-            });
-
-            jpLastPedidoPanel.add(cancelarPedidoButton);
-        }
 
         JButton irPedidoButton = new JButton("Ver pedido");
         irPedidoButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
@@ -307,5 +286,17 @@ public class GUIHome extends MainGUIPanel implements UserObserver {
         }
         putArticulosExclusivos();
         updatePedido(jpLastPedido);
+    }
+
+    @Override
+    public void onPedidoCreated(TOPedido toPedido) {
+        updatePedido(jpLastPedido);
+    }
+
+    @Override
+    public void onPedidoUpdated(TOPedido toPedido) {
+        if (toPedido.getID() == lastPedido.getID()) {
+            updatePedido(jpLastPedido);
+        }
     }
 }

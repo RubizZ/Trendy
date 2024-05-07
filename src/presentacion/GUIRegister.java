@@ -1,7 +1,6 @@
 package presentacion;
 
 import negocio.SAFacade;
-import negocio.SAUsuarioImp;
 import negocio.TUsuario;
 
 import javax.swing.*;
@@ -123,10 +122,11 @@ public class GUIRegister extends JPanel {
             contraRep = _repContrasenya.getText();
             if (contra.equals(contraRep)) {
                 tUsuario = crearUsuario();
-                try{
+                if (tUsuario == null) return;
+                try {
                     saFacade.create(tUsuario);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(mainPanel, "Ha habido un problema al crear la cuenta: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPanel, "Ha habido un problema al crear la cuenta: " + ex.getMessage() + " " + ex.getCause().getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(mainPanel, "La contraseña no coincide");
@@ -156,10 +156,26 @@ public class GUIRegister extends JPanel {
         apellidos = _apellidos.getText();
         correo = _correo.getText();
         contrasenya = _contrasenya.getText();
-        anyo = Integer.parseInt(_anyoNac.getText());
+        try {
+            anyo = Integer.parseInt(_anyoNac.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El año de nacimiento debe ser un número", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
         pais = _pais.getText();
         dir = _direccion.getText();
         sexo = (Character) comboBoxSexo.getSelectedItem();
+
+        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || contrasenya.isEmpty() || pais.isEmpty() || dir.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No puede haber campos vacios, por favor, rellenelos todos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            JOptionPane.showMessageDialog(this, "El correo no tiene un formato valido", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
         return new TUsuario(nombre, apellidos, correo, contrasenya, anyo, sexo, pais, dir, false);
     }
 

@@ -273,23 +273,8 @@ public class GUIWindow extends JFrame {
 
 
     public void showPedido(TOPedido lastPedido) {
-        JButton backButton = new JButton("Atras");
-
-        GUIPedido guiPedido = new GUIPedido(saFacade, this, lastPedido, backButton);
-
-        backButton.addActionListener(e1 -> Transitions.makeWhiteFadeTransition(guiPedido, homePanel, 1, (from, to) -> {
-            mainPanel.remove(from);
-            mainPanel.add(to, BorderLayout.CENTER);
-            revalidate();
-            repaint();
-        }));
-
-        Transitions.makeWhiteFadeTransition(homePanel, guiPedido, 1, (from, to) -> {
-            mainPanel.remove(from);
-            mainPanel.add(to, BorderLayout.CENTER);
-            revalidate();
-            repaint();
-        });
+        userPanel.goToPedido(lastPedido);
+        buttonAction(changePanelAction()).accept(userPanel);
     }
 
 
@@ -310,4 +295,5 @@ public class GUIWindow extends JFrame {
     public void updateArticulos() {
         this.searchPanel.update();
     }
+
 }

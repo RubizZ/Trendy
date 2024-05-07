@@ -21,4 +21,6 @@ public interface DAOUsuario {
     void actualizarSaldo(int idUsuario, double cantidad);
 
     void actualizarSuscripcion(int idUsuario, Suscripciones susc);
+
+    int getId(String correoE);
 }

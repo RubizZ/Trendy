@@ -16,7 +16,7 @@ public class GUIPedido extends JPanel {
         JLabel idLabel = new JLabel("ID: " + toPedido.getID());
         JLabel fechaLabel = new JLabel("Fecha: " + toPedido.getFecha());
         JLabel estadoLabel = new JLabel("Estado: " + toPedido.getStatus());
-        JLabel precioLabel = new JLabel("Precio: " + toPedido.getTOAArticulosEnPedido().getArticulosSet().stream().mapToDouble(TOAArticuloEnPedido::getPrecio).sum());
+        JLabel precioLabel = new JLabel("Precio: " + toPedido.getTOAArticulosEnPedido().getArticulosSet().stream().mapToDouble(TOAArticuloEnPedido::getPrecio).sum() + "€");
 
         infoPanel.add(idLabel);
         infoPanel.add(fechaLabel);
@@ -30,7 +30,7 @@ public class GUIPedido extends JPanel {
         toPedido.getTOAArticulosEnPedido().getArticulosSet().forEach(toaArticuloEnPedido -> {
             tArticulo articulo = saFacade.buscarArticulo(toaArticuloEnPedido.getToArticuloEnCesta().getIdArticulo());
 
-            if(articulo !=null){
+            if (articulo != null) {
                 JPanel jpArticulo = new JPanel(new BorderLayout());
                 jpArticulo.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 jpArticulo.setPreferredSize(new Dimension(100, 100));
@@ -48,8 +48,6 @@ public class GUIPedido extends JPanel {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         mainWindow.goToArticulo(articulo.getID());
-                        revalidate();
-                        repaint();
                     }
 
                     @Override
@@ -92,7 +90,7 @@ public class GUIPedido extends JPanel {
                     return;
                 }
 
-                try{
+                try {
                     saFacade.cambiarStatus(toPedido.getID(), TOStatusPedido.ENTREGADO);
                     estadoLabel.setText("Estado: ENTREGADO");
                     JOptionPane.showMessageDialog(this, "Entrega confirmada con exito");
@@ -111,7 +109,7 @@ public class GUIPedido extends JPanel {
                 if (sel != JOptionPane.YES_OPTION) {
                     return;
                 }
-                try{
+                try {
                     saFacade.cancelarPedido(toPedido.getID());
                     estadoLabel.setText("Estado: CANCELADO");
                     JOptionPane.showMessageDialog(this, "Pedido cancelado con exito");

@@ -255,5 +255,7 @@ public class GUICategoria extends MainGUIPanel implements ActionListener {
         this.setVisible(false);
         GUIArticulo art = new GUIArticulo(articulo, cat, this, this.sa);
         this.guippal.setViewportView(art);
+        revalidate();
+        repaint();
     }
 }

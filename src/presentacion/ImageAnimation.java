@@ -46,7 +46,7 @@ public class ImageAnimation extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         percentage += (((double) (System.currentTimeMillis() - initTime) / expectedEndTimeMs) - percentage);
-        drawPercentageBar(g2d, (int) (getHeight() - (getHeight() * 0.1)), "Loading...", percentage);
+        drawPercentageBar(g2d, (int) (getHeight() - (getHeight() * 0.1)), "Cargando...", percentage);
 
         // Escribe trendy en grande encima del logo dependiendo del tamaño de la ventana
         int fontSize = (int) (getHeight() * 0.1); // 10% of window height
