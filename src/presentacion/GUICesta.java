@@ -29,9 +29,9 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
     private static final String PANELFAVORITOS = "Panel_favoritos";
     private static final String PANELRESERVAS = "Panel_reservas";
 
-    private JLabel mensajeCesta = new JLabel("La cesta se encuentra vacia...");
-    private JLabel mensajeFavs = new JLabel("La lista de favoritos se encuentra vacia...");
-    private JLabel mensajesReservas = new JLabel("No hay reservas...");
+    private final JLabel mensajeCesta = new JLabel("La cesta se encuentra vacia...");
+    private final JLabel mensajeFavs = new JLabel("La lista de favoritos se encuentra vacia...");
+    private final JLabel mensajesReservas = new JLabel("No hay reservas...");
 
     private JPanel cards;
     private CardLayout cl;
@@ -109,10 +109,14 @@ public class GUICesta extends MainGUIPanel implements CestaObserver, FavsObserve
         pedir.setAlignmentX(Component.CENTER_ALIGNMENT);
         pedir.addActionListener((e -> {
             try {
+                if (panelMap.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "No hay articulos en la cesta");
+                    return;
+                }
                 this.facade.crearPedido();
                 JOptionPane.showMessageDialog(this, "¡Pedido realizado con éxito!");
-            } catch (RuntimeException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }));
         panelCestaComprar.add(pedir, BorderLayout.PAGE_END);
