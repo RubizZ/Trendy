@@ -50,3 +50,23 @@ Preparamos todo, hicimos revisiones de la documentación y del código, juntamos
 - Javier Martínez
 - Ramiro Marcos
 - Rocío Mercado
+
+## Interfaz gráfica
+
+Las siguientes imagenes representan una pequeña parte de la aplicación implementada
+
+### Pantalla de carga
+
+<img width="796" height="803" alt="image" src="https://github.com/user-attachments/assets/59f99043-3739-4f33-abd8-300fb97669d1" />
+
+### Home
+
+<img width="796" height="803" alt="image" src="https://github.com/user-attachments/assets/cdc980ac-6d4c-4b3e-ae5c-b128cbd4f558" />
+
+### Carrito de compra
+
+<img width="796" height="803" alt="image" src="https://github.com/user-attachments/assets/eae9915e-301e-4535-b742-41b224deb6a1" />
+
+### Historial de pedidos
+
+<img width="796" height="803" alt="image" src="https://github.com/user-attachments/assets/45d675c8-eaff-48f1-bc8e-d1acab3af0d4" />
