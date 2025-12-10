@@ -1,5 +1,5 @@
 # Trendy
-Proyecto en equipo realizado en las asignaturas de "Ingeniería del Software I" e "Ingeniería del Software II" de Ingeniería Informática en la Universidad Complutense de Madrid
+Proyecto en equipo realizado en las asignaturas de "Ingeniería del Software I" e "Ingeniería del Software II" de Ingeniería Informática en la Universidad Complutense de Madrid.
 
 Trendy es una aplicación de escritorio que implementa el acceso desde el frontend a una tienda de ropa, y el backend que esta tendría.
 
